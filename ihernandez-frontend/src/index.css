@@ -1,0 +1,371 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255, 191, 0, 0.24), transparent 27rem),
+    radial-gradient(circle at 92% 12%, rgba(255, 62, 108, 0.18), transparent 25rem),
+    linear-gradient(180deg, #fff8eb 0%, #fdf2f8 42%, #fff7ed 100%);
+  color: #1d1028;
+}
+
+h1,
+h2,
+h3,
+button,
+nav a {
+  font-family: "Arial Black", "Trebuchet MS", Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+.site-header {
+  padding: 1rem;
+  background-color: #222;
+  color: white;
+}
+
+.site-header h1 {
+  margin-bottom: 0.25rem;
+}
+
+.site-header p {
+  font-size: 0.95rem;
+  color: #ddd;
+}
+
+.add-product-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 1rem;
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+}
+
+.add-product-form input {
+  flex: 1 1 160px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.add-product-form input:focus {
+  border-color: #222;
+}
+
+.add-product-form button {
+  padding: 0.5rem 1.2rem;
+  background-color: #222;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.add-product-form button:hover {
+  background-color: #444;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.product-card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px 8px 0 0;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.product-card img {
+  width: 100%;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.product-card h3 {
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.stock {
+  font-size: 0.95rem;
+}
+
+.in-stock {
+  color: green;
+}
+
+.out-of-stock {
+  color: red;
+}
+
+.product-card.actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  cursor: default;
+}
+
+.product-card.actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  background-color: #f0f0f0;
+}
+
+.product-card.actions button:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.1);
+}
+
+.product-card.actions button.btn-danger {
+  background-color: #fee2e2;
+}
+
+.product-card.actions button.btn-danger:hover {
+  background-color: #fca5a5;
+  transform: scale(1.1);
+}
+
+@media (min-width: 1180px) {
+  .fedi-floating {
+    display: flex !important;
+    flex-direction: column !important;
+    position: fixed !important;
+    top: 82px !important;
+    right: 18px !important;
+    bottom: 10px !important;
+    width: 390px !important;
+    z-index: 30 !important;
+    margin: 0 !important;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease !important;
+  }
+
+  .fedi-floating.fedi-over-footer {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateX(28px) !important;
+    visibility: hidden !important;
+  }
+
+  .fedi-floating > div:first-child {
+    flex-shrink: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 0.85rem !important;
+  }
+
+  .fedi-floating > div:first-child p {
+    font-size: 0.84rem !important;
+    line-height: 1.32 !important;
+    margin-top: 0.35rem !important;
+  }
+
+  .fedi-floating > div:first-child h2 {
+    font-size: 1.25rem !important;
+  }
+
+  .fedi-floating > div:first-child button {
+    font-size: 0.78rem !important;
+    min-height: 32px !important;
+    padding: 0.38rem 0.58rem !important;
+  }
+
+  .fedi-chat-box {
+    flex: 1 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+  }
+
+  .fedi-chat-messages {
+    flex: 1 1 auto !important;
+    max-height: none !important;
+    min-height: 260px !important;
+  }
+
+  .fedi-tools {
+    flex: 0 0 auto !important;
+    grid-template-columns: 1fr !important;
+    max-height: 190px !important;
+    overflow-y: auto !important;
+    padding: 0.55rem !important;
+  }
+
+  .fedi-tools > div {
+    padding: 0.55rem !important;
+  }
+
+  .fedi-tools p {
+    font-size: 0.74rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 0.45rem !important;
+  }
+
+  .fedi-tools span {
+    font-size: 0.7rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .fedi-tools input,
+  .fedi-tools button {
+    font-size: 0.76rem !important;
+    min-width: 0 !important;
+    padding: 0.42rem 0.5rem !important;
+  }
+
+  .fedi-tools input {
+    min-height: 36px !important;
+    width: 100% !important;
+  }
+
+  .fedi-tools [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  .fedi-tools [style*="display: flex"] button {
+    width: 100% !important;
+  }
+
+  .fedi-tools > div:first-child > div {
+    flex-wrap: wrap !important;
+  }
+}
+
+@media (max-width: 1179px) {
+  .fedi-mobile-toggle {
+    display: inline-flex !important;
+  }
+
+  .fedi-mobile-close {
+    display: inline-flex !important;
+  }
+
+  .fedi-floating {
+    bottom: 0 !important;
+    display: none !important;
+    left: 0 !important;
+    margin: 0 !important;
+    max-height: 92vh !important;
+    overflow: hidden !important;
+    position: fixed !important;
+    right: 0 !important;
+    top: auto !important;
+    z-index: 60 !important;
+  }
+
+  .fedi-floating.fedi-mobile-open {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .home-page {
+    max-width: 1220px !important;
+    padding-right: 2rem !important;
+  }
+
+  .fedi-chat-box {
+    min-height: 720px !important;
+  }
+
+  .fedi-chat-messages {
+    min-height: 430px !important;
+    max-height: 560px !important;
+  }
+
+  .fedi-tools {
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)) !important;
+    padding: 0.65rem !important;
+  }
+
+  .fedi-tools > div {
+    padding: 0.7rem !important;
+  }
+
+  .fedi-tools p {
+    font-size: 0.8rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .fedi-tools input,
+  .fedi-tools button {
+    font-size: 0.8rem !important;
+    padding: 0.48rem 0.58rem !important;
+  }
+
+  .fedi-tools input {
+    min-height: 40px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .home-page {
+    padding: 1rem !important;
+  }
+
+  .fedi-chat-box {
+    min-height: 78vh !important;
+  }
+
+  .fedi-chat-messages {
+    min-height: 48vh !important;
+    max-height: 58vh !important;
+  }
+
+  .fedi-tools {
+    grid-template-columns: 1fr !important;
+  }
+
+  .fedi-tools > div:last-child > div {
+    flex-direction: column !important;
+  }
+
+  .fedi-tools > div:last-child button {
+    width: 100% !important;
+  }
+
+  footer > div {
+    grid-template-columns: 1fr !important;
+    padding: 1.5rem !important;
+  }
+}
