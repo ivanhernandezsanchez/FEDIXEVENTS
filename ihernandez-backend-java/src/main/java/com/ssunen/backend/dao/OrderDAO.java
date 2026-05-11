@@ -78,6 +78,24 @@ public class OrderDAO {
                 int activityId = number(first(item.get("activityId"), item.get("productId"))).intValue();
                 int quantity = number(item.get("quantity")).intValue();
                 BigDecimal unitPrice = number(item.get("unitPrice"));
+
+                Map<String, Object> customPlan = object(item.get("customPlan"));
+                if (customPlan != null && activityId < 0) {
+                    Map<String, Object> customActivity = jdbc.queryOne(conn, """
+                        INSERT INTO activities (provider_id, city_id, name, description, category, price, duration_minutes, max_capacity)
+                        VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)
+                        RETURNING id
+                        """,
+                        number(first(customPlan.get("cityId"), cityId)).intValue(),
+                        truncate(String.valueOf(first(customPlan.get("name"), "Plan personalizado IA")), 150),
+                        String.valueOf(first(customPlan.get("description"), "Plan personalizado creado desde el chat IA")),
+                        truncate(String.valueOf(first(customPlan.get("category"), "Plan personalizado IA")), 100),
+                        unitPrice,
+                        number(first(customPlan.get("durationMinutes"), 240)).intValue(),
+                        number(first(customPlan.get("maxCapacity"), quantity)).intValue());
+                    activityId = ((Number) customActivity.get("id")).intValue();
+                }
+
                 if (activityId <= 0 || quantity <= 0 || unitPrice.compareTo(BigDecimal.ZERO) < 0) {
                     continue;
                 }
@@ -133,8 +151,20 @@ public class OrderDAO {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> object(Object value) {
+        if (value instanceof Map<?, ?>) {
+            return (Map<String, Object>) value;
+        }
+        return null;
+    }
+
     private Object first(Object first, Object second) {
         return first == null ? second : first;
+    }
+
+    private String truncate(String value, int max) {
+        return value.length() <= max ? value : value.substring(0, max);
     }
 
     private BigDecimal number(Object value) {

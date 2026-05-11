@@ -6,13 +6,14 @@ import com.ssunen.backend.dao.CatalogDAO;
 import com.ssunen.backend.dao.FichajeDAO;
 import com.ssunen.backend.dao.OrderDAO;
 import com.ssunen.backend.dao.SchemaDAO;
+import com.ssunen.backend.dao.TravelDAO;
 import com.ssunen.backend.dao.UserDAO;
 import com.ssunen.backend.exception.ApiException;
 import com.ssunen.backend.exception.BadRequestException;
-import com.ssunen.backend.exception.ConflictException;
 import com.ssunen.backend.exception.NotFoundException;
 import com.ssunen.backend.security.AuthService;
 import com.ssunen.backend.security.AuthService.AuthUser;
+import com.ssunen.backend.service.ChatService;
 import com.ssunen.backend.util.RequestUtils;
 
 import javax.servlet.ServletException;
@@ -28,7 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(name = "FrontControllerServlet", urlPatterns = "/api/*", loadOnStartup = 1)
+@WebServlet(name = "FrontControllerServlet", urlPatterns = {"/api/*", "/chat"}, loadOnStartup = 1)
 public class FrontControllerServlet extends HttpServlet {
     private final Gson gson = new Gson();
     private final AuthService auth = new AuthService();
@@ -37,6 +38,8 @@ public class FrontControllerServlet extends HttpServlet {
     private final AiPlanDAO aiPlans = new AiPlanDAO();
     private final OrderDAO orders = new OrderDAO();
     private final FichajeDAO fichajes = new FichajeDAO();
+    private final TravelDAO travel = new TravelDAO();
+    private final ChatService chat = new ChatService();
 
     @Override
     public void init() throws ServletException {
@@ -130,6 +133,9 @@ public class FrontControllerServlet extends HttpServlet {
         if ("POST".equals(method) && "/register".equals(path)) {
             return register(req, false);
         }
+        if ("POST".equals(method) && "/chat".equals(path)) {
+            return chat.reply(RequestUtils.readJson(req));
+        }
 
         if ("GET".equals(method) && "/cities".equals(path)) {
             return catalog.findCities();
@@ -149,6 +155,21 @@ public class FrontControllerServlet extends HttpServlet {
         if (path.startsWith("/orders")) {
             return orders(req, method, path);
         }
+        if (path.startsWith("/hotels")) {
+            return hotels(req, method, path);
+        }
+        if (path.startsWith("/providers")) {
+            return providers(req, method, path);
+        }
+        if (path.startsWith("/groups")) {
+            return groups(req, method, path);
+        }
+        if (path.startsWith("/bookings")) {
+            return bookings(req, method, path);
+        }
+        if (path.startsWith("/payments")) {
+            return payments(req, method, path);
+        }
         if (path.startsWith("/fichajes")) {
             return fichajes(req, method, path);
         }
@@ -156,6 +177,28 @@ public class FrontControllerServlet extends HttpServlet {
             return new com.ssunen.backend.dao.JdbcTemplate().query("SELECT NOW()");
         }
 
+        throw new NotFoundException("Ruta no encontrada");
+    }
+
+    private Object hotels(HttpServletRequest req, String method, String path) throws ApiException, SQLException {
+        if ("GET".equals(method) && "/hotels".equals(path)) {
+            return travel.findHotels(RequestUtils.intParam(req, "city_id"));
+        }
+        if ("GET".equals(method)) {
+            int id = RequestUtils.pathId(path, "/hotels/");
+            return requireFound(travel.findHotel(id), "Hotel no encontrado");
+        }
+        throw new NotFoundException("Ruta no encontrada");
+    }
+
+    private Object providers(HttpServletRequest req, String method, String path) throws ApiException, SQLException {
+        if ("GET".equals(method) && "/providers".equals(path)) {
+            return travel.findProviders(RequestUtils.intParam(req, "city_id"));
+        }
+        if ("GET".equals(method)) {
+            int id = RequestUtils.pathId(path, "/providers/");
+            return requireFound(travel.findProvider(id), "Proveedor no encontrado");
+        }
         throw new NotFoundException("Ruta no encontrada");
     }
 
@@ -312,6 +355,78 @@ public class FrontControllerServlet extends HttpServlet {
             int id = RequestUtils.pathId(path, "/orders/");
             String status = RequestUtils.requiredString(RequestUtils.readJson(req), "status", "El nuevo estado es obligatorio");
             return requireFound(orders.updateStatus(id, status), "Pedido no encontrado");
+        }
+        throw new NotFoundException("Ruta no encontrada");
+    }
+
+    private Object groups(HttpServletRequest req, String method, String path) throws ApiException, SQLException, IOException {
+        AuthUser user = requireUser(req);
+        if ("GET".equals(method) && "/groups".equals(path)) {
+            return travel.findGroupsForCustomer(user.id());
+        }
+        if ("POST".equals(method) && "/groups".equals(path)) {
+            Map<String, Object> data = RequestUtils.readJson(req);
+            String name = RequestUtils.requiredString(data, "name", "Faltan campos obligatorios");
+            int cityId = requireInt(data, "city_id", "Faltan campos obligatorios");
+            String eventDate = RequestUtils.requiredString(data, "event_date", "Faltan campos obligatorios");
+            BigDecimal budget = requireDecimal(data, "budget_per_person", "Faltan campos obligatorios");
+            return travel.createGroup(name, user.id(), cityId, eventDate, budget);
+        }
+        if ("POST".equals(method) && path.endsWith("/members")) {
+            int groupId = RequestUtils.pathId(path, "/groups/");
+            Map<String, Object> data = RequestUtils.readJson(req);
+            int customerId = requireInt(data, "customer_id", "ID de cliente obligatorio");
+            String role = RequestUtils.string(data, "role");
+            return travel.addGroupMember(groupId, customerId, role == null || role.isBlank() ? "member" : role);
+        }
+        if ("GET".equals(method)) {
+            int id = RequestUtils.pathId(path, "/groups/");
+            return requireFound(travel.findGroup(id), "Grupo no encontrado");
+        }
+        throw new NotFoundException("Ruta no encontrada");
+    }
+
+    private Object bookings(HttpServletRequest req, String method, String path) throws ApiException, SQLException, IOException {
+        AuthUser user = requireUser(req);
+        if ("GET".equals(method) && "/bookings".equals(path)) {
+            return travel.findBookingsForCustomer(user.id());
+        }
+        if ("POST".equals(method) && "/bookings".equals(path)) {
+            Map<String, Object> data = RequestUtils.readJson(req);
+            int groupId = requireInt(data, "group_id", "Datos de reserva inválidos");
+            List<Map<String, Object>> items = RequestUtils.objectList(data, "items");
+            if (items.isEmpty()) {
+                throw new BadRequestException("Datos de reserva inválidos");
+            }
+            return travel.createBooking(groupId, items);
+        }
+        if ("PATCH".equals(method) && path.endsWith("/status")) {
+            int id = RequestUtils.pathId(path, "/bookings/");
+            String status = RequestUtils.requiredString(RequestUtils.readJson(req), "status", "Status es obligatorio");
+            return requireFound(travel.updateBookingStatus(id, status), "Reserva no encontrada");
+        }
+        if ("GET".equals(method)) {
+            int id = RequestUtils.pathId(path, "/bookings/");
+            return requireFound(travel.findBooking(id), "Reserva no encontrada");
+        }
+        throw new NotFoundException("Ruta no encontrada");
+    }
+
+    private Object payments(HttpServletRequest req, String method, String path) throws ApiException, SQLException, IOException {
+        AuthUser user = requireUser(req);
+        if ("GET".equals(method) && "/payments".equals(path)) {
+            return travel.findPaymentsForCustomer(user.id());
+        }
+        if ("POST".equals(method) && "/payments".equals(path)) {
+            Map<String, Object> data = RequestUtils.readJson(req);
+            int bookingId = requireInt(data, "booking_id", "Faltan campos obligatorios");
+            BigDecimal amount = requireDecimal(data, "amount", "Faltan campos obligatorios");
+            String methodName = RequestUtils.requiredString(data, "method", "Faltan campos obligatorios");
+            return travel.createPayment(bookingId, amount, methodName);
+        }
+        if ("GET".equals(method) && path.startsWith("/payments/booking/")) {
+            int bookingId = RequestUtils.pathId(path, "/payments/booking/");
+            return travel.findPaymentsByBooking(bookingId);
         }
         throw new NotFoundException("Ruta no encontrada");
     }

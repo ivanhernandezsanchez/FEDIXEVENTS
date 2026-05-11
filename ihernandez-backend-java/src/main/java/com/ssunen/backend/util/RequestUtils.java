@@ -40,6 +40,9 @@ public final class RequestUtils {
     }
 
     public static String path(HttpServletRequest req) {
+        if ("/chat".equals(req.getServletPath())) {
+            return "/chat";
+        }
         String path = req.getPathInfo();
         return path == null || path.isBlank() ? "/" : path;
     }
@@ -118,6 +121,15 @@ public final class RequestUtils {
             return (List<Map<String, Object>>) value;
         }
         throw new BadRequestException("Campo " + key + " inválido");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Map<String, Object> object(Map<String, Object> data, String key) {
+        Object value = data.get(key);
+        if (value instanceof Map<?, ?>) {
+            return (Map<String, Object>) value;
+        }
+        return null;
     }
 
     public static String bearerToken(HttpServletRequest req) {
