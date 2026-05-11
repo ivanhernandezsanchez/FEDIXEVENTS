@@ -32,7 +32,14 @@ public class AuthService {
             return false;
         }
         if (storedPassword.startsWith("$2a$") || storedPassword.startsWith("$2b$") || storedPassword.startsWith("$2y$")) {
-            return BCrypt.checkpw(plainPassword, storedPassword);
+            if (!storedPassword.startsWith("$2a$")) {
+                storedPassword = "$2a$" + storedPassword.substring(4);
+            }
+            try {
+                return BCrypt.checkpw(plainPassword, storedPassword);
+            } catch (IllegalArgumentException ex) {
+                return false;
+            }
         }
         return plainPassword.equals(storedPassword);
     }
