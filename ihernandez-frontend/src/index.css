@@ -4,13 +4,29 @@
   box-sizing: border-box;
 }
 
+:root {
+  --midnight-purple: #2E1065;
+  --neon-magenta: #DB2777;
+  --sunset-orange: #F97316;
+  --lavender-glow: #A855F7;
+  --party-pink: #EC4899;
+  --warm-coral: #FB7185;
+  --soft-cream: #FDF4FF;
+  --light-gray: #F3F4F6;
+  --midnight: #1E1B4B;
+  --bg-dark: #0D0920;
+}
+
 body {
   font-family: "Trebuchet MS", Arial, sans-serif;
   background:
-    radial-gradient(circle at 12% 8%, rgba(255, 191, 0, 0.24), transparent 27rem),
-    radial-gradient(circle at 92% 12%, rgba(255, 62, 108, 0.18), transparent 25rem),
-    linear-gradient(180deg, #fff8eb 0%, #fdf2f8 42%, #fff7ed 100%);
-  color: #1d1028;
+    radial-gradient(circle at 10% 15%, rgba(168, 85, 247, 0.15), transparent 30rem),
+    radial-gradient(circle at 88% 10%, rgba(219, 39, 119, 0.12), transparent 28rem),
+    radial-gradient(circle at 50% 75%, rgba(46, 16, 101, 0.25), transparent 40rem),
+    #0D0920;
+  background-attachment: fixed;
+  color: #F3F4F6;
+  min-height: 100vh;
 }
 
 h1,
@@ -31,7 +47,7 @@ textarea {
 
 .site-header {
   padding: 1rem;
-  background-color: #222;
+  background-color: #1E1B4B;
   color: white;
 }
 
@@ -41,7 +57,7 @@ textarea {
 
 .site-header p {
   font-size: 0.95rem;
-  color: #ddd;
+  color: #A855F7;
 }
 
 .add-product-form {
@@ -50,38 +66,40 @@ textarea {
   gap: 0.6rem;
   align-items: center;
   padding: 1rem;
-  background-color: white;
-  border-bottom: 1px solid #ddd;
+  background-color: rgba(46, 16, 101, 0.4);
+  border-bottom: 1px solid rgba(168, 85, 247, 0.25);
 }
 
 .add-product-form input {
   flex: 1 1 160px;
   padding: 0.5rem 0.75rem;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(168, 85, 247, 0.4);
   border-radius: 6px;
   font-size: 0.9rem;
   outline: none;
   transition: border-color 0.2s;
+  background: rgba(13, 9, 32, 0.6);
+  color: #F3F4F6;
 }
 
 .add-product-form input:focus {
-  border-color: #222;
+  border-color: #A855F7;
 }
 
 .add-product-form button {
   padding: 0.5rem 1.2rem;
-  background-color: #222;
+  background: linear-gradient(135deg, #A855F7, #DB2777);
   color: white;
   border: none;
   border-radius: 6px;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: opacity 0.2s;
   white-space: nowrap;
 }
 
 .add-product-form button:hover {
-  background-color: #444;
+  opacity: 0.85;
 }
 
 .products-grid {
@@ -92,12 +110,13 @@ textarea {
 }
 
 .product-card {
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: rgba(30, 27, 75, 0.6);
+  border: 1px solid rgba(168, 85, 247, 0.25);
   border-radius: 8px 8px 0 0;
   padding: 1rem;
   text-align: center;
   cursor: pointer;
+  color: #F3F4F6;
 }
 
 .product-card img {
@@ -108,6 +127,7 @@ textarea {
 
 .product-card h3 {
   margin-bottom: 0.5rem;
+  color: #F3F4F6;
 }
 
 .price {
@@ -120,11 +140,11 @@ textarea {
 }
 
 .in-stock {
-  color: green;
+  color: #34d399;
 }
 
 .out-of-stock {
-  color: red;
+  color: #FB7185;
 }
 
 .product-card.actions {
@@ -132,8 +152,8 @@ textarea {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.6rem 1rem;
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: rgba(30, 27, 75, 0.6);
+  border: 1px solid rgba(168, 85, 247, 0.25);
   border-top: none;
   border-radius: 0 0 8px 8px;
   cursor: default;
@@ -150,21 +170,36 @@ textarea {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.1s;
-  background-color: #f0f0f0;
+  background-color: rgba(168, 85, 247, 0.15);
+  color: #F3F4F6;
 }
 
 .product-card.actions button:hover {
-  background-color: #e0e0e0;
+  background-color: rgba(168, 85, 247, 0.3);
   transform: scale(1.1);
 }
 
 .product-card.actions button.btn-danger {
-  background-color: #fee2e2;
+  background-color: rgba(219, 39, 119, 0.15);
 }
 
 .product-card.actions button.btn-danger:hover {
-  background-color: #fca5a5;
+  background-color: rgba(219, 39, 119, 0.3);
   transform: scale(1.1);
+}
+
+/* Floating placeholder for search input */
+.search-input-placeholder::placeholder {
+  color: #9ca3af;
+}
+
+/* Mini cards section below hero */
+.mini-cards-row {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  padding: 0 2rem;
+  margin-bottom: 2rem;
 }
 
 @media (min-width: 1180px) {

@@ -88,7 +88,7 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
             <button onClick={() => navigate(-1)} style={styles.backButton}>← Volver</button>
 
             <section style={styles.hero}>
-                <div style={{ ...styles.imagePanel, backgroundImage: `linear-gradient(180deg, rgba(29,16,40,0.06), rgba(29,16,40,0.76)), url('${getActivityImage(activity)}')` }}>
+                <div style={{ ...styles.imagePanel, backgroundImage: `linear-gradient(180deg, rgba(13,9,32,0.08), rgba(46,16,101,0.7)), url('${getActivityImage(activity)}')` }}>
                     <span style={styles.categoryBadge}>{activity.category}</span>
                 </div>
 
@@ -162,34 +162,34 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
 
 const styles: Record<string, React.CSSProperties> = {
     page: { maxWidth: 1180, margin: "0 auto", padding: "2rem 2rem 7rem" },
-    centerState: { minHeight: "60vh", display: "grid", placeItems: "center", textAlign: "center", padding: "2rem" },
-    backButton: { background: "#fff7ed", border: "2px solid #fed7aa", borderRadius: 999, color: "#9f1239", cursor: "pointer", fontWeight: 900, marginBottom: "1rem", padding: "0.8rem 1rem" },
+    centerState: { minHeight: "60vh", display: "grid", placeItems: "center", textAlign: "center", padding: "2rem", color: "#F3F4F6" },
+    backButton: { background: "transparent", border: "1px solid rgba(168, 85, 247, 0.4)", borderRadius: 999, color: "#c4b5fd", cursor: "pointer", fontWeight: 900, marginBottom: "1rem", padding: "0.8rem 1rem" },
     hero: { display: "grid", gap: "1.5rem", gridTemplateColumns: "minmax(0, 1.4fr) 380px", alignItems: "stretch" },
-    imagePanel: { minHeight: 520, backgroundPosition: "center", backgroundSize: "cover", borderRadius: 8, padding: "1.2rem", display: "flex", alignItems: "start" },
-    categoryBadge: { background: "#fff", borderRadius: 999, color: "#9f1239", fontWeight: 900, padding: "0.55rem 0.8rem" },
-    bookingPanel: { background: "linear-gradient(180deg, #fff, #fff7ed)", border: "1px solid #fed7aa", borderRadius: 8, boxShadow: "0 22px 48px rgba(76,29,149,0.14)", display: "flex", flexDirection: "column", gap: "1rem", padding: "1.5rem" },
-    kicker: { color: "#be123c", fontSize: "0.82rem", fontWeight: 900, textTransform: "uppercase" },
-    title: { color: "#1d1028", fontSize: "2.4rem", lineHeight: 1.05, margin: 0 },
-    description: { color: "#5b4a5f", lineHeight: 1.6, margin: 0 },
-    ratingRow: { display: "flex", alignItems: "center", gap: "0.65rem", color: "#5b4a5f" },
-    stars: { color: "#f59e0b", letterSpacing: "0.03em" },
-    priceBox: { background: "#fff1f2", border: "1px solid #fecdd3", borderRadius: 8, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1rem" },
-    primaryButton: { background: "linear-gradient(135deg, #ffbf00, #ff3e6c)", border: "none", borderRadius: 999, color: "#fff", cursor: "pointer", fontWeight: 900, padding: "1rem 1.25rem" },
+    imagePanel: { minHeight: 520, backgroundPosition: "center", backgroundSize: "cover", borderRadius: 12, padding: "1.2rem", display: "flex", alignItems: "start", border: "1px solid rgba(168, 85, 247, 0.2)" },
+    categoryBadge: { background: "rgba(168, 85, 247, 0.8)", backdropFilter: "blur(4px)", borderRadius: 999, color: "#fff", fontWeight: 900, padding: "0.55rem 0.8rem" },
+    bookingPanel: { background: "rgba(30, 27, 75, 0.6)", backdropFilter: "blur(8px)", border: "1px solid rgba(168, 85, 247, 0.25)", borderRadius: 12, boxShadow: "0 22px 48px rgba(46, 16, 101, 0.3)", display: "flex", flexDirection: "column", gap: "1rem", padding: "1.5rem" },
+    kicker: { color: "#A855F7", fontSize: "0.82rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.04em" },
+    title: { color: "#F3F4F6", fontSize: "2.4rem", lineHeight: 1.05, margin: 0 },
+    description: { color: "#9ca3af", lineHeight: 1.6, margin: 0 },
+    ratingRow: { display: "flex", alignItems: "center", gap: "0.65rem", color: "#9ca3af" },
+    stars: { color: "#F97316", letterSpacing: "0.03em" },
+    priceBox: { background: "rgba(249, 115, 22, 0.1)", border: "1px solid rgba(249, 115, 22, 0.3)", borderRadius: 8, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1rem", color: "#F97316", fontWeight: 700, fontSize: "1.3rem" },
+    primaryButton: { background: "linear-gradient(135deg, #DB2777, #F97316)", border: "none", borderRadius: 999, color: "#fff", cursor: "pointer", fontWeight: 900, padding: "1rem 1.25rem", boxShadow: "0 8px 20px rgba(249, 115, 22, 0.3)" },
     quickFacts: { display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", margin: "1.5rem 0" },
-    fact: { background: "#fff", border: "1px solid #fed7aa", borderRadius: 8, display: "grid", gap: "0.35rem", padding: "1rem" },
+    fact: { background: "rgba(30, 27, 75, 0.5)", border: "1px solid rgba(168, 85, 247, 0.2)", borderRadius: 8, display: "grid", gap: "0.35rem", padding: "1rem", color: "#c4b5fd" },
     contentGrid: { display: "grid", gap: "1.5rem", gridTemplateColumns: "minmax(0, 1fr) 340px" },
-    sectionTitle: { color: "#1d1028", margin: "0 0 1rem" },
+    sectionTitle: { color: "#F3F4F6", margin: "0 0 1rem" },
     includeGrid: { display: "grid", gap: "0.75rem", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", marginBottom: "2rem" },
-    includeItem: { background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 8, color: "#9f1239", fontWeight: 900, padding: "0.85rem" },
+    includeItem: { background: "rgba(168, 85, 247, 0.1)", border: "1px solid rgba(168, 85, 247, 0.3)", borderRadius: 8, color: "#e9d5ff", fontWeight: 900, padding: "0.85rem" },
     reviewList: { display: "grid", gap: "0.85rem" },
-    reviewCard: { background: "#fff", border: "1px solid #fed7aa", borderRadius: 8, padding: "1rem" },
-    reviewTop: { display: "flex", justifyContent: "space-between", gap: "1rem" },
-    muted: { color: "#6b556b" },
-    reviewForm: { background: "linear-gradient(180deg, #fff, #fff7ed)", border: "1px solid #fed7aa", borderRadius: 8, display: "flex", flexDirection: "column", gap: "0.8rem", padding: "1.2rem", position: "sticky", top: 20 },
-    input: { border: "2px solid #fed7aa", borderRadius: 8, padding: "0.85rem" },
-    textarea: { border: "2px solid #fed7aa", borderRadius: 8, minHeight: 140, padding: "0.85rem" },
-    secondaryButton: { background: "#4c1d95", border: "none", borderRadius: 999, color: "#fff", cursor: "pointer", fontWeight: 900, padding: "0.9rem 1rem" },
-    stickyCta: { alignItems: "center", background: "rgba(29,16,40,0.94)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 999, bottom: 18, boxShadow: "0 18px 40px rgba(29,16,40,0.28)", color: "#fff", display: "flex", gap: "1rem", justifyContent: "space-between", left: "50%", maxWidth: 760, padding: "0.65rem 0.75rem 0.65rem 1.2rem", position: "fixed", transform: "translateX(-50%)", width: "calc(100% - 2rem)", zIndex: 35 },
+    reviewCard: { background: "rgba(30, 27, 75, 0.5)", border: "1px solid rgba(168, 85, 247, 0.2)", borderRadius: 8, padding: "1rem", color: "#c4b5fd" },
+    reviewTop: { display: "flex", justifyContent: "space-between", gap: "1rem", color: "#F3F4F6", marginBottom: "0.5rem" },
+    muted: { color: "#6b7280" },
+    reviewForm: { background: "rgba(30, 27, 75, 0.55)", backdropFilter: "blur(8px)", border: "1px solid rgba(168, 85, 247, 0.25)", borderRadius: 8, display: "flex", flexDirection: "column", gap: "0.8rem", padding: "1.2rem", position: "sticky", top: 20 },
+    input: { border: "1px solid rgba(168, 85, 247, 0.4)", borderRadius: 8, padding: "0.85rem", background: "rgba(13, 9, 32, 0.6)", color: "#F3F4F6" },
+    textarea: { border: "1px solid rgba(168, 85, 247, 0.4)", borderRadius: 8, minHeight: 140, padding: "0.85rem", background: "rgba(13, 9, 32, 0.6)", color: "#F3F4F6" },
+    secondaryButton: { background: "linear-gradient(135deg, #A855F7, #DB2777)", border: "none", borderRadius: 999, color: "#fff", cursor: "pointer", fontWeight: 900, padding: "0.9rem 1rem" },
+    stickyCta: { alignItems: "center", background: "rgba(13, 9, 32, 0.92)", backdropFilter: "blur(12px)", border: "1px solid rgba(168, 85, 247, 0.3)", borderRadius: 999, bottom: 18, boxShadow: "0 18px 40px rgba(46, 16, 101, 0.4)", color: "#fff", display: "flex", gap: "1rem", justifyContent: "space-between", left: "50%", maxWidth: 760, padding: "0.65rem 0.75rem 0.65rem 1.2rem", position: "fixed", transform: "translateX(-50%)", width: "calc(100% - 2rem)", zIndex: 35 },
 };
 
 export default ProductDetail;

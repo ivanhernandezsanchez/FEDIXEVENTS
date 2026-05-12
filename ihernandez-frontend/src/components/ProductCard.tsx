@@ -29,15 +29,16 @@ function ProductCard({ product, onSelect, onAddToCart }: ProductCardProps) {
       onClick={() => onSelect?.(product.id)}
       style={{
         cursor: "pointer",
-        border: "1px solid #eee",
+        border: "1px solid rgba(168, 85, 247, 0.2)",
         borderRadius: 14,
         padding: 15,
-        background: "#fff",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+        background: "rgba(30, 27, 75, 0.55)",
+        boxShadow: "0 8px 24px rgba(46, 16, 101, 0.25)",
         display: "flex",
         flexDirection: "column",
         gap: 8,
         transition: "0.2s",
+        color: "#F3F4F6",
       }}
     >
       {/* IMG */}
@@ -53,21 +54,21 @@ function ProductCard({ product, onSelect, onAddToCart }: ProductCardProps) {
       />
 
       {/* NAME */}
-      <h3 style={{ margin: 0 }}>{product.name}</h3>
+      <h3 style={{ margin: 0, color: "#F3F4F6" }}>{product.name}</h3>
 
       {/* PRICE */}
-      <p style={{ fontSize: 16, fontWeight: "bold", margin: 0 }}>
+      <p style={{ fontSize: 16, fontWeight: "bold", margin: 0, color: "#F97316" }}>
         {Number(product.price).toFixed(2)} €
       </p>
 
       {/* ⭐ RATING */}
-      <p style={{ margin: 0, fontSize: 14, color: "#f59e0b" }}>
+      <p style={{ margin: 0, fontSize: 14, color: "#F97316" }}>
         {hasRating ? (
           <>
             {renderStars(safeRating)} ({safeRating.toFixed(1)})
           </>
         ) : (
-          "Sin valoraciones"
+          <span style={{ color: "#6b7280" }}>Sin valoraciones</span>
         )}
       </p>
 
@@ -75,7 +76,7 @@ function ProductCard({ product, onSelect, onAddToCart }: ProductCardProps) {
       <p
         style={{
           fontSize: 13,
-          color: product.stock > 0 ? "#16a34a" : "#dc2626",
+          color: product.stock > 0 ? "#34d399" : "#FB7185",
           margin: 0,
         }}
       >
@@ -86,7 +87,7 @@ function ProductCard({ product, onSelect, onAddToCart }: ProductCardProps) {
 
       {/* 🛒 BUTTON */}
       <button
-        disabled={isDisabled} // ✅ FIX IMPORTANTE
+        disabled={isDisabled}
         onClick={(e) => {
           e.stopPropagation();
           onAddToCart?.(product);
@@ -95,12 +96,12 @@ function ProductCard({ product, onSelect, onAddToCart }: ProductCardProps) {
           marginTop: 10,
           width: "100%",
           padding: "10px 12px",
-          borderRadius: 10,
+          borderRadius: 999,
           border: "none",
           fontWeight: 600,
           fontSize: 14,
-          background: isDisabled ? "#e5e5e5" : "#111827",
-          color: isDisabled ? "#888" : "white",
+          background: isDisabled ? "rgba(168, 85, 247, 0.1)" : "linear-gradient(135deg, #DB2777, #F97316)",
+          color: isDisabled ? "#6b7280" : "white",
           cursor: isDisabled ? "not-allowed" : "pointer",
           transition: "all 0.2s ease",
         }}

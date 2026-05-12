@@ -37,75 +37,90 @@ function Header() {
 
   return (
     <header style={{
-      background: "linear-gradient(90deg, #1d1028, #4c1d95 46%, #be123c)",
+      background: "rgba(10, 7, 25, 0.88)",
+      backdropFilter: "blur(16px)",
+      borderBottom: "1px solid rgba(168, 85, 247, 0.15)",
       color: "white",
-      padding: "18px 34px",
+      padding: "14px 28px",
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
       fontFamily: "Trebuchet MS, Arial, sans-serif",
-      boxShadow: "0 12px 32px rgba(29, 16, 40, 0.28)",
-      position: "relative",
+      boxShadow: "0 4px 24px rgba(13, 9, 32, 0.5)",
+      position: "sticky",
+      top: 0,
       zIndex: 40,
     }}>
-      <div>
-        <h1 style={{ margin: 0, fontSize: 28, fontFamily: "Arial Black, Trebuchet MS, Arial, sans-serif" }}>Despedidas Fedi</h1>
-        <p style={{ margin: 0, fontSize: 13, color: "#fde68a", fontWeight: 700 }}>Planes de despedida, reservas y propuestas IA</p>
-      </div>
+      {/* Logo */}
+      <Link to="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+        <div style={{ background: "#fff", borderRadius: 8, padding: "3px 8px", display: "inline-flex", alignItems: "center" }}>
+          <img src="/logo.png" alt="FedixEvents" style={{ height: 34 }} />
+        </div>
+      </Link>
 
-      <nav style={{ display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap" }}>
-        <Link to="/" style={{ color: "white", textDecoration: "none", fontWeight: 800 }}>Home</Link>
-        <Link to="/catalog" style={{ color: "white", textDecoration: "none", fontWeight: 800 }}>Catálogo</Link>
-        <Link to="/contact" style={{ color: "white", textDecoration: "none", fontWeight: 800 }}>Contacto</Link>
+      {/* Center nav pill */}
+      <nav style={{
+        display: "flex",
+        gap: "4px",
+        alignItems: "center",
+        background: "rgba(255,255,255,0.05)",
+        backdropFilter: "blur(8px)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: 999,
+        padding: "5px 8px",
+      }}>
+        {[
+          { to: "/", label: "Inicio" },
+          { to: "/catalog", label: "Catálogo" },
+          { to: "/contact", label: "Contacto" },
+        ].map(({ to, label }) => (
+          <Link key={to} to={to} style={{
+            color: "#d1d5db",
+            textDecoration: "none",
+            fontWeight: 600,
+            fontSize: 14,
+            padding: "6px 14px",
+            borderRadius: 999,
+            transition: "background 0.15s",
+          }}>{label}</Link>
+        ))}
         {user?.role === "customer" && (
-          <Link to="/history" style={{ color: "white", textDecoration: "none" }}>Historial</Link>
+          <Link to="/history" style={{ color: "#d1d5db", textDecoration: "none", fontWeight: 600, fontSize: 14, padding: "6px 14px", borderRadius: 999 }}>Historial</Link>
         )}
         {user?.role === "admin" ? (
-          <Link to="/intranet/dashboard" style={{ color: "#5eead4", textDecoration: "none", fontWeight: "bold" }}>
-            Intranet
-          </Link>
+          <Link to="/intranet/dashboard" style={{ color: "#A855F7", textDecoration: "none", fontWeight: 700, fontSize: 14, padding: "6px 14px", borderRadius: 999 }}>Intranet</Link>
         ) : !user ? (
-          <Link to="/intranet/login" style={{ color: "#5eead4", textDecoration: "none", fontWeight: "bold" }}>
-            Acceso Intranet
-          </Link>
+          <Link to="/intranet/login" style={{ color: "#A855F7", textDecoration: "none", fontWeight: 700, fontSize: 14, padding: "6px 14px", borderRadius: 999 }}>Intranet</Link>
         ) : null}
+      </nav>
 
+      {/* Right actions */}
+      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
         {user ? (
           <>
-            <span style={{ color: "#d1d5db" }}>Hola, {user.name}</span>
+            <span style={{ color: "#9ca3af", fontSize: 13 }}>{user.name}</span>
             <button
-              onClick={async () => {
-                await logout();
-                navigate("/");
-              }}
-              style={{
-                background: "transparent",
-                border: "1px solid #ffffff66",
-                borderRadius: 6,
-                padding: "6px 12px",
-                color: "white",
-                cursor: "pointer"
-              }}
-            >
-              Cerrar sesión
-            </button>
+              onClick={async () => { await logout(); navigate("/"); }}
+              style={{ background: "transparent", border: "none", color: "#9ca3af", cursor: "pointer", fontSize: 13, padding: "6px 10px" }}
+            >Salir</button>
           </>
         ) : (
-          <Link to="/intranet/login" style={{ color: "white", textDecoration: "none" }}>Entrar</Link>
+          <Link to="/intranet/login" style={{ color: "#9ca3af", textDecoration: "none", fontSize: 14, fontWeight: 600 }}>Log in</Link>
         )}
-
         <Link to="/cart" style={{
-          background: "linear-gradient(135deg, #ffbf00, #ff3e6c)",
-          padding: "9px 14px",
+          background: "linear-gradient(135deg, #DB2777, #F97316)",
+          padding: "8px 18px",
           borderRadius: 999,
           color: "white",
-          fontWeight: "bold",
+          fontWeight: 700,
           textDecoration: "none",
-          boxShadow: "0 8px 18px rgba(255, 62, 108, 0.3)",
+          fontSize: 14,
+          boxShadow: "0 4px 16px rgba(219, 39, 119, 0.45)",
+          whiteSpace: "nowrap",
         }}>
-          🛒 {totalItems}
+          🛒 {totalItems > 0 ? totalItems : ""}
         </Link>
-      </nav>
+      </div>
     </header>
   );
 }

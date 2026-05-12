@@ -309,46 +309,91 @@ function Home() {
   return (
     <main className="home-page" style={styles.page}>
       <section style={styles.hero}>
-        <div style={styles.heroOverlay}>
-          <div style={styles.heroContent}>
-            <span style={styles.kicker}>Despedidas de soltero</span>
-            <h1 style={styles.title}>La despedida empieza aquí</h1>
-            <p style={styles.subtitle}>
-              Elige ciudad, mezcla actividades, pide ideas a Fedi y monta un plan con ritmo, presupuesto claro y cero líos de grupo.
-            </p>
-            <div style={styles.heroActions}>
-              <button onClick={() => navigate("/catalog")} style={styles.heroButton}>
-                Ver planes
-              </button>
-              <button onClick={() => document.getElementById("ai-chat")?.scrollIntoView({ behavior: "smooth" })} style={styles.heroGhostButton}>
-                Hablar con Fedi
-              </button>
+        {/* Floating decorative shapes */}
+        <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
+          {/* Large central glow */}
+          <div style={styles.centralGlow} />
+          {/* Orange sphere top-right */}
+          <div style={{ ...styles.floatShape, top: "9%", right: "11%", width: 72, height: 72, background: "radial-gradient(circle at 35% 32%, #FB923C, #F97316 55%, #DB2777)", boxShadow: "0 0 48px rgba(249,115,22,0.75), 0 0 90px rgba(249,115,22,0.3)" }} />
+          {/* Purple sphere top-left */}
+          <div style={{ ...styles.floatShape, top: "16%", left: "9%", width: 52, height: 52, background: "radial-gradient(circle at 35% 32%, #C084FC, #7C3AED 60%, #2E1065)", boxShadow: "0 0 32px rgba(168,85,247,0.7), 0 0 64px rgba(168,85,247,0.3)" }} />
+          {/* Pink sphere bottom-left */}
+          <div style={{ ...styles.floatShape, bottom: "22%", left: "5%", width: 90, height: 90, background: "radial-gradient(circle at 35% 32%, #F472B6, #DB2777 60%, #9D174D)", boxShadow: "0 0 48px rgba(219,39,119,0.65), 0 0 88px rgba(219,39,119,0.25)" }} />
+          {/* Small orange sphere mid-right */}
+          <div style={{ ...styles.floatShape, top: "52%", right: "7%", width: 56, height: 56, background: "radial-gradient(circle at 35% 32%, #FCD34D, #F97316 55%, #EA580C)", boxShadow: "0 0 32px rgba(249,115,22,0.65), 0 0 60px rgba(249,115,22,0.25)" }} />
+          {/* Tiny purple sphere bottom-right */}
+          <div style={{ ...styles.floatShape, bottom: "14%", right: "22%", width: 38, height: 38, background: "radial-gradient(circle at 35% 32%, #A78BFA, #7C3AED)", boxShadow: "0 0 20px rgba(124,58,237,0.6)" }} />
+          {/* Triangle top-right */}
+          <div style={{ position: "absolute", top: "20%", right: "26%", width: 0, height: 0, borderLeft: "16px solid transparent", borderRight: "16px solid transparent", borderBottom: "28px solid rgba(249,115,22,0.65)", filter: "drop-shadow(0 0 8px rgba(249,115,22,0.9))" }} />
+          {/* Triangle bottom-left area */}
+          <div style={{ position: "absolute", bottom: "38%", left: "20%", width: 0, height: 0, borderLeft: "12px solid transparent", borderRight: "12px solid transparent", borderBottom: "22px solid rgba(168,85,247,0.55)", filter: "drop-shadow(0 0 6px rgba(168,85,247,0.7))" }} />
+          {/* Rounded rect bottom-right */}
+          <div style={{ position: "absolute", bottom: "28%", right: "10%", width: 44, height: 44, borderRadius: 10, background: "rgba(219,39,119,0.18)", border: "1px solid rgba(219,39,119,0.55)", backdropFilter: "blur(6px)", boxShadow: "0 0 16px rgba(219,39,119,0.3)" }} />
+          {/* Rounded rect mid-left */}
+          <div style={{ position: "absolute", top: "55%", left: "15%", width: 34, height: 34, borderRadius: 8, background: "rgba(168,85,247,0.15)", border: "1px solid rgba(168,85,247,0.45)", backdropFilter: "blur(4px)" }} />
+          {/* Quote mark decoration */}
+          <div style={{ position: "absolute", top: "38%", left: "28%", fontSize: "5rem", color: "rgba(249,115,22,0.08)", fontWeight: 900, lineHeight: 1 }}>"</div>
+        </div>
+
+        {/* Centered hero content */}
+        <div style={styles.heroContent}>
+          <h1 style={styles.title}>La despedida<br />empieza aquí</h1>
+          <p style={styles.subtitle}>
+            Organiza la despedida de soltero/a perfecta con ayuda de nuestra inteligencia artificial. Rápido, fácil y sin estrés.
+          </p>
+
+          <div style={styles.searchRow}>
+            <div style={styles.searchBox}>
+              <span style={{ color: "#9ca3af", fontSize: 18, lineHeight: 1 }}>🔍</span>
+              <input
+                placeholder="Busca en memarria..."
+                style={styles.searchInput}
+                onClick={() => document.getElementById("ai-chat")?.scrollIntoView({ behavior: "smooth" })}
+                readOnly
+              />
             </div>
+            <button onClick={() => navigate("/catalog")} style={styles.heroCta}>
+              Contier acción
+            </button>
           </div>
 
-          <aside style={styles.heroPanel}>
-            <p style={styles.panelLabel}>Empieza por destino</p>
+          <div style={styles.destinoRow}>
+            <span style={{ color: "#6b7280", fontSize: "0.88rem" }}>Destino:</span>
             <select
               value={selectedCity || ""}
               onChange={(e) => setSelectedCity(Number(e.target.value))}
-              style={styles.heroSelect}
+              style={styles.destinoSelect}
             >
               {cities.map((city) => (
                 <option key={city.id} value={city.id}>
-                  {city.name} - {city.country}
+                  {city.name}
                 </option>
               ))}
             </select>
-            <div style={styles.panelDivider} />
-            <strong style={styles.panelCity}>{selectedCityName}</strong>
-            <span style={styles.panelText}>{activities.length} planes y actividades disponibles</span>
-            <button onClick={handleCreateGroup} style={styles.panelButton}>
-              Montar despedida
-            </button>
-          </aside>
+            <span style={{ color: "#6b7280", fontSize: "0.85rem" }}>· {activities.length} actividades</span>
+          </div>
         </div>
       </section>
 
+      {/* Mini preview cards row - like in mockup */}
+      {featuredActivities.length > 0 && (
+        <div className="mini-cards-row">
+          {featuredActivities.map((activity) => (
+            <article
+              key={activity.id}
+              onClick={() => handleActivityClick(activity.id)}
+              style={styles.miniCard}
+            >
+              <div style={styles.miniCardGlow} />
+              <span style={styles.miniCardCategory}>{activity.category}</span>
+              <strong style={styles.miniCardTitle}>{activity.name}</strong>
+              <span style={styles.miniCardPrice}>{Number(activity.price).toFixed(2)} €</span>
+            </article>
+          ))}
+        </div>
+      )}
+
+      <div style={{ padding: "0 2rem" }}>
       <button className="fedi-mobile-toggle" onClick={() => setFediOpen(true)} style={styles.mobileFediButton}>
         Hablar con Fedi
       </button>
@@ -638,6 +683,7 @@ function Home() {
           Abrir Fedi
         </button>
       </section>
+      </div>
     </main>
   );
 }
@@ -646,58 +692,67 @@ const styles: Record<string, React.CSSProperties> = {
   page: {
     maxWidth: "1640px",
     margin: "0 auto",
-    padding: "2rem",
     paddingRight: "430px",
   },
   hero: {
-    backgroundImage:
-      "linear-gradient(90deg, rgba(29,16,40,0.95), rgba(76,29,149,0.72) 45%, rgba(190,18,60,0.6)), url('https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1400&q=80')",
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    borderRadius: "8px",
-    color: "#fff",
-    minHeight: "560px",
-    overflow: "hidden",
-  },
-  heroOverlay: {
-    alignItems: "center",
+    position: "relative",
+    minHeight: "640px",
     display: "flex",
-    justifyContent: "space-between",
-    gap: "2rem",
-    padding: "3rem",
-    minHeight: "560px",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+    borderRadius: "0",
   },
+  centralGlow: {
+    position: "absolute",
+    bottom: "-15%",
+    left: "50%",
+    transform: "translateX(-50%)",
+    width: "700px",
+    height: "480px",
+    background: "radial-gradient(ellipse, rgba(249,115,22,0.38) 0%, rgba(219,39,119,0.22) 42%, transparent 68%)",
+    filter: "blur(55px)",
+    pointerEvents: "none",
+  },
+  floatShape: {
+    position: "absolute",
+    borderRadius: "50%",
+  } as React.CSSProperties,
   heroContent: {
-    maxWidth: "680px",
+    position: "relative",
+    zIndex: 1,
+    textAlign: "center" as const,
+    maxWidth: "660px",
+    padding: "5rem 2rem 4rem",
   },
   kicker: {
-    background: "rgba(255, 191, 0, 0.2)",
-    border: "1px solid rgba(255, 191, 0, 0.65)",
+    background: "rgba(168, 85, 247, 0.18)",
+    border: "1px solid rgba(168, 85, 247, 0.55)",
     borderRadius: "999px",
     display: "inline-block",
-    color: "#fde68a",
+    color: "#e9d5ff",
     fontSize: "0.9rem",
     fontWeight: 900,
     marginBottom: "1rem",
     padding: "0.45rem 0.7rem",
   },
   heroButton: {
-    background: "linear-gradient(135deg, #ffbf00, #ff3e6c)",
+    background: "linear-gradient(135deg, #DB2777, #F97316)",
     border: "none",
     borderRadius: "999px",
     color: "#fff",
     cursor: "pointer",
     fontSize: "1rem",
     fontWeight: 700,
-    boxShadow: "0 14px 28px rgba(255, 62, 108, 0.34)",
+    boxShadow: "0 14px 28px rgba(249, 115, 22, 0.4)",
     padding: "1.05rem 1.75rem",
     whiteSpace: "nowrap",
   },
   heroGhostButton: {
-    backgroundColor: "rgba(255,255,255,0.12)",
-    border: "1px solid rgba(253,230,138,0.72)",
+    backgroundColor: "rgba(168, 85, 247, 0.12)",
+    border: "1px solid rgba(168, 85, 247, 0.6)",
     borderRadius: "999px",
-    color: "#fff",
+    color: "#e9d5ff",
     cursor: "pointer",
     fontSize: "1rem",
     fontWeight: 700,
@@ -708,75 +763,95 @@ const styles: Record<string, React.CSSProperties> = {
     flexWrap: "wrap",
     gap: "0.8rem",
     marginTop: "1.5rem",
+    justifyContent: "center",
   },
   title: {
     fontFamily: "Arial Black, Trebuchet MS, Arial, sans-serif",
-    fontSize: "clamp(3.2rem, 7vw, 5.9rem)",
-    lineHeight: 1.02,
-    marginBottom: "1rem",
+    fontSize: "clamp(3.2rem, 7.5vw, 6.2rem)",
+    lineHeight: 1.0,
+    marginBottom: "1.2rem",
     color: "#fff",
+    letterSpacing: "-0.01em",
   },
   subtitle: {
-    fontSize: "1.24rem",
+    fontSize: "1.12rem",
     lineHeight: 1.65,
-    color: "#e0f2fe",
-    marginBottom: "1rem",
+    color: "#9ca3af",
+    marginBottom: "0",
+    maxWidth: 520,
+    margin: "0 auto",
   },
-  heroPanel: {
-    background: "linear-gradient(180deg, rgba(255,255,255,0.98), #fff1f2)",
-    border: "1px solid rgba(255, 191, 0, 0.45)",
-    borderRadius: "8px",
-    boxShadow: "0 22px 60px rgba(0,0,0,0.24)",
-    color: "#111827",
-    minWidth: "330px",
-    padding: "1.65rem",
+  searchRow: {
+    alignItems: "center",
+    background: "rgba(255,255,255,0.07)",
+    backdropFilter: "blur(14px)",
+    border: "1px solid rgba(255,255,255,0.1)",
+    borderRadius: "999px",
+    display: "flex",
+    gap: "0.5rem",
+    margin: "2.2rem auto 0",
+    maxWidth: 540,
+    padding: "0.45rem 0.45rem 0.45rem 1.2rem",
   },
-  panelLabel: {
-    color: "#be123c",
-    fontSize: "0.85rem",
-    fontWeight: 700,
-    marginBottom: "0.6rem",
-    textTransform: "uppercase",
+  searchBox: {
+    alignItems: "center",
+    display: "flex",
+    flex: 1,
+    gap: "0.6rem",
+    minWidth: 0,
   },
-  heroSelect: {
-    border: "2px solid #fbbf24",
-    borderRadius: "8px",
-    fontSize: "1rem",
-    padding: "0.9rem",
-    width: "100%",
+  searchInput: {
+    background: "transparent",
+    border: "none",
+    color: "#d1d5db",
+    cursor: "pointer",
+    flex: 1,
+    fontSize: "0.95rem",
+    minWidth: 0,
+    outline: "none",
   },
-  panelDivider: {
-    background: "linear-gradient(90deg, #ffbf00, #ff3e6c)",
-    height: "3px",
-    margin: "1.2rem 0",
-  },
-  panelCity: {
-    display: "block",
-    fontSize: "1.4rem",
-    marginBottom: "0.35rem",
-  },
-  panelText: {
-    color: "#6b7280",
-    display: "block",
-    marginBottom: "1rem",
-  },
-  panelButton: {
-    background: "linear-gradient(135deg, #ffbf00, #ff3e6c)",
+  heroCta: {
+    background: "linear-gradient(135deg, #DB2777, #F97316)",
     border: "none",
     borderRadius: "999px",
     color: "#fff",
     cursor: "pointer",
+    fontSize: "0.95rem",
     fontWeight: 700,
-    boxShadow: "0 12px 22px rgba(255, 62, 108, 0.25)",
-    padding: "1rem 1.1rem",
-    width: "100%",
+    padding: "0.85rem 1.4rem",
+    whiteSpace: "nowrap",
+    boxShadow: "0 8px 24px rgba(249,115,22,0.4)",
   },
+  destinoRow: {
+    alignItems: "center",
+    display: "flex",
+    gap: "0.65rem",
+    justifyContent: "center",
+    marginTop: "1.2rem",
+  },
+  destinoSelect: {
+    background: "transparent",
+    border: "none",
+    color: "#A855F7",
+    cursor: "pointer",
+    fontSize: "0.88rem",
+    fontWeight: 700,
+    outline: "none",
+  },
+  heroPanel: {} as React.CSSProperties,
+  panelLabel: {} as React.CSSProperties,
+  heroSelect: {} as React.CSSProperties,
+  panelDivider: {} as React.CSSProperties,
+  panelCity: {} as React.CSSProperties,
+  panelText: {} as React.CSSProperties,
+  panelButton: {} as React.CSSProperties,
   chatSection: {
     alignItems: "stretch",
-    background: "linear-gradient(135deg, #fff7ed, #fff1f2 55%, #fef3c7)",
-    border: "1px solid #fbbf24",
-    borderRadius: "8px",
-    boxShadow: "0 22px 52px rgba(15, 23, 42, 0.12)",
+    background: "rgba(30, 27, 75, 0.5)",
+    backdropFilter: "blur(8px)",
+    border: "1px solid rgba(168, 85, 247, 0.25)",
+    borderRadius: "12px",
+    boxShadow: "0 22px 52px rgba(46, 16, 101, 0.3)",
     display: "grid",
     gap: 0,
     gridTemplateColumns: "1fr",
@@ -785,11 +860,11 @@ const styles: Record<string, React.CSSProperties> = {
     padding: 0,
   },
   mobileFediButton: {
-    background: "linear-gradient(135deg, #ffbf00, #ff3e6c)",
+    background: "linear-gradient(135deg, #DB2777, #F97316)",
     border: "none",
     borderRadius: 999,
     bottom: 18,
-    boxShadow: "0 16px 34px rgba(255,62,108,0.32)",
+    boxShadow: "0 16px 34px rgba(249, 115, 22, 0.4)",
     color: "#fff",
     cursor: "pointer",
     display: "none",
@@ -801,10 +876,10 @@ const styles: Record<string, React.CSSProperties> = {
   },
   mobileCloseButton: {
     alignSelf: "flex-end",
-    background: "#fff7ed",
-    border: "1px solid #fed7aa",
+    background: "rgba(46, 16, 101, 0.8)",
+    border: "1px solid rgba(168, 85, 247, 0.4)",
     borderRadius: 999,
-    color: "#9f1239",
+    color: "#e9d5ff",
     cursor: "pointer",
     display: "none",
     fontWeight: 900,
@@ -812,8 +887,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
   chatIntro: {
     alignItems: "center",
-    background: "rgba(255,255,255,0.76)",
-    borderBottom: "2px solid #fbbf24",
+    background: "rgba(46, 16, 101, 0.4)",
+    borderBottom: "1px solid rgba(168, 85, 247, 0.25)",
     display: "flex",
     flexDirection: "column",
     gap: "0.9rem",
@@ -825,7 +900,7 @@ const styles: Record<string, React.CSSProperties> = {
     minWidth: 0,
   },
   fediBadge: {
-    background: "linear-gradient(135deg, #4c1d95, #be123c)",
+    background: "linear-gradient(135deg, #A855F7, #DB2777)",
     borderRadius: "999px",
     color: "#ffffff",
     display: "inline-block",
@@ -837,7 +912,7 @@ const styles: Record<string, React.CSSProperties> = {
     textTransform: "uppercase",
   },
   chatIntroText: {
-    color: "#475569",
+    color: "#c4b5fd",
     fontSize: "0.95rem",
     lineHeight: 1.5,
     margin: "0.55rem 0 0",
@@ -851,10 +926,10 @@ const styles: Record<string, React.CSSProperties> = {
     marginTop: "0.1rem",
   },
   fediChip: {
-    background: "#ffffff",
-    border: "1px solid #fbbf24",
+    background: "rgba(168, 85, 247, 0.12)",
+    border: "1px solid rgba(168, 85, 247, 0.4)",
     borderRadius: "999px",
-    color: "#9f1239",
+    color: "#e9d5ff",
     cursor: "pointer",
     fontSize: "0.86rem",
     fontWeight: 800,
@@ -864,7 +939,7 @@ const styles: Record<string, React.CSSProperties> = {
     whiteSpace: "nowrap",
   },
   chatBox: {
-    background: "rgba(255,255,255,0.9)",
+    background: "rgba(13, 9, 32, 0.6)",
     display: "flex",
     flexDirection: "column",
     minHeight: "560px",
@@ -892,38 +967,40 @@ const styles: Record<string, React.CSSProperties> = {
   },
   chatBubbleAssistant: {
     alignSelf: "flex-start",
-    background: "#fff7ed",
-    border: "1px solid #fed7aa",
-    color: "#1d1028",
+    background: "rgba(46, 16, 101, 0.6)",
+    border: "1px solid rgba(168, 85, 247, 0.3)",
+    color: "#e9d5ff",
   },
   chatBubbleUser: {
     alignSelf: "flex-end",
-    background: "linear-gradient(135deg, #4c1d95, #be123c)",
+    background: "linear-gradient(135deg, #A855F7, #DB2777)",
     color: "#ffffff",
   },
   chatCheck: {
     alignSelf: "flex-end",
-    color: "#34b7f1",
+    color: "#34d399",
     fontSize: "0.78rem",
     fontWeight: 900,
     lineHeight: 1,
   },
   chatForm: {
-    borderTop: "2px solid #fed7aa",
+    borderTop: "1px solid rgba(168, 85, 247, 0.25)",
     display: "flex",
     gap: "0.75rem",
     padding: "1rem",
   },
   chatInput: {
-    border: "2px solid #fbbf24",
+    border: "1px solid rgba(168, 85, 247, 0.4)",
     borderRadius: "999px",
     flex: 1,
     fontSize: "0.95rem",
     minWidth: 0,
     padding: "0.95rem 1rem",
+    background: "rgba(13, 9, 32, 0.6)",
+    color: "#F3F4F6",
   },
   chatSendButton: {
-    background: "linear-gradient(135deg, #ffbf00, #ff3e6c)",
+    background: "linear-gradient(135deg, #DB2777, #F97316)",
     border: "none",
     borderRadius: "999px",
     color: "#ffffff",
@@ -937,7 +1014,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: "0.75rem",
   },
   chatCartButton: {
-    background: "#4c1d95",
+    background: "linear-gradient(135deg, #A855F7, #DB2777)",
     border: "none",
     borderRadius: "999px",
     color: "#ffffff",
@@ -947,29 +1024,29 @@ const styles: Record<string, React.CSSProperties> = {
     padding: "0.52rem 0.68rem",
   },
   chatCartGhostButton: {
-    background: "#fff7ed",
-    border: "1px solid #fbbf24",
+    background: "transparent",
+    border: "1px solid rgba(168, 85, 247, 0.4)",
     borderRadius: "999px",
-    color: "#9f1239",
+    color: "#c4b5fd",
     cursor: "pointer",
     fontSize: "0.86rem",
     fontWeight: 800,
     padding: "0.52rem 0.68rem",
   },
   chatCartMessage: {
-    color: "#0f766e",
+    color: "#34d399",
     fontSize: "0.9rem",
     fontWeight: 700,
     margin: "0.65rem 0 0",
   },
   fediTools: {
-    background: "#fff7ed",
-    borderTop: "2px solid #fed7aa",
+    background: "rgba(46, 16, 101, 0.3)",
+    borderTop: "1px solid rgba(168, 85, 247, 0.2)",
     padding: "0.9rem",
   },
   fediToolPanel: {
-    background: "#ffffff",
-    border: "1px solid #fed7aa",
+    background: "rgba(13, 9, 32, 0.5)",
+    border: "1px solid rgba(168, 85, 247, 0.2)",
     borderRadius: "8px",
     padding: "1rem",
   },
@@ -982,7 +1059,7 @@ const styles: Record<string, React.CSSProperties> = {
     minWidth: 0,
   },
   fediToolLabel: {
-    color: "#be123c",
+    color: "#A855F7",
     display: "block",
     fontSize: "0.78rem",
     fontWeight: 900,
@@ -990,7 +1067,7 @@ const styles: Record<string, React.CSSProperties> = {
     textTransform: "uppercase",
   },
   fediToolText: {
-    color: "#64748b",
+    color: "#9ca3af",
     fontSize: "0.9rem",
     lineHeight: 1.45,
     margin: "0 0 0.75rem",
@@ -1000,15 +1077,17 @@ const styles: Record<string, React.CSSProperties> = {
     gap: "0.75rem",
   },
   publishInput: {
-    border: "2px solid #fed7aa",
+    border: "1px solid rgba(168, 85, 247, 0.4)",
     borderRadius: "10px",
     flex: 1,
     minWidth: 0,
     minHeight: "38px",
     padding: "0.75rem",
+    background: "rgba(13, 9, 32, 0.6)",
+    color: "#F3F4F6",
   },
   publishButton: {
-    background: "#4c1d95",
+    background: "linear-gradient(135deg, #A855F7, #DB2777)",
     border: "none",
     borderRadius: "999px",
     color: "#ffffff",
@@ -1019,7 +1098,7 @@ const styles: Record<string, React.CSSProperties> = {
     whiteSpace: "nowrap",
   },
   publishMessage: {
-    color: "#312e81",
+    color: "#c4b5fd",
     fontSize: "0.9rem",
     fontWeight: 700,
     margin: "0.65rem 0 0",
@@ -1039,10 +1118,10 @@ const styles: Record<string, React.CSSProperties> = {
     gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
   },
   reviewCard: {
-    background: "linear-gradient(180deg, #ffffff, #fff7ed)",
-    border: "1px solid #fed7aa",
-    borderRadius: "8px",
-    boxShadow: "0 12px 28px rgba(15, 23, 42, 0.08)",
+    background: "rgba(30, 27, 75, 0.5)",
+    border: "1px solid rgba(168, 85, 247, 0.2)",
+    borderRadius: "12px",
+    boxShadow: "0 12px 28px rgba(46, 16, 101, 0.2)",
     padding: "1.15rem",
   },
   reviewTop: {
@@ -1053,42 +1132,45 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: "0.8rem",
   },
   reviewName: {
-    color: "#111827",
+    color: "#F3F4F6",
     display: "block",
     fontSize: "1rem",
   },
   reviewCity: {
-    color: "#be123c",
+    color: "#A855F7",
     display: "block",
     fontSize: "0.86rem",
     fontWeight: 800,
     marginTop: "0.15rem",
   },
   reviewStars: {
-    color: "#f59e0b",
+    color: "#F97316",
     fontSize: "1rem",
     letterSpacing: "0.03em",
     whiteSpace: "nowrap",
   },
   reviewText: {
-    color: "#475569",
+    color: "#9ca3af",
     lineHeight: 1.55,
     margin: 0,
   },
   stat: {
-    background: "linear-gradient(180deg, #ffffff, #fff7ed)",
-    border: "1px solid #fed7aa",
-    borderRadius: "8px",
-    boxShadow: "0 14px 32px rgba(76, 29, 149, 0.1)",
+    background: "rgba(30, 27, 75, 0.5)",
+    border: "1px solid rgba(168, 85, 247, 0.2)",
+    borderRadius: "12px",
+    boxShadow: "0 14px 32px rgba(46, 16, 101, 0.2)",
     padding: "1.5rem",
   },
   statNumber: {
-    color: "#be123c",
+    background: "linear-gradient(135deg, #A855F7, #DB2777)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
     display: "block",
-    fontSize: "2rem",
+    fontSize: "2.2rem",
+    fontWeight: 900,
   },
   statText: {
-    color: "#6b7280",
+    color: "#9ca3af",
   },
   section: {
     marginBottom: "3rem",
@@ -1101,25 +1183,25 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: "1.2rem",
   },
   sectionKicker: {
-    color: "#be123c",
+    color: "#A855F7",
     display: "block",
     fontSize: "0.82rem",
     fontWeight: 800,
-    letterSpacing: "0.02em",
+    letterSpacing: "0.04em",
     marginBottom: "0.35rem",
     textTransform: "uppercase",
   },
   sectionTitle: {
-    color: "#1d1028",
+    color: "#F3F4F6",
     fontSize: "2rem",
     lineHeight: 1.15,
     margin: 0,
   },
   linkButton: {
-    background: "#fff7ed",
-    border: "2px solid #fbbf24",
+    background: "rgba(168, 85, 247, 0.1)",
+    border: "1px solid rgba(168, 85, 247, 0.4)",
     borderRadius: "999px",
-    color: "#9f1239",
+    color: "#c4b5fd",
     cursor: "pointer",
     fontWeight: 700,
     padding: "0.85rem 1.2rem",
@@ -1130,13 +1212,13 @@ const styles: Record<string, React.CSSProperties> = {
     gap: "1.5rem",
   },
   card: {
-    backgroundColor: "#fff",
-    border: "1px solid #fed7aa",
-    borderRadius: "8px",
+    backgroundColor: "rgba(30, 27, 75, 0.6)",
+    border: "1px solid rgba(168, 85, 247, 0.2)",
+    borderRadius: "12px",
     cursor: "pointer",
     overflow: "hidden",
     transition: "transform 0.2s ease, box-shadow 0.2s ease",
-    boxShadow: "0 18px 38px rgba(76, 29, 149, 0.14)",
+    boxShadow: "0 18px 38px rgba(46, 16, 101, 0.3)",
   },
   cardImage: {
     alignItems: "start",
@@ -1147,7 +1229,8 @@ const styles: Record<string, React.CSSProperties> = {
     padding: "1rem",
   },
   cardBadge: {
-    background: "#1d1028",
+    background: "rgba(168, 85, 247, 0.8)",
+    backdropFilter: "blur(4px)",
     borderRadius: "999px",
     color: "#fff",
     fontSize: "0.8rem",
@@ -1164,24 +1247,24 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: "1.25rem",
     fontWeight: "600",
     margin: "0",
-    color: "#172033",
+    color: "#F3F4F6",
   },
   productRating: {
     alignItems: "center",
-    color: "#64748b",
+    color: "#9ca3af",
     display: "flex",
     flexWrap: "wrap",
     fontSize: "0.88rem",
     gap: "0.45rem",
   },
   ratingStars: {
-    color: "#f59e0b",
+    color: "#F97316",
     fontSize: "1rem",
     letterSpacing: "0.03em",
   },
   cardDescription: {
     fontSize: "0.95rem",
-    color: "#555",
+    color: "#9ca3af",
     margin: "0",
     lineHeight: "1.4",
   },
@@ -1198,19 +1281,19 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: "center",
     marginTop: "0.5rem",
     paddingTop: "0.75rem",
-    borderTop: "1px solid #eee",
+    borderTop: "1px solid rgba(168, 85, 247, 0.15)",
   },
   price: {
     fontSize: "1.25rem",
     fontWeight: "700",
-    color: "#be123c",
+    color: "#F97316",
   },
   rating: {
     fontSize: "0.9rem",
-    color: "#f97316",
+    color: "#A855F7",
   },
   secondaryButton: {
-    background: "linear-gradient(135deg, #4c1d95, #be123c)",
+    background: "linear-gradient(135deg, #DB2777, #F97316)",
     border: "none",
     borderRadius: "999px",
     color: "#fff",
@@ -1220,8 +1303,9 @@ const styles: Record<string, React.CSSProperties> = {
   },
   splitSection: {
     alignItems: "start",
-    background: "linear-gradient(135deg, #1d1028, #4c1d95 52%, #be123c)",
-    borderRadius: "8px",
+    background: "linear-gradient(135deg, #0D0920, #2E1065 52%, #DB2777 120%)",
+    border: "1px solid rgba(168, 85, 247, 0.25)",
+    borderRadius: "12px",
     color: "#fff",
     display: "grid",
     gap: "2rem",
@@ -1233,7 +1317,7 @@ const styles: Record<string, React.CSSProperties> = {
     maxWidth: "460px",
   },
   storyText: {
-    color: "#d1d5db",
+    color: "#c4b5fd",
     lineHeight: 1.6,
     marginTop: "1rem",
   },
@@ -1243,8 +1327,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
   step: {
     alignItems: "start",
-    background: "rgba(255,255,255,0.12)",
-    border: "1px solid rgba(253,230,138,0.42)",
+    background: "rgba(168, 85, 247, 0.1)",
+    border: "1px solid rgba(168, 85, 247, 0.25)",
     borderRadius: "8px",
     display: "flex",
     gap: "1rem",
@@ -1252,9 +1336,9 @@ const styles: Record<string, React.CSSProperties> = {
   },
   stepNumber: {
     alignItems: "center",
-    background: "#ffbf00",
+    background: "linear-gradient(135deg, #DB2777, #F97316)",
     borderRadius: "999px",
-    color: "#312e81",
+    color: "#fff",
     display: "inline-flex",
     fontWeight: 800,
     height: "34px",
@@ -1264,9 +1348,10 @@ const styles: Record<string, React.CSSProperties> = {
   stepTitle: {
     fontSize: "1rem",
     margin: "0 0 0.25rem",
+    color: "#F3F4F6",
   },
   stepText: {
-    color: "#d1d5db",
+    color: "#c4b5fd",
     lineHeight: 1.5,
     margin: 0,
   },
@@ -1280,10 +1365,10 @@ const styles: Record<string, React.CSSProperties> = {
   },
   categoryCard: {
     alignItems: "start",
-    background: "linear-gradient(180deg, #fff, #fff7ed)",
-    border: "1px solid #fed7aa",
-    borderRadius: "8px",
-    color: "#111827",
+    background: "rgba(30, 27, 75, 0.5)",
+    border: "1px solid rgba(168, 85, 247, 0.2)",
+    borderRadius: "12px",
+    color: "#F3F4F6",
     cursor: "pointer",
     display: "flex",
     flexDirection: "column",
@@ -1291,6 +1376,7 @@ const styles: Record<string, React.CSSProperties> = {
     minHeight: "140px",
     padding: "1.45rem",
     textAlign: "left",
+    transition: "border-color 0.2s, background 0.2s",
   },
   communitySection: {
     marginBottom: "3rem",
@@ -1301,9 +1387,9 @@ const styles: Record<string, React.CSSProperties> = {
     gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
   },
   communityCard: {
-    background: "linear-gradient(180deg, #ffffff, #fff7ed)",
-    border: "1px solid #fed7aa",
-    borderRadius: "8px",
+    background: "rgba(30, 27, 75, 0.5)",
+    border: "1px solid rgba(168, 85, 247, 0.2)",
+    borderRadius: "12px",
     display: "flex",
     flexDirection: "column",
     gap: "0.75rem",
@@ -1311,20 +1397,20 @@ const styles: Record<string, React.CSSProperties> = {
   },
   communityBadge: {
     alignSelf: "flex-start",
-    background: "#fff1f2",
+    background: "rgba(219, 39, 119, 0.15)",
     borderRadius: "999px",
-    color: "#be123c",
+    color: "#FB7185",
     fontSize: "0.8rem",
     fontWeight: 800,
     padding: "0.35rem 0.65rem",
   },
   communityTitle: {
-    color: "#111827",
+    color: "#F3F4F6",
     fontSize: "1.15rem",
     margin: 0,
   },
   communityText: {
-    color: "#4b5563",
+    color: "#9ca3af",
     lineHeight: 1.45,
     margin: 0,
     maxHeight: 120,
@@ -1340,7 +1426,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   communityFooter: {
     alignItems: "center",
-    borderTop: "1px solid #e5e7eb",
+    borderTop: "1px solid rgba(168, 85, 247, 0.15)",
     display: "flex",
     justifyContent: "space-between",
     gap: "0.75rem",
@@ -1348,17 +1434,17 @@ const styles: Record<string, React.CSSProperties> = {
     paddingTop: "0.75rem",
   },
   smallGhostButton: {
-    background: "#fff7ed",
-    border: "1px solid #fed7aa",
+    background: "transparent",
+    border: "1px solid rgba(168, 85, 247, 0.4)",
     borderRadius: "6px",
-    color: "#c2410c",
+    color: "#c4b5fd",
     cursor: "pointer",
     fontWeight: 800,
     marginRight: "0.45rem",
     padding: "0.55rem 0.75rem",
   },
   smallPrimaryButton: {
-    background: "#4c1d95",
+    background: "linear-gradient(135deg, #A855F7, #DB2777)",
     border: "none",
     borderRadius: "6px",
     color: "#fff",
@@ -1368,43 +1454,95 @@ const styles: Record<string, React.CSSProperties> = {
   },
   ctaBand: {
     alignItems: "center",
-    background: "linear-gradient(90deg, #fff7ed, #fff1f2)",
-    border: "1px solid #fbbf24",
-    borderRadius: "8px",
+    background: "linear-gradient(135deg, rgba(46, 16, 101, 0.6), rgba(219, 39, 119, 0.25))",
+    border: "1px solid rgba(168, 85, 247, 0.3)",
+    borderRadius: "12px",
     display: "flex",
     justifyContent: "space-between",
     gap: "1rem",
     padding: "2rem",
   },
   ctaKicker: {
-    color: "#be123c",
+    color: "#A855F7",
     fontWeight: 800,
   },
   ctaTitle: {
-    color: "#111827",
+    color: "#F3F4F6",
     fontSize: "1.7rem",
     margin: "0.35rem 0 0",
   },
   ctaButton: {
-    background: "linear-gradient(135deg, #ffbf00, #ff3e6c)",
+    background: "linear-gradient(135deg, #DB2777, #F97316)",
     border: "none",
     borderRadius: "999px",
     color: "#fff",
     cursor: "pointer",
     fontWeight: 800,
     padding: "1rem 1.55rem",
+    boxShadow: "0 8px 24px rgba(249, 115, 22, 0.35)",
   },
   loading: {
     gridColumn: "1 / -1",
     textAlign: "center",
     padding: "2rem",
-    color: "#666",
+    color: "#9ca3af",
   },
   empty: {
     gridColumn: "1 / -1",
     textAlign: "center",
     padding: "2rem",
-    color: "#999",
+    color: "#6b7280",
+  },
+  miniCard: {
+    background: "rgba(20, 16, 45, 0.75)",
+    backdropFilter: "blur(8px)",
+    border: "1px solid rgba(168, 85, 247, 0.18)",
+    borderRadius: "14px",
+    cursor: "pointer",
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+    minHeight: 140,
+    overflow: "hidden",
+    padding: "1.2rem",
+    position: "relative",
+    transition: "border-color 0.2s, transform 0.2s",
+  },
+  miniCardGlow: {
+    background: "radial-gradient(circle at 40% 55%, rgba(249,115,22,0.45), rgba(219,39,119,0.25) 50%, transparent 72%)",
+    borderRadius: "50%",
+    filter: "blur(18px)",
+    height: "80px",
+    left: "50%",
+    position: "absolute",
+    top: "30%",
+    transform: "translateX(-50%)",
+    width: "80px",
+  },
+  miniCardCategory: {
+    color: "#A855F7",
+    fontSize: "0.76rem",
+    fontWeight: 800,
+    letterSpacing: "0.04em",
+    position: "relative",
+    textTransform: "uppercase",
+    zIndex: 1,
+  },
+  miniCardTitle: {
+    color: "#F3F4F6",
+    fontSize: "1rem",
+    fontWeight: 700,
+    lineHeight: 1.3,
+    position: "relative",
+    zIndex: 1,
+  },
+  miniCardPrice: {
+    color: "#F97316",
+    fontSize: "0.9rem",
+    fontWeight: 700,
+    marginTop: "auto",
+    position: "relative",
+    zIndex: 1,
   },
 };
 
