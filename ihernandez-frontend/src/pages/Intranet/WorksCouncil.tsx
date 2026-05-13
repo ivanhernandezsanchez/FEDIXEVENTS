@@ -113,36 +113,19 @@ const styles: Record<string, React.CSSProperties> = {
 };
 
 const categories = [
-    {
-        title: "¿Quiénes somos?",
-        description: "Conoce al equipo que representa a los trabajadores y la función del comité de empresa.",
-        icon: "👥",
-        path: "/intranet/works-council/members",
-    },
-    {
-        title: "Normativa Laboral",
-        description: "Convenios colectivos, Estatuto de los Trabajadores y leyes importantes.",
-        icon: "📋",
-        path: "/intranet/works-council/legal",
-    },
-    {
-        title: "Información sobre Contratos",
-        description: "Guía sobre modificaciones y extinción del contrato laboral.",
-        icon: "📄",
-        path: "/intranet/works-council/contract-info",
-    },
-    {
-        title: "Acuerdos Conseguidos",
-        description: "Mejoras laborales logradas por el comité de empresa.",
-        icon: "✅",
-        path: "/intranet/works-council/agreements",
-    },
-    {
-        title: "Objetivos para 2026",
-        description: "Prioridades que el comité quiere negociar durante el próximo año.",
-        icon: "🎯",
-        path: "/intranet/works-council/objectives",
-    },
+    { title: "¿Quiénes somos?", description: "Conoce al equipo que representa a los trabajadores y la función del comité de empresa.", icon: "👥", path: "/intranet/works-council/members" },
+    { title: "Normativa Laboral", description: "Convenios colectivos, Estatuto de los Trabajadores y leyes importantes.", icon: "📋", path: "/intranet/works-council/legal" },
+    { title: "Información sobre Contratos", description: "Guía sobre modificaciones y extinción del contrato laboral.", icon: "📄", path: "/intranet/works-council/contract-info" },
+    { title: "Acuerdos Conseguidos", description: "Mejoras laborales logradas por el comité de empresa.", icon: "✅", path: "/intranet/works-council/agreements" },
+    { title: "Objetivos para 2026", description: "Prioridades que el comité quiere negociar durante el próximo año.", icon: "🎯", path: "/intranet/works-council/objectives" },
+    { title: "Calendario Laboral", description: "Festivos nacionales, autonómicos, locales, períodos de vacaciones y turnos publicados.", icon: "📅", path: "/intranet/works-council/calendar" },
+    { title: "Buzón de Sugerencias", description: "Envía consultas, propuestas o inquietudes al comité de forma confidencial.", icon: "📬", path: "/intranet/works-council/suggestions" },
+    { title: "Preguntas Frecuentes", description: "Respuestas a las dudas más comunes sobre derechos laborales, permisos y nóminas.", icon: "❓", path: "/intranet/works-council/faq" },
+    { title: "Guía de Permisos Retribuidos", description: "Todos los permisos a los que tienes derecho: matrimonio, nacimiento, fallecimiento y más.", icon: "📝", path: "/intranet/works-council/paid-leave" },
+{ title: "Calculadora de Finiquito", description: "Estima los conceptos de tu finiquito según tu antigüedad, salario y motivo de extinción.", icon: "🧮", path: "/intranet/works-council/severance" },
+    { title: "Noticias y Avisos", description: "Tablón de novedades del comité: negociaciones, logros, convocatorias y comunicados.", icon: "📢", path: "/intranet/works-council/news" },
+    { title: "Actas de Reuniones", description: "Puntos tratados y acuerdos adoptados en cada reunión del comité de empresa.", icon: "📃", path: "/intranet/works-council/minutes" },
+    { title: "Elecciones Sindicales", description: "Proceso electoral, resultados de las últimas elecciones y composición del comité.", icon: "🗳️", path: "/intranet/works-council/elections" },
 ];
 
 function WorksCouncil() {
@@ -155,7 +138,7 @@ function WorksCouncil() {
                 </p>
                 <div style={styles.heroStats}>
                     <div style={styles.stat}>
-                        <span style={styles.statValue}>5</span>
+                        <span style={styles.statValue}>13</span>
                         <span style={styles.statLabel}>áreas de consulta</span>
                     </div>
                     <div style={styles.stat}>
@@ -166,6 +149,12 @@ function WorksCouncil() {
                         <span style={styles.statValue}>24h</span>
                         <span style={styles.statLabel}>canal de dudas interno</span>
                     </div>
+                </div>
+            </section>
+
+            <section style={styles.section}>
+                <div style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 8px 32px rgba(15,23,42,0.12)", border: "1px solid #dbe4ef", marginBottom: "2rem" }}>
+                    <img src="/comite.png" alt="Organigrama del Comité de Empresa" style={{ width: "100%", display: "block" }} />
                 </div>
             </section>
 

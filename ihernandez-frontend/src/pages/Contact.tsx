@@ -4,8 +4,21 @@ function Contact() {
   const [sent, setSent] = useState(false);
 
   return (
-    <main style={styles.page}>
-      <section style={styles.hero}>
+    <>
+    <style>{`
+      @media (max-width: 768px) {
+        .contact-page {
+          grid-template-columns: 1fr !important;
+          padding: 1rem !important;
+          gap: 1.25rem !important;
+        }
+        .contact-hero {
+          min-height: 320px !important;
+        }
+      }
+    `}</style>
+    <main className="contact-page" style={styles.page}>
+      <section className="contact-hero" style={styles.hero}>
         <div style={styles.heroCopy}>
           <span style={styles.kicker}>Contacto</span>
           <h1 style={styles.title}>Cuéntanos la despedida que tienes en mente</h1>
@@ -96,6 +109,7 @@ function Contact() {
         </form>
       </section>
     </main>
+    </>
   );
 }
 

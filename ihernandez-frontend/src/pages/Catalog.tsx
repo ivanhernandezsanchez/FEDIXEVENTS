@@ -40,15 +40,28 @@ function Catalog() {
   });
 
   return (
-    <main style={styles.container}>
-      <section style={styles.hero}>
+    <>
+    <style>{`
+      @media (max-width: 768px) {
+        .catalog-container { padding: 1rem !important; }
+        .catalog-hero {
+          flex-direction: column !important;
+          gap: 1.25rem !important;
+          padding: 1.5rem !important;
+        }
+        .catalog-title { font-size: 2rem !important; }
+        .catalog-filter-box { min-width: 0 !important; width: 100% !important; }
+      }
+    `}</style>
+    <main className="catalog-container" style={styles.container}>
+      <section className="catalog-hero" style={styles.hero}>
         <div>
           <span style={styles.kicker}>Catálogo completo</span>
-          <h1 style={styles.title}>Catálogo</h1>
+          <h1 className="catalog-title" style={styles.title}>Catálogo</h1>
           <p style={styles.subtitle}>Filtra por ciudad, compara actividades y monta el carrito de la despedida en pocos clics.</p>
         </div>
 
-        <div style={styles.filterBox}>
+        <div className="catalog-filter-box" style={styles.filterBox}>
           <label style={styles.filterLabel}>Destino</label>
           <select
             value={selectedCity}
@@ -128,6 +141,7 @@ function Catalog() {
         )}
       </div>
     </main>
+    </>
   );
 }
 

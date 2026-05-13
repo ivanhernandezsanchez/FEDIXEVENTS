@@ -373,6 +373,14 @@ textarea {
   }
 }
 
+@media (max-width: 768px) {
+  .how-it-works {
+    grid-template-columns: 1fr !important;
+    padding: 1.5rem 1.25rem !important;
+    gap: 1.5rem !important;
+  }
+}
+
 @media (max-width: 760px) {
   .home-page {
     padding: 1rem !important;

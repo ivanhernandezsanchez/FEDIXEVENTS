@@ -592,24 +592,30 @@ function Home() {
         </div>
       </section>
 
-      <section style={styles.splitSection}>
+      <section className="how-it-works" style={styles.splitSection}>
         <div style={styles.storyBlock}>
           <span style={styles.sectionKicker}>Cómo funciona</span>
           <h2 style={{ ...styles.sectionTitle, color: "#fff" }}>De idea suelta a plan reservado</h2>
           <p style={styles.storyText}>
             El grupo elige destino, compara propuestas y prepara una selección. El equipo recibe la reserva lista para gestionarla desde la intranet.
           </p>
+          <button onClick={() => navigate("/catalog")} style={styles.storyBtn}>
+            Explorar actividades →
+          </button>
         </div>
         <div style={styles.steps}>
           {[
-            ["1", "Elige ciudad", "Filtra por destino y revisa actividades disponibles."],
-            ["2", "Mezcla planes", "Añade actividades, ideas IA y propuestas del grupo."],
-            ["3", "Confirma reserva", "El pedido llega listo para que el equipo lo gestione."],
-          ].map(([number, title, text]) => (
-            <div key={number} style={styles.step}>
-              <span style={styles.stepNumber}>{number}</span>
-              <div>
-                <h3 style={styles.stepTitle}>{title}</h3>
+            { num: "01", icon: "🗺️", title: "Elige ciudad", text: "Filtra por destino y revisa todas las actividades disponibles." },
+            { num: "02", icon: "🎉", title: "Mezcla planes", text: "Añade actividades, ideas de la IA y propuestas del grupo al carrito." },
+            { num: "03", icon: "✅", title: "Confirma reserva", text: "El pedido llega listo para que el equipo lo gestione desde la intranet." },
+          ].map(({ num, icon, title, text }) => (
+            <div key={num} style={styles.step}>
+              <span style={styles.stepNumber}>{num}</span>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.3rem" }}>
+                  <span style={{ fontSize: "1.2rem" }}>{icon}</span>
+                  <h3 style={styles.stepTitle}>{title}</h3>
+                </div>
                 <p style={styles.stepText}>{text}</p>
               </div>
             </div>
@@ -1303,57 +1309,75 @@ const styles: Record<string, React.CSSProperties> = {
   },
   splitSection: {
     alignItems: "start",
-    background: "linear-gradient(135deg, #0D0920, #2E1065 52%, #DB2777 120%)",
-    border: "1px solid rgba(168, 85, 247, 0.25)",
-    borderRadius: "12px",
+    background: "linear-gradient(135deg, #0D0920 0%, #2E1065 55%, #6b21a8 100%)",
+    border: "1px solid rgba(168, 85, 247, 0.3)",
+    borderRadius: "16px",
     color: "#fff",
     display: "grid",
-    gap: "2rem",
-    gridTemplateColumns: "minmax(0, 0.9fr) minmax(320px, 1.1fr)",
+    gap: "2.5rem",
+    gridTemplateColumns: "minmax(0, 0.9fr) minmax(0, 1.1fr)",
     marginBottom: "3rem",
-    padding: "2rem",
+    padding: "2.5rem 2rem",
   },
   storyBlock: {
     maxWidth: "460px",
   },
   storyText: {
     color: "#c4b5fd",
-    lineHeight: 1.6,
+    lineHeight: 1.65,
     marginTop: "1rem",
+    marginBottom: "1.75rem",
+    fontSize: "1.02rem",
+  },
+  storyBtn: {
+    background: "linear-gradient(135deg, #DB2777, #F97316)",
+    border: "none",
+    borderRadius: "999px",
+    boxShadow: "0 6px 20px rgba(219,39,119,0.4)",
+    color: "#fff",
+    cursor: "pointer",
+    fontSize: "0.95rem",
+    fontWeight: 800,
+    padding: "0.8rem 1.6rem",
   },
   steps: {
     display: "grid",
-    gap: "1rem",
+    gap: "0.85rem",
   },
   step: {
     alignItems: "start",
-    background: "rgba(168, 85, 247, 0.1)",
-    border: "1px solid rgba(168, 85, 247, 0.25)",
-    borderRadius: "8px",
+    background: "rgba(255, 255, 255, 0.06)",
+    border: "1px solid rgba(168, 85, 247, 0.22)",
+    borderRadius: "12px",
     display: "flex",
-    gap: "1rem",
-    padding: "1rem",
+    gap: "1.25rem",
+    padding: "1.25rem 1.5rem",
+    backdropFilter: "blur(6px)",
   },
   stepNumber: {
     alignItems: "center",
     background: "linear-gradient(135deg, #DB2777, #F97316)",
-    borderRadius: "999px",
+    borderRadius: "10px",
     color: "#fff",
     display: "inline-flex",
-    fontWeight: 800,
-    height: "34px",
+    flexShrink: 0,
+    fontSize: "1rem",
+    fontWeight: 900,
+    height: "44px",
     justifyContent: "center",
-    minWidth: "34px",
+    minWidth: "44px",
   },
   stepTitle: {
-    fontSize: "1rem",
-    margin: "0 0 0.25rem",
+    fontSize: "1.05rem",
+    fontWeight: 800,
+    margin: 0,
     color: "#F3F4F6",
   },
   stepText: {
     color: "#c4b5fd",
-    lineHeight: 1.5,
-    margin: 0,
+    lineHeight: 1.55,
+    margin: "0.3rem 0 0",
+    fontSize: "0.9rem",
   },
   categorySection: {
     marginBottom: "3rem",

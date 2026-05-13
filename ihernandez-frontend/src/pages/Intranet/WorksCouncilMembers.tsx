@@ -149,7 +149,7 @@ function WorksCouncilMembers() {
 
             <section style={styles.section}>
                 <h3 style={styles.sectionTitle}>Miembros del Comité</h3>
-                <div style={styles.orgChart}>
+<div style={styles.orgChart}>
                     {committeeMembers.map((member, index) => (
                         <article key={member.name} style={{ ...styles.memberCard, ...(index === 0 ? styles.memberLead : {}) }}>
                             <span style={styles.avatar}>{member.initials}</span>

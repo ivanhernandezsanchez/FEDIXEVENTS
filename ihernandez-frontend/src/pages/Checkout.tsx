@@ -148,8 +148,27 @@ function CheckoutPage() {
     }
 
     return (
-        <main style={styles.container}>
-            <section style={styles.header}>
+        <>
+        <style>{`
+          @media (max-width: 768px) {
+            .checkout-container { padding: 1rem !important; }
+            .checkout-header { flex-direction: column !important; align-items: flex-start !important; }
+            .checkout-layout { grid-template-columns: 1fr !important; }
+            .checkout-item { grid-template-columns: 80px 1fr !important; }
+            .checkout-qty-box {
+              grid-column: 1 / -1 !important;
+              display: flex !important;
+              flex-wrap: wrap !important;
+              align-items: center !important;
+              justify-content: space-between !important;
+              gap: 0.5rem !important;
+              padding-top: 0.75rem !important;
+              border-top: 1px solid rgba(168,85,247,0.15) !important;
+            }
+          }
+        `}</style>
+        <main className="checkout-container" style={styles.container}>
+            <section className="checkout-header" style={styles.header}>
                 <div>
                     <span style={styles.kicker}>Proceso de compra</span>
                     <h1 style={styles.title}>Carrito y reserva</h1>
@@ -160,7 +179,7 @@ function CheckoutPage() {
                 </button>
             </section>
 
-            <section style={styles.layout}>
+            <section className="checkout-layout" style={styles.layout}>
                 <div style={styles.cartPanel}>
                     <div style={styles.panelHeader}>
                         <h2 style={styles.panelTitle}>Actividades seleccionadas</h2>
@@ -174,7 +193,7 @@ function CheckoutPage() {
                             const pricePending = item.customPlan && price === 0;
 
                             return (
-                                <article key={item.product.id} style={styles.item}>
+                                <article key={item.product.id} className="checkout-item" style={styles.item}>
                                     <button
                                         onClick={() => {
                                             if (item.customPlan) return;
@@ -198,7 +217,7 @@ function CheckoutPage() {
                                         <p style={styles.itemDescription}>{item.product.description}</p>
                                     </div>
 
-                                    <div style={styles.quantityBox}>
+                                    <div className="checkout-qty-box" style={styles.quantityBox}>
                                         <span style={styles.price}>{pricePending ? "A consultar" : `${price.toFixed(2)} €`}</span>
                                         <div style={styles.stepper}>
                                             <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)} style={styles.stepButton}>-</button>
@@ -303,6 +322,7 @@ function CheckoutPage() {
                 </aside>
             </section>
         </main>
+        </>
     );
 }
 

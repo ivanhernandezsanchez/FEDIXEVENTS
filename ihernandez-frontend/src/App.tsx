@@ -23,6 +23,14 @@ import WorksCouncilLegal from "./pages/Intranet/WorksCouncilLegal";
 import WorksCouncilContractInfo from "./pages/Intranet/WorksCouncilContractInfo";
 import WorksCouncilAgreements from "./pages/Intranet/WorksCouncilAgreements";
 import WorksCouncilObjectives from "./pages/Intranet/WorksCouncilObjectives";
+import WorksCouncilCalendar from "./pages/Intranet/WorksCouncilCalendar";
+import WorksCouncilSuggestions from "./pages/Intranet/WorksCouncilSuggestions";
+import WorksCouncilFAQ from "./pages/Intranet/WorksCouncilFAQ";
+import WorksCouncilPaidLeave from "./pages/Intranet/WorksCouncilPaidLeave";
+import WorksCouncilSeverance from "./pages/Intranet/WorksCouncilSeverance";
+import WorksCouncilNews from "./pages/Intranet/WorksCouncilNews";
+import WorksCouncilMinutes from "./pages/Intranet/WorksCouncilMinutes";
+import WorksCouncilElections from "./pages/Intranet/WorksCouncilElections";
 
 function App() {
   return (
@@ -149,6 +157,14 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path="works-council/calendar" element={<PrivateRoute roles={["admin"]}><WorksCouncilCalendar /></PrivateRoute>} />
+          <Route path="works-council/suggestions" element={<PrivateRoute roles={["admin"]}><WorksCouncilSuggestions /></PrivateRoute>} />
+          <Route path="works-council/faq" element={<PrivateRoute roles={["admin"]}><WorksCouncilFAQ /></PrivateRoute>} />
+          <Route path="works-council/paid-leave" element={<PrivateRoute roles={["admin"]}><WorksCouncilPaidLeave /></PrivateRoute>} />
+          <Route path="works-council/severance" element={<PrivateRoute roles={["admin"]}><WorksCouncilSeverance /></PrivateRoute>} />
+          <Route path="works-council/news" element={<PrivateRoute roles={["admin"]}><WorksCouncilNews /></PrivateRoute>} />
+          <Route path="works-council/minutes" element={<PrivateRoute roles={["admin"]}><WorksCouncilMinutes /></PrivateRoute>} />
+          <Route path="works-council/elections" element={<PrivateRoute roles={["admin"]}><WorksCouncilElections /></PrivateRoute>} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
