@@ -73,19 +73,19 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
     if (notFound) {
         return (
             <main style={styles.centerState}>
-                <h1>Actividad no encontrada</h1>
-                <p>La actividad que buscas no existe o ha sido eliminada.</p>
-                <button onClick={() => navigate("/catalog")} style={styles.primaryButton}>Volver al catálogo</button>
+                <h1>Activity not found</h1>
+                <p>The activity you're looking for doesn't exist or has been removed.</p>
+                <button onClick={() => navigate("/catalog")} style={styles.primaryButton}>Back to catalog</button>
             </main>
         );
     }
 
-    if (!idNumber) return <p style={{ padding: 20 }}>ID inválido</p>;
-    if (!activity) return <p style={{ padding: 20 }}>Cargando...</p>;
+    if (!idNumber) return <p style={{ padding: 20 }}>Invalid ID</p>;
+    if (!activity) return <p style={{ padding: 20 }}>Loading...</p>;
 
     return (
         <main style={styles.page}>
-            <button onClick={() => navigate(-1)} style={styles.backButton}>← Volver</button>
+            <button onClick={() => navigate(-1)} style={styles.backButton}>← Back</button>
 
             <section style={styles.hero}>
                 <div style={{ ...styles.imagePanel, backgroundImage: `linear-gradient(180deg, rgba(13,9,32,0.08), rgba(46,16,101,0.7)), url('${getActivityImage(activity)}')` }}>
@@ -93,41 +93,41 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
                 </div>
 
                 <aside style={styles.bookingPanel}>
-                    <span style={styles.kicker}>Plan destacado</span>
+                    <span style={styles.kicker}>Featured plan</span>
                     <h1 style={styles.title}>{activity.name}</h1>
                     <p style={styles.description}>{activity.description}</p>
                     <div style={styles.ratingRow}>
                         <span style={styles.stars}>{renderStars(activity.avgRating)}</span>
-                        <strong>{Number(activity.avgRating) > 0 ? `${Number(activity.avgRating).toFixed(1)} / 5` : "Sin reseñas"}</strong>
+                        <strong>{Number(activity.avgRating) > 0 ? `${Number(activity.avgRating).toFixed(1)} / 5` : "No reviews"}</strong>
                     </div>
                     <div style={styles.priceBox}>
-                        <span>Desde</span>
+                        <span>From</span>
                         <strong>{Number(activity.price).toFixed(2)} €</strong>
                     </div>
-                    <button onClick={addToSelection} style={styles.primaryButton}>Añadir al carrito</button>
+                    <button onClick={addToSelection} style={styles.primaryButton}>Add to cart</button>
                 </aside>
             </section>
 
             <section style={styles.quickFacts}>
-                <article style={styles.fact}><strong>Duración</strong><span>{activity.duration_minutes ? `${activity.duration_minutes} min` : "Flexible"}</span></article>
-                <article style={styles.fact}><strong>Grupo</strong><span>{activity.max_capacity ? `Hasta ${activity.max_capacity}` : "Grupo abierto"}</span></article>
-                <article style={styles.fact}><strong>Proveedor</strong><span>{activity.provider_name || "Equipo Fedi"}</span></article>
-                <article style={styles.fact}><strong>Incluye</strong><span>Plan, coordinación y reserva</span></article>
+                <article style={styles.fact}><strong>Duration</strong><span>{activity.duration_minutes ? `${activity.duration_minutes} min` : "Flexible"}</span></article>
+                <article style={styles.fact}><strong>Group</strong><span>{activity.max_capacity ? `Up to ${activity.max_capacity}` : "Open group"}</span></article>
+                <article style={styles.fact}><strong>Provider</strong><span>{activity.provider_name || "Fedi Team"}</span></article>
+                <article style={styles.fact}><strong>Includes</strong><span>Plan, coordination and booking</span></article>
             </section>
 
             <section style={styles.contentGrid}>
                 <div>
-                    <h2 style={styles.sectionTitle}>Qué incluye este plan</h2>
+                    <h2 style={styles.sectionTitle}>What's included</h2>
                     <div style={styles.includeGrid}>
-                        {["Actividad principal", "Horarios orientativos", "Adaptación al grupo", "Añadible al carrito"].map((item) => (
+                        {["Main activity", "Estimated timings", "Group customisation", "Add to cart"].map((item) => (
                             <span key={item} style={styles.includeItem}>✓ {item}</span>
                         ))}
                     </div>
 
-                    <h2 style={styles.sectionTitle}>Reseñas</h2>
+                    <h2 style={styles.sectionTitle}>Reviews</h2>
                     <div style={styles.reviewList}>
                         {reviews.length === 0 ? (
-                            <p style={styles.muted}>Todavía no hay reseñas. Puedes ser el primero en dejar una.</p>
+                            <p style={styles.muted}>No reviews yet. Be the first to leave one.</p>
                         ) : (
                             reviews.map((review) => (
                                 <article key={review.id} style={styles.reviewCard}>
@@ -143,18 +143,18 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
                 </div>
 
                 <aside style={styles.reviewForm}>
-                    <h2 style={styles.sectionTitle}>Escribir reseña</h2>
+                    <h2 style={styles.sectionTitle}>Write a review</h2>
                     <select value={rating} onChange={(e) => setRating(Number(e.target.value))} style={styles.input}>
-                        {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n} estrellas</option>)}
+                        {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n} {n === 1 ? "star" : "stars"}</option>)}
                     </select>
-                    <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Cuenta qué tal fue el plan..." style={styles.textarea} />
-                    <button onClick={sendReview} style={styles.secondaryButton}>Enviar reseña</button>
+                    <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Tell us how it went..." style={styles.textarea} />
+                    <button onClick={sendReview} style={styles.secondaryButton}>Submit review</button>
                 </aside>
             </section>
 
             <div style={styles.stickyCta}>
                 <strong>{activity.name}</strong>
-                <button onClick={addToSelection} style={styles.primaryButton}>Añadir por {Number(activity.price).toFixed(2)} €</button>
+                <button onClick={addToSelection} style={styles.primaryButton}>Add for {Number(activity.price).toFixed(2)} €</button>
             </div>
         </main>
     );

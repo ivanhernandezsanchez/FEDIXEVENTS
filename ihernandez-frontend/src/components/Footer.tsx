@@ -27,41 +27,41 @@ function Footer() {
       <footer id="site-footer" style={styles.footer}>
         <div className="footer-inner" style={styles.inner}>
           <div style={styles.brandBlock}>
-            <span style={styles.kicker}>Despedidas sin caos</span>
+            <span style={styles.kicker}>Celebrations without chaos</span>
             <div style={{ background: "#fff", borderRadius: 10, padding: "4px 10px", display: "inline-flex", marginBottom: "0.55rem" }}>
               <img src="/logo.png" alt="FedixEvents" style={{ height: 48 }} />
             </div>
             <p style={styles.text}>
-              Planes, actividades y propuestas personalizadas para montar una despedida redonda sin perder tardes enteras organizando.
+              Personalised activity plans and proposals for the perfect celebration — without wasting endless afternoons organising.
             </p>
             <div style={styles.trustRow}>
-              <span style={styles.trustPill}>Planes IA</span>
-              <span style={styles.trustPill}>Carrito grupal</span>
-              <span style={styles.trustPill}>Reseñas reales</span>
+              <span style={styles.trustPill}>AI Plans</span>
+              <span style={styles.trustPill}>Group cart</span>
+              <span style={styles.trustPill}>Real reviews</span>
             </div>
           </div>
 
           <div>
-            <span style={styles.heading}>Explorar</span>
+            <span style={styles.heading}>Explore</span>
             <nav style={styles.links} aria-label="Footer">
-              <Link to="/" style={styles.link}>Inicio</Link>
-              <Link to="/catalog" style={styles.link}>Catálogo</Link>
-              <Link to="/contact" style={styles.link}>Contacto</Link>
-              <Link to="/cart" style={styles.link}>Carrito</Link>
+              <Link to="/" style={styles.link}>Home</Link>
+              <Link to="/catalog" style={styles.link}>Catalog</Link>
+              <Link to="/contact" style={styles.link}>Contact</Link>
+              <Link to="/cart" style={styles.link}>Cart</Link>
             </nav>
           </div>
 
           <div style={styles.contact}>
-            <span style={styles.heading}>Atención</span>
+            <span style={styles.heading}>Support</span>
             <span>info@despedidasfedi.com</span>
-            <span>Madrid, España</span>
-            <Link to="/catalog" style={styles.ctaLink}>Ver planes disponibles</Link>
+            <span>Madrid, Spain</span>
+            <Link to="/catalog" style={styles.ctaLink}>View available plans</Link>
           </div>
         </div>
 
         <div className="footer-bottom" style={styles.bottom}>
           <span>© 2026 FedixEvents</span>
-          <span>Ideas con cabeza, reservas sin lío y un poco de chispa.</span>
+          <span>Smart ideas, hassle-free bookings, and a spark of magic.</span>
         </div>
       </footer>
     </>

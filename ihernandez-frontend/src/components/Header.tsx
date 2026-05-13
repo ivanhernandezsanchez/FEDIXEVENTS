@@ -41,9 +41,9 @@ function Header() {
   }, [location.pathname]);
 
   const navLinks = [
-    { to: "/", label: "Inicio" },
-    { to: "/catalog", label: "Catálogo" },
-    { to: "/contact", label: "Contacto" },
+    { to: "/", label: "Home" },
+    { to: "/catalog", label: "Catalog" },
+    { to: "/contact", label: "Contact" },
   ];
 
   return (
@@ -105,7 +105,7 @@ function Header() {
             }}>{label}</Link>
           ))}
           {user?.role === "customer" && (
-            <Link to="/history" style={{ color: "#d1d5db", textDecoration: "none", fontWeight: 600, fontSize: 14, padding: "6px 14px", borderRadius: 999 }}>Historial</Link>
+            <Link to="/history" style={{ color: "#d1d5db", textDecoration: "none", fontWeight: 600, fontSize: 14, padding: "6px 14px", borderRadius: 999 }}>History</Link>
           )}
           {user?.role === "admin" ? (
             <Link to="/intranet/dashboard" style={{ color: "#A855F7", textDecoration: "none", fontWeight: 700, fontSize: 14, padding: "6px 14px", borderRadius: 999 }}>Intranet</Link>
@@ -123,7 +123,7 @@ function Header() {
             <button
               onClick={async () => { await logout(); navigate("/"); }}
               style={{ background: "transparent", border: "none", color: "#9ca3af", cursor: "pointer", fontSize: 13, padding: "6px 10px" }}
-            >Salir</button>
+            >Log out</button>
           )}
           <Link to="/cart" style={{
             background: "linear-gradient(135deg, #DB2777, #F97316)",
@@ -153,7 +153,7 @@ function Header() {
               borderRadius: 8,
               lineHeight: 1,
             }}
-            aria-label="Menú"
+            aria-label="Menu"
           >
             {menuOpen ? "✕" : "☰"}
           </button>
@@ -179,7 +179,7 @@ function Header() {
               }}>{label}</Link>
             ))}
             {user?.role === "customer" && (
-              <Link to="/history" onClick={() => setMenuOpen(false)} style={{ color: "#d1d5db", textDecoration: "none", fontWeight: 600, fontSize: 15, padding: "11px 4px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>Historial</Link>
+              <Link to="/history" onClick={() => setMenuOpen(false)} style={{ color: "#d1d5db", textDecoration: "none", fontWeight: 600, fontSize: 15, padding: "11px 4px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>History</Link>
             )}
             {user?.role === "admin" ? (
               <Link to="/intranet/dashboard" onClick={() => setMenuOpen(false)} style={{ color: "#A855F7", textDecoration: "none", fontWeight: 700, fontSize: 15, padding: "11px 4px", borderBottom: "1px solid rgba(168,85,247,0.15)" }}>Intranet</Link>
@@ -192,7 +192,7 @@ function Header() {
                 <button
                   onClick={async () => { setMenuOpen(false); await logout(); navigate("/"); }}
                   style={{ background: "transparent", border: "none", color: "#9ca3af", cursor: "pointer", fontSize: 13, padding: 0 }}
-                >Salir</button>
+                >Log out</button>
               </div>
             )}
           </div>

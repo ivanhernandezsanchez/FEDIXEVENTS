@@ -30,19 +30,19 @@ const siteReviews = [
     name: "Carlos M.",
     city: "Madrid",
     rating: 5,
-    text: "En una tarde cerramos actividades, presupuesto y carrito. El grupo llegó con todo claro y sin discusiones eternas.",
+    text: "We wrapped up activities, budget and cart in one afternoon. The group arrived with everything sorted and no endless debates.",
   },
   {
     name: "Lucía R.",
     city: "Valencia",
     rating: 5,
-    text: "Fedi nos propuso un plan mixto con comida, sorpresa y noche. Parecía hecho por alguien que conocía al grupo.",
+    text: "Fedi suggested a mixed plan with food, a surprise and a night out. It felt like it was made by someone who knew our group.",
   },
   {
     name: "Andrés P.",
     city: "Sevilla",
     rating: 4,
-    text: "Muy cómodo para comparar opciones y guardar ideas. Las reseñas de actividades ayudaron bastante a decidir.",
+    text: "Really convenient for comparing options and saving ideas. The activity reviews were a big help when it came to deciding.",
   },
 ];
 
@@ -55,7 +55,7 @@ function Home() {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
-      content: "Soy Fedi. Dime cuántos sois, qué rollo buscáis y presupuesto aproximado; mezclo catálogo, ideas a medida y carrito en un plan listo para reservar.",
+      content: "I'm Fedi. Tell me how many of you there are, the kind of vibe you're after, and your approximate budget — I'll mix catalogue activities, tailored ideas and a cart into a plan ready to book.",
     },
   ]);
   const [chatInput, setChatInput] = useState("");
@@ -223,20 +223,20 @@ function Home() {
 
     const customPlan: Activity = {
       id: -Date.now(),
-      name: `Plan IA en ${selectedCityName}`,
-      category: "Plan personalizado IA",
-      description: lastAssistantPlan || "Plan personalizado acordado en el chat IA.",
+      name: `AI Plan in ${selectedCityName}`,
+      category: "Custom AI Plan",
+      description: lastAssistantPlan || "Custom plan agreed in the AI chat.",
       price: unlimitedBudget || !budgetPerPerson ? 0 : budgetPerPerson,
       city_id: selectedCity ?? undefined,
       duration_minutes: 240,
       max_capacity: people,
-      provider_name: "Asistente IA",
+      provider_name: "AI Assistant",
     };
 
     addCustomPlanToCart(customPlan, people);
     setChatCartMessage(unlimitedBudget || !budgetPerPerson
-      ? "Plan añadido al carrito con precio a consultar."
-      : "Plan añadido al carrito. Puedes revisarlo y confirmar la reserva.");
+      ? "Plan added to cart — price on request."
+      : "Plan added to cart. Review it and confirm your booking.");
   };
 
   const handleSubmitAiPlanIdea = async () => {
@@ -246,12 +246,12 @@ function Home() {
     const people = extractLastNumber(/(?:we are|for|group of|somos|para|grupo de)\s*(\d{1,3})|(\d{1,3})\s*(?:people|friends|personas|amigos|amigas)/gi, 1);
 
     if (!name) {
-      setPublishMessage("Ponle nombre a la idea antes de enviarla.");
+      setPublishMessage("Give the idea a name before sending.");
       return;
     }
 
     if (!lastAssistantPlan) {
-      setPublishMessage("Termina primero el plan con la IA y después envíalo para publicar.");
+      setPublishMessage("Finish the AI plan first, then submit it to publish.");
       return;
     }
 
@@ -277,9 +277,9 @@ function Home() {
       }
 
       setPublishName("");
-      setPublishMessage("Idea enviada. El equipo la revisará en la intranet antes de publicarla.");
+      setPublishMessage("Idea submitted. The team will review it in the intranet before publishing.");
     } catch (error) {
-      setPublishMessage(error instanceof Error ? error.message : "Error enviando la propuesta.");
+      setPublishMessage(error instanceof Error ? error.message : "Error sending the proposal.");
     }
   };
 
@@ -293,18 +293,18 @@ function Home() {
       city_id: idea.city_id ?? undefined,
       duration_minutes: idea.duration_minutes ?? undefined,
       max_capacity: idea.max_capacity ?? undefined,
-      provider_name: "Idea de la comunidad",
+      provider_name: "Community idea",
     };
 
     addActivityToCart(activity);
     navigate("/cart");
   };
 
-  const selectedCityName = cities.find((c) => c.id === selectedCity)?.name || "Selecciona una ciudad";
+  const selectedCityName = cities.find((c) => c.id === selectedCity)?.name || "Select a city";
 
   const featuredActivities = activities.slice(0, 3);
   const categories = Array.from(new Set(activities.map((activity) => activity.category))).slice(0, 4);
-  const moods = ["Fiesta", "Aventura", "Gastro", "Relax", "Premium", "Sorpresa"];
+  const moods = ["Party", "Adventure", "Gastro", "Relax", "Premium", "Surprise"];
 
   return (
     <main className="home-page" style={styles.page}>
@@ -337,28 +337,28 @@ function Home() {
 
         {/* Centered hero content */}
         <div style={styles.heroContent}>
-          <h1 style={styles.title}>La despedida<br />empieza aquí</h1>
+          <h1 style={styles.title}>The celebration<br />starts here</h1>
           <p style={styles.subtitle}>
-            Organiza la despedida de soltero/a perfecta con ayuda de nuestra inteligencia artificial. Rápido, fácil y sin estrés.
+            Plan the perfect stag or hen party with the help of our AI. Fast, easy and stress-free.
           </p>
 
           <div style={styles.searchRow}>
             <div style={styles.searchBox}>
               <span style={{ color: "#9ca3af", fontSize: 18, lineHeight: 1 }}>🔍</span>
               <input
-                placeholder="Busca en memarria..."
+                placeholder="Search ideas..."
                 style={styles.searchInput}
                 onClick={() => document.getElementById("ai-chat")?.scrollIntoView({ behavior: "smooth" })}
                 readOnly
               />
             </div>
             <button onClick={() => navigate("/catalog")} style={styles.heroCta}>
-              Contier acción
+              Explore now
             </button>
           </div>
 
           <div style={styles.destinoRow}>
-            <span style={{ color: "#6b7280", fontSize: "0.88rem" }}>Destino:</span>
+            <span style={{ color: "#6b7280", fontSize: "0.88rem" }}>Destination:</span>
             <select
               value={selectedCity || ""}
               onChange={(e) => setSelectedCity(Number(e.target.value))}
@@ -370,7 +370,7 @@ function Home() {
                 </option>
               ))}
             </select>
-            <span style={{ color: "#6b7280", fontSize: "0.85rem" }}>· {activities.length} actividades</span>
+            <span style={{ color: "#6b7280", fontSize: "0.85rem" }}>· {activities.length} activities</span>
           </div>
         </div>
       </section>
@@ -395,29 +395,29 @@ function Home() {
 
       <div style={{ padding: "0 2rem" }}>
       <button className="fedi-mobile-toggle" onClick={() => setFediOpen(true)} style={styles.mobileFediButton}>
-        Hablar con Fedi
+        Talk to Fedi
       </button>
 
       <section id="ai-chat" className={`fedi-floating${footerVisible ? " fedi-over-footer" : ""}${fediOpen ? " fedi-mobile-open" : ""}`} style={styles.chatSection}>
         <div style={styles.chatIntro}>
-          <button className="fedi-mobile-close" onClick={() => setFediOpen(false)} style={styles.mobileCloseButton}>Cerrar</button>
+          <button className="fedi-mobile-close" onClick={() => setFediOpen(false)} style={styles.mobileCloseButton}>Close</button>
           <div style={styles.chatIntroCopy}>
             <span style={styles.fediBadge}>Fedi</span>
-            <h2 style={styles.sectionTitle}>Tu copiloto de despedida</h2>
+            <h2 style={styles.sectionTitle}>Your celebration co-pilot</h2>
             <p style={styles.chatIntroText}>
-              Pídele un plan, ajusta el presupuesto y deja que Fedi combine actividades reales con ideas personalizadas para el grupo.
+              Ask for a plan, adjust the budget and let Fedi combine real activities with personalised ideas for your group.
             </p>
           </div>
 
           <div style={styles.fediActions}>
             <button onClick={() => sendChatMessage(`We are a group and we want a mixed plan in ${selectedCityName}. Use catalogue activities if they fit.`)} style={styles.fediChip}>
-              Plan mixto
+              Mixed plan
             </button>
             <button onClick={() => sendChatMessage(`Give me a budget option and a premium option in ${selectedCityName}.`)} style={styles.fediChip}>
-              Barato / premium
+              Budget / premium
             </button>
             <button onClick={() => sendChatMessage(`Surprise me with an original bachelor party in ${selectedCityName}.`)} style={styles.fediChip}>
-              Sorpréndeme
+              Surprise me
             </button>
           </div>
         </div>
@@ -438,7 +438,7 @@ function Home() {
             ))}
             {chatLoading && (
               <div style={{ ...styles.chatBubble, ...styles.chatBubbleAssistant }}>
-                <span>Preparando ideas...</span>
+                <span>Preparing ideas...</span>
                 <span style={styles.chatCheck}>✓✓</span>
               </div>
             )}
@@ -448,12 +448,12 @@ function Home() {
             <input
               value={chatInput}
               onChange={(event) => setChatInput(event.target.value)}
-              placeholder="Escribe a Fedi..."
+              placeholder="Message Fedi..."
               style={styles.chatInput}
               disabled={chatLoading}
             />
             <button type="submit" style={styles.chatSendButton} disabled={chatLoading || !chatInput.trim()}>
-              Enviar
+              Send
             </button>
           </form>
 
@@ -461,31 +461,31 @@ function Home() {
             <div style={styles.fediToolPanel}>
               <div style={styles.fediToolColumns}>
                 <div style={styles.fediToolColumn}>
-                  <span style={styles.fediToolLabel}>Reserva</span>
-                  <p style={styles.fediToolText}>Guarda el plan de Fedi y revísalo antes de reservar.</p>
+                  <span style={styles.fediToolLabel}>Booking</span>
+                  <p style={styles.fediToolText}>Save Fedi's plan and review it before booking.</p>
                   <div style={styles.chatCartActions}>
                     <button onClick={handleAddAiPlanToCart} style={styles.chatCartButton} type="button">
-                      Añadir plan
+                      Add plan
                     </button>
                     <button onClick={() => navigate("/cart")} style={styles.chatCartGhostButton} type="button">
-                      Carrito
+                      Cart
                     </button>
                   </div>
                   {chatCartMessage && <p style={styles.chatCartMessage}>{chatCartMessage}</p>}
                 </div>
 
                 <div style={styles.fediToolColumn}>
-                  <span style={styles.fediToolLabel}>Publicar</span>
-                  <p style={styles.fediToolText}>Ponle nombre y mándalo para revisarlo en la intranet.</p>
+                  <span style={styles.fediToolLabel}>Publish</span>
+                  <p style={styles.fediToolText}>Give it a name and send it for review in the intranet.</p>
                   <div style={styles.publishBox}>
                     <input
                       value={publishName}
                       onChange={(event) => setPublishName(event.target.value)}
-                      placeholder="Nombre de la despedida"
+                      placeholder="Name your celebration"
                       style={styles.publishInput}
                     />
                     <button onClick={handleSubmitAiPlanIdea} type="button" style={styles.publishButton}>
-                      Enviar
+                      Send
                     </button>
                   </div>
                   {publishMessage && <p style={styles.publishMessage}>{publishMessage}</p>}
@@ -499,27 +499,27 @@ function Home() {
       <section style={styles.statsGrid}>
         <div style={styles.stat}>
           <strong style={styles.statNumber}>{cities.length}</strong>
-          <span style={styles.statText}>ciudades con planes</span>
+          <span style={styles.statText}>cities with plans</span>
         </div>
         <div style={styles.stat}>
           <strong style={styles.statNumber}>{activities.length}</strong>
-          <span style={styles.statText}>actividades en {selectedCityName}</span>
+          <span style={styles.statText}>activities in {selectedCityName}</span>
         </div>
         <div style={styles.stat}>
           <strong style={styles.statNumber}>24h</strong>
-          <span style={styles.statText}>para cerrar propuesta</span>
+          <span style={styles.statText}>to close a proposal</span>
         </div>
         <div style={styles.stat}>
           <strong style={styles.statNumber}>1</strong>
-          <span style={styles.statText}>carrito para el grupo</span>
+          <span style={styles.statText}>shared group cart</span>
         </div>
       </section>
 
       <section style={styles.reviewsSection}>
         <div style={styles.sectionHeader}>
           <div>
-            <span style={styles.sectionKicker}>Reseñas</span>
-            <h2 style={styles.sectionTitle}>Grupos que ya lo montaron con nosotros</h2>
+            <span style={styles.sectionKicker}>Reviews</span>
+            <h2 style={styles.sectionTitle}>Groups who planned with us</h2>
           </div>
         </div>
         <div style={styles.reviewGrid}>
@@ -541,19 +541,19 @@ function Home() {
       <section style={styles.section}>
         <div style={styles.sectionHeader}>
           <div>
-            <span style={styles.sectionKicker}>Destacados</span>
-            <h2 style={styles.sectionTitle}>Planazos en {selectedCityName}</h2>
+            <span style={styles.sectionKicker}>Featured</span>
+            <h2 style={styles.sectionTitle}>Top picks in {selectedCityName}</h2>
           </div>
           <button onClick={() => navigate("/catalog")} style={styles.linkButton}>
-            Ver todo
+            View all
           </button>
         </div>
 
         <div style={styles.grid}>
           {loading ? (
-            <p style={styles.loading}>Cargando actividades...</p>
+            <p style={styles.loading}>Loading activities...</p>
           ) : activities.length === 0 ? (
-            <p style={styles.empty}>No hay actividades en {selectedCityName}</p>
+            <p style={styles.empty}>No activities in {selectedCityName}</p>
           ) : (
             featuredActivities.map((activity) => (
               <article key={activity.id} style={styles.card} onClick={() => handleActivityClick(activity.id)}>
@@ -564,16 +564,16 @@ function Home() {
                   <h3 style={styles.cardTitle}>{activity.name}</h3>
                   <div style={styles.productRating}>
                     <span style={styles.ratingStars}>{renderStars(activity.avgRating)}</span>
-                    <span>{Number(activity.avgRating) > 0 ? `${Number(activity.avgRating).toFixed(1)} / 5` : "Sin reseñas"}</span>
+                    <span>{Number(activity.avgRating) > 0 ? `${Number(activity.avgRating).toFixed(1)} / 5` : "No reviews"}</span>
                   </div>
                   <p style={styles.cardDescription}>{activity.description}</p>
                   <div style={styles.cardMeta}>
-                    <span>{activity.duration_minutes ? `${activity.duration_minutes} min` : "Duración flexible"}</span>
-                    <span>{activity.max_capacity ? `Hasta ${activity.max_capacity}` : "Grupo abierto"}</span>
+                    <span>{activity.duration_minutes ? `${activity.duration_minutes} min` : "Flexible duration"}</span>
+                    <span>{activity.max_capacity ? `Up to ${activity.max_capacity}` : "Open group"}</span>
                   </div>
                   <div style={styles.cardFooter}>
                     <span style={styles.price}>{Number(activity.price).toFixed(2)} €</span>
-                    <span style={styles.rating}>{Number(activity.avgRating) > 0 ? "Con reseñas" : "Nuevo"}</span>
+                    <span style={styles.rating}>{Number(activity.avgRating) > 0 ? "Reviewed" : "New"}</span>
                   </div>
                   <button
                     onClick={(e) => {
@@ -583,7 +583,7 @@ function Home() {
                     }}
                     style={styles.secondaryButton}
                   >
-                    Añadir al carrito
+                    Add to cart
                   </button>
                 </div>
               </article>
@@ -594,20 +594,20 @@ function Home() {
 
       <section className="how-it-works" style={styles.splitSection}>
         <div style={styles.storyBlock}>
-          <span style={styles.sectionKicker}>Cómo funciona</span>
-          <h2 style={{ ...styles.sectionTitle, color: "#fff" }}>De idea suelta a plan reservado</h2>
+          <span style={styles.sectionKicker}>How it works</span>
+          <h2 style={{ ...styles.sectionTitle, color: "#fff" }}>From loose idea to confirmed booking</h2>
           <p style={styles.storyText}>
-            El grupo elige destino, compara propuestas y prepara una selección. El equipo recibe la reserva lista para gestionarla desde la intranet.
+            The group picks a destination, compares proposals and builds a selection. The team receives the booking ready to manage from the intranet.
           </p>
           <button onClick={() => navigate("/catalog")} style={styles.storyBtn}>
-            Explorar actividades →
+            Explore activities →
           </button>
         </div>
         <div style={styles.steps}>
           {[
-            { num: "01", icon: "🗺️", title: "Elige ciudad", text: "Filtra por destino y revisa todas las actividades disponibles." },
-            { num: "02", icon: "🎉", title: "Mezcla planes", text: "Añade actividades, ideas de la IA y propuestas del grupo al carrito." },
-            { num: "03", icon: "✅", title: "Confirma reserva", text: "El pedido llega listo para que el equipo lo gestione desde la intranet." },
+            { num: "01", icon: "🗺️", title: "Choose a city", text: "Filter by destination and browse all available activities." },
+            { num: "02", icon: "🎉", title: "Mix and match", text: "Add activities, AI ideas and group suggestions to your cart." },
+            { num: "03", icon: "✅", title: "Confirm booking", text: "Your order reaches the team ready to be managed from the intranet." },
           ].map(({ num, icon, title, text }) => (
             <div key={num} style={styles.step}>
               <span style={styles.stepNumber}>{num}</span>
@@ -627,14 +627,14 @@ function Home() {
         <div style={styles.sectionHeader}>
           <div>
             <span style={styles.sectionKicker}>Mood</span>
-            <h2 style={styles.sectionTitle}>Elige el rollo del grupo</h2>
+            <h2 style={styles.sectionTitle}>Pick your group's vibe</h2>
           </div>
         </div>
         <div style={styles.categoryGrid}>
           {(moods.length ? moods : categories).map((category) => (
-            <button key={category} onClick={() => sendChatMessage(`Queremos una despedida estilo ${category} en ${selectedCityName}.`)} style={styles.categoryCard}>
+            <button key={category} onClick={() => sendChatMessage(`We want a ${category} style celebration in ${selectedCityName}.`)} style={styles.categoryCard}>
               <strong>{category}</strong>
-              <span>Pedir ideas a Fedi</span>
+              <span>Ask Fedi for ideas</span>
             </button>
           ))}
         </div>
@@ -643,34 +643,34 @@ function Home() {
       <section style={styles.communitySection}>
         <div style={styles.sectionHeader}>
           <div>
-            <span style={styles.sectionKicker}>Ideas de la comunidad</span>
-            <h2 style={styles.sectionTitle}>Despedidas creadas por otros grupos</h2>
+            <span style={styles.sectionKicker}>Community ideas</span>
+            <h2 style={styles.sectionTitle}>Celebrations created by other groups</h2>
           </div>
         </div>
 
         {communityIdeas.length === 0 ? (
-          <p style={styles.empty}>Todavía no hay despedidas de la comunidad publicadas. Envía una idea de Fedi y podrá aparecer aquí cuando se apruebe.</p>
+          <p style={styles.empty}>No community celebrations published yet. Submit a Fedi idea and it may appear here once approved.</p>
         ) : (
           <div style={styles.communityGrid}>
             {communityIdeas.map((idea) => (
               <article key={idea.id} style={styles.communityCard}>
-                <span style={styles.communityBadge}>{idea.city_name || "Destino abierto"}</span>
+                <span style={styles.communityBadge}>{idea.city_name || "Open destination"}</span>
                 <h3 style={styles.communityTitle}>{idea.suggested_name}</h3>
                 <p style={styles.communityText}>{idea.description}</p>
                 <div style={styles.communityMeta}>
-                  <span>{idea.duration_minutes ? `${idea.duration_minutes} min` : "Duración flexible"}</span>
-                  <span>{idea.max_capacity ? `Hasta ${idea.max_capacity}` : "Grupo abierto"}</span>
+                  <span>{idea.duration_minutes ? `${idea.duration_minutes} min` : "Flexible duration"}</span>
+                  <span>{idea.max_capacity ? `Up to ${idea.max_capacity}` : "Open group"}</span>
                 </div>
                 <div style={styles.communityFooter}>
                   <strong style={styles.price}>
-                    {Number(idea.price) > 0 ? `${Number(idea.price).toFixed(2)} €` : "Presupuesto pendiente"}
+                    {Number(idea.price) > 0 ? `${Number(idea.price).toFixed(2)} €` : "Price pending"}
                   </strong>
                   <div>
                     <button onClick={() => navigate(`/activity/${idea.created_activity_id}`)} style={styles.smallGhostButton}>
-                      Ver
+                      View
                     </button>
                     <button onClick={() => addCommunityIdeaToCart(idea)} style={styles.smallPrimaryButton}>
-                      Añadir
+                      Add
                     </button>
                   </div>
                 </div>
@@ -682,11 +682,11 @@ function Home() {
 
       <section style={styles.ctaBand}>
         <div>
-          <span style={styles.ctaKicker}>¿Necesitas una propuesta a medida?</span>
-          <h2 style={styles.ctaTitle}>Fedi convierte una idea suelta en una reserva.</h2>
+          <span style={styles.ctaKicker}>Need a tailor-made proposal?</span>
+          <h2 style={styles.ctaTitle}>Fedi turns a loose idea into a booking.</h2>
         </div>
         <button onClick={() => document.getElementById("ai-chat")?.scrollIntoView({ behavior: "smooth" })} style={styles.ctaButton}>
-          Abrir Fedi
+          Open Fedi
         </button>
       </section>
       </div>

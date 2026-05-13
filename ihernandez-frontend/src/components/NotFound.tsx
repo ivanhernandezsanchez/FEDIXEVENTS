@@ -1,9 +1,9 @@
 function NotFound() {
     return (
         <div style={{ padding: "40px", backgroundColor: "#fff", height: "100vh" }}>
-            <h1>Error 404: Página no encontrada</h1>
-            <p>La ruta solicitada no existe.</p>
-            <a href="/">Volver al inicio</a>
+            <h1>Error 404: Page not found</h1>
+            <p>The requested page doesn't exist.</p>
+            <a href="/">Back to home</a>
         </div>
     );
 }

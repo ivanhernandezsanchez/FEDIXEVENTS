@@ -60,20 +60,20 @@ function CheckoutPage() {
 
     const clearCart = () => {
         persistCart([]);
-        setMessage("Carrito vaciado.");
+        setMessage("Cart cleared.");
     };
 
     const addSuggestedActivity = (activity: Activity) => {
         addActivityToCart(activity);
         setCart(readCart());
-        setMessage(`${activity.name} añadido al carrito.`);
+        setMessage(`${activity.name} added to cart.`);
     };
 
     const handleOrder = async () => {
         setMessage("");
 
         if (!groupName.trim()) {
-            setMessage("Indica un nombre de grupo o referencia.");
+            setMessage("Please enter a group name or reference.");
             return;
         }
 
@@ -109,7 +109,7 @@ function CheckoutPage() {
             const data = await res.json();
 
             if (!res.ok) {
-                setMessage(data.error || "Error al procesar pedido");
+                setMessage(data.error || "Error processing order");
                 return;
             }
 
@@ -121,7 +121,7 @@ function CheckoutPage() {
 
             navigate("/history");
         } catch {
-            setMessage("Error al procesar pedido");
+            setMessage("Error processing order");
         } finally {
             setSubmitting(false);
         }
@@ -131,15 +131,15 @@ function CheckoutPage() {
         return (
             <main style={styles.container}>
                 <section style={styles.emptyState}>
-                    <span style={styles.emptyIcon}>Carrito</span>
-                    <h1 style={styles.title}>Tu carrito está vacío</h1>
-                    <p style={styles.muted}>Añade actividades desde el catálogo para preparar una reserva para tu grupo.</p>
+                    <span style={styles.emptyIcon}>Cart</span>
+                    <h1 style={styles.title}>Your cart is empty</h1>
+                    <p style={styles.muted}>Add activities from the catalogue to prepare a booking for your group.</p>
                     <div style={styles.emptyActions}>
                         <button onClick={() => navigate("/catalog")} style={styles.primaryButton}>
-                            Ver catálogo
+                            View catalogue
                         </button>
                         <button onClick={() => navigate("/contact")} style={styles.lightButton}>
-                            Pedir recomendación
+                            Get a recommendation
                         </button>
                     </div>
                 </section>
@@ -170,20 +170,20 @@ function CheckoutPage() {
         <main className="checkout-container" style={styles.container}>
             <section className="checkout-header" style={styles.header}>
                 <div>
-                    <span style={styles.kicker}>Proceso de compra</span>
-                    <h1 style={styles.title}>Carrito y reserva</h1>
-                    <p style={styles.muted}>Revisa actividades, ajusta asistentes y confirma la solicitud para que el equipo la gestione.</p>
+                    <span style={styles.kicker}>Checkout</span>
+                    <h1 style={styles.title}>Cart &amp; booking</h1>
+                    <p style={styles.muted}>Review activities, adjust attendees and confirm the request for our team to handle.</p>
                 </div>
                 <button onClick={() => navigate("/catalog")} style={styles.lightButton}>
-                    Seguir comprando
+                    Keep browsing
                 </button>
             </section>
 
             <section className="checkout-layout" style={styles.layout}>
                 <div style={styles.cartPanel}>
                     <div style={styles.panelHeader}>
-                        <h2 style={styles.panelTitle}>Actividades seleccionadas</h2>
-                        <button onClick={clearCart} style={styles.dangerButton}>Vaciar carrito</button>
+                        <h2 style={styles.panelTitle}>Selected activities</h2>
+                        <button onClick={clearCart} style={styles.dangerButton}>Clear cart</button>
                     </div>
 
                     <div style={styles.itemList}>
@@ -211,14 +211,14 @@ function CheckoutPage() {
                                         <h3 style={styles.itemTitle}>{item.product.name}</h3>
                                         <p style={styles.itemMeta}>
                                             {item.product.category}
-                                            {item.customPlan ? " · a medida" : ""}
+                                            {item.customPlan ? " · custom" : ""}
                                             {item.product.provider_name ? ` · ${item.product.provider_name}` : ""}
                                         </p>
                                         <p style={styles.itemDescription}>{item.product.description}</p>
                                     </div>
 
                                     <div className="checkout-qty-box" style={styles.quantityBox}>
-                                        <span style={styles.price}>{pricePending ? "A consultar" : `${price.toFixed(2)} €`}</span>
+                                        <span style={styles.price}>{pricePending ? "Price on request" : `${price.toFixed(2)} €`}</span>
                                         <div style={styles.stepper}>
                                             <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)} style={styles.stepButton}>-</button>
                                             <input
@@ -231,8 +231,8 @@ function CheckoutPage() {
                                             />
                                             <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)} style={styles.stepButton}>+</button>
                                         </div>
-                                        <strong style={styles.lineTotal}>{pricePending ? "Precio abierto" : `${lineTotal.toFixed(2)} €`}</strong>
-                                        <button onClick={() => removeItem(item.product.id)} style={styles.removeButton}>Quitar</button>
+                                        <strong style={styles.lineTotal}>{pricePending ? "Open price" : `${lineTotal.toFixed(2)} €`}</strong>
+                                        <button onClick={() => removeItem(item.product.id)} style={styles.removeButton}>Remove</button>
                                     </div>
                                 </article>
                             );
@@ -241,14 +241,14 @@ function CheckoutPage() {
 
                     {suggestedActivities.length > 0 && (
                         <section style={styles.suggestions}>
-                            <h2 style={styles.panelTitle}>Ideas para completar el plan</h2>
+                            <h2 style={styles.panelTitle}>Ideas to complete your plan</h2>
                             <div style={styles.suggestionGrid}>
                                 {suggestedActivities.map((activity) => (
                                     <article key={activity.id} style={styles.suggestionCard}>
                                         <strong>{activity.name}</strong>
                                         <span style={styles.itemMeta}>{activity.category} · {Number(activity.price).toFixed(2)} €</span>
                                         <button onClick={() => addSuggestedActivity(activity)} style={styles.smallButton}>
-                                            Añadir
+                                            Add
                                         </button>
                                     </article>
                                 ))}
@@ -258,9 +258,9 @@ function CheckoutPage() {
                 </div>
 
                 <aside style={styles.summary}>
-                    <h2 style={styles.panelTitle}>Resumen</h2>
+                    <h2 style={styles.panelTitle}>Summary</h2>
                     <div style={styles.summaryLine}>
-                        <span>Plazas / actividades</span>
+                        <span>Spots / activities</span>
                         <strong>{totalItems}</strong>
                     </div>
                     <div style={styles.summaryLine}>
@@ -268,18 +268,18 @@ function CheckoutPage() {
                         <strong>{subtotal.toFixed(2)} €</strong>
                     </div>
                     <div style={styles.summaryLine}>
-                        <span>Gestión</span>
+                        <span>Service fee</span>
                         <strong>{managementFee.toFixed(2)} €</strong>
                     </div>
                     <div style={styles.totalLine}>
-                        <span>Total estimado</span>
+                        <span>Estimated total</span>
                         <strong>{total.toFixed(2)} €</strong>
                     </div>
 
                     <label style={styles.label}>
-                        Nombre del grupo
+                        Group name
                         <input
-                            placeholder="Ej. Despedida de Juan"
+                            placeholder="e.g. Tom's stag party"
                             value={groupName}
                             onChange={(e) => setGroupName(e.target.value)}
                             style={styles.input}
@@ -287,7 +287,7 @@ function CheckoutPage() {
                     </label>
 
                     <label style={styles.label}>
-                        Fecha prevista
+                        Event date
                         <input
                             type="date"
                             value={eventDate}
@@ -297,9 +297,9 @@ function CheckoutPage() {
                     </label>
 
                     <label style={styles.label}>
-                        Notas para el equipo
+                        Notes for the team
                         <textarea
-                            placeholder="Horario, tamaño del grupo, preferencias..."
+                            placeholder="Schedule, group size, preferences..."
                             value={notes}
                             onChange={(e) => setNotes(e.target.value)}
                             style={styles.textarea}
@@ -315,7 +315,7 @@ function CheckoutPage() {
                             width: "100%",
                         }}
                     >
-                        {submitting ? "Confirmando..." : "Confirmar reserva"}
+                        {submitting ? "Confirming..." : "Confirm booking"}
                     </button>
 
                     {message && <p style={styles.message}>{message}</p>}

@@ -68,7 +68,7 @@ function ProductCard({ product, onSelect, onAddToCart }: ProductCardProps) {
             {renderStars(safeRating)} ({safeRating.toFixed(1)})
           </>
         ) : (
-          <span style={{ color: "#6b7280" }}>Sin valoraciones</span>
+          <span style={{ color: "#6b7280" }}>No ratings</span>
         )}
       </p>
 
@@ -81,8 +81,8 @@ function ProductCard({ product, onSelect, onAddToCart }: ProductCardProps) {
         }}
       >
         {product.stock > 0
-          ? `En stock - ${product.stock}`
-          : "Sin stock"}
+          ? `In stock - ${product.stock}`
+          : "Out of stock"}
       </p>
 
       {/* 🛒 BUTTON */}
@@ -106,7 +106,7 @@ function ProductCard({ product, onSelect, onAddToCart }: ProductCardProps) {
           transition: "all 0.2s ease",
         }}
       >
-        {isDisabled ? "No disponible" : "🛒 Añadir al carrito"}
+        {isDisabled ? "Not available" : "🛒 Add to cart"}
       </button>
     </div>
   );

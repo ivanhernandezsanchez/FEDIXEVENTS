@@ -20,10 +20,10 @@ function Contact() {
     <main className="contact-page" style={styles.page}>
       <section className="contact-hero" style={styles.hero}>
         <div style={styles.heroCopy}>
-          <span style={styles.kicker}>Contacto</span>
-          <h1 style={styles.title}>Cuéntanos la despedida que tienes en mente</h1>
+          <span style={styles.kicker}>Contact</span>
+          <h1 style={styles.title}>Tell us about the event you have in mind</h1>
           <p style={styles.text}>
-            Dinos ciudad, número de personas, presupuesto y el nivel de fiesta que buscáis. Te ayudamos a aterrizarlo en un plan claro y fácil de reservar.
+            Tell us the city, number of people, budget and vibe you're after. We'll help you shape it into a clear, easy-to-book plan.
           </p>
         </div>
 
@@ -38,15 +38,15 @@ function Contact() {
           <article style={styles.infoCard}>
             <span style={styles.cardIcon}>☎</span>
             <div>
-              <strong>Teléfono</strong>
+              <strong>Phone</strong>
               <p>600 111 222</p>
             </div>
           </article>
           <article style={styles.infoCard}>
             <span style={styles.cardIcon}>★</span>
             <div>
-              <strong>Respuesta</strong>
-              <p>Normalmente en menos de 24h</p>
+              <strong>Response</strong>
+              <p>Usually within 24 hours</p>
             </div>
           </article>
         </div>
@@ -54,9 +54,9 @@ function Contact() {
 
       <section style={styles.formSection}>
         <div style={styles.formHeader}>
-          <span style={styles.formBadge}>Propuesta personalizada</span>
-          <h2 style={styles.formTitle}>Vamos a montarla bien</h2>
-          <p style={styles.formText}>Cuanto más contexto nos des, más fina sale la idea.</p>
+          <span style={styles.formBadge}>Custom proposal</span>
+          <h2 style={styles.formTitle}>Let's plan it right</h2>
+          <p style={styles.formText}>The more context you give us, the better the plan.</p>
         </div>
 
         <form
@@ -68,44 +68,44 @@ function Contact() {
         >
           <div style={styles.fieldGrid}>
             <label style={styles.field}>
-              <span style={styles.label}>Nombre</span>
-              <input required placeholder="Tu nombre" style={styles.input} />
+              <span style={styles.label}>Name</span>
+              <input required placeholder="Your name" style={styles.input} />
             </label>
             <label style={styles.field}>
               <span style={styles.label}>Email</span>
-              <input required type="email" placeholder="tu@email.com" style={styles.input} />
+              <input required type="email" placeholder="you@email.com" style={styles.input} />
             </label>
           </div>
 
           <div style={styles.fieldGrid}>
             <label style={styles.field}>
-              <span style={styles.label}>Ciudad</span>
-              <input placeholder="Madrid, Valencia, Sevilla..." style={styles.input} />
+              <span style={styles.label}>City</span>
+              <input placeholder="Madrid, Valencia, Seville..." style={styles.input} />
             </label>
             <label style={styles.field}>
-              <span style={styles.label}>Tipo de plan</span>
+              <span style={styles.label}>Plan type</span>
               <select style={styles.input} defaultValue="">
-                <option value="" disabled>Elige una opción</option>
-                <option>Fiesta y noche</option>
-                <option>Aventura</option>
-                <option>Relax y comida</option>
-                <option>Plan mixto</option>
-                <option>Premium sorpresa</option>
+                <option value="" disabled>Choose an option</option>
+                <option>Party &amp; nightlife</option>
+                <option>Adventure</option>
+                <option>Relax &amp; food</option>
+                <option>Mixed plan</option>
+                <option>Premium surprise</option>
               </select>
             </label>
           </div>
 
           <label style={styles.field}>
-            <span style={styles.label}>Mensaje</span>
+            <span style={styles.label}>Message</span>
             <textarea
               required
-              placeholder="Somos 10, buscamos algo con cena, actividad divertida y algo de fiesta..."
+              placeholder="We're a group of 10, looking for a dinner, fun activity and some partying..."
               style={styles.textarea}
             />
           </label>
 
-          <button style={styles.button}>Enviar propuesta</button>
-          {sent && <p style={styles.success}>Listo. Hemos recibido tu idea y te prepararemos una propuesta.</p>}
+          <button style={styles.button}>Send proposal</button>
+          {sent && <p style={styles.success}>Done! We've received your request and will put together a proposal for you.</p>}
         </form>
       </section>
     </main>
