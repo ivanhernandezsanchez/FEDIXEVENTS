@@ -165,7 +165,21 @@ function Products() {
     await loadSubmissions();
   };
 
-  const pendingSubmissions = submissions.filter((submission) => submission.status === "pending");
+  const deleteSubmission = async (id: number) => {
+    if (!window.confirm("¿Eliminar esta propuesta definitivamente?")) return;
+    const res = await fetch(`/api/ai-plan-submissions/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    if (!res.ok) {
+      const data = await res.json();
+      setError(data.error || "No se pudo eliminar la propuesta");
+      return;
+    }
+    await loadSubmissions();
+  };
+
+  const statusLabel: Record<string, string> = { pending: "Pendiente", approved: "Aprobada", rejected: "Rechazada" };
 
   return (
     <div>
@@ -174,26 +188,34 @@ function Products() {
       {error && <p style={{ color: "#b91c1c" }}>{error}</p>}
 
       <section style={styles.submissions}>
-        <h3>Propuestas IA pendientes</h3>
-        {pendingSubmissions.length === 0 ? (
-          <p style={styles.muted}>No hay propuestas pendientes.</p>
+        <h3>Propuestas IA ({submissions.length})</h3>
+        {submissions.length === 0 ? (
+          <p style={styles.muted}>No hay propuestas.</p>
         ) : (
           <div style={styles.submissionList}>
-            {pendingSubmissions.map((submission) => (
+            {submissions.map((submission) => (
               <article key={submission.id} style={styles.submissionCard}>
                 <div>
                   <strong>{submission.suggested_name}</strong>
                   <p style={styles.muted}>
-                    {submission.city_name || `Ciudad ID ${submission.city_id || "sin ciudad"}`} · {submission.category} ·{" "}
+                    {submission.city_name || `sin ciudad`} · {submission.category} ·{" "}
                     {Number(submission.suggested_price) > 0
                       ? `${Number(submission.suggested_price).toFixed(2)} €`
                       : "Presupuesto pendiente"}
+                    {" · "}
+                    <span style={{ fontWeight: 700, color: submission.status === "approved" ? "#16a34a" : submission.status === "rejected" ? "#dc2626" : "#d97706" }}>
+                      {statusLabel[submission.status] ?? submission.status}
+                    </span>
                   </p>
-                  <p style={styles.submissionText}>{submission.description}</p>
                 </div>
                 <div style={styles.submissionActions}>
-                  <button onClick={() => approveSubmission(submission.id)} style={styles.primary}>Aprobar y publicar</button>
-                  <button onClick={() => rejectSubmission(submission.id)} style={styles.danger}>Rechazar</button>
+                  {submission.status === "pending" && (
+                    <>
+                      <button onClick={() => approveSubmission(submission.id)} style={styles.primary}>Aprobar y publicar</button>
+                      <button onClick={() => rejectSubmission(submission.id)} style={styles.secondary}>Rechazar</button>
+                    </>
+                  )}
+                  <button onClick={() => deleteSubmission(submission.id)} style={styles.danger}>Eliminar</button>
                 </div>
               </article>
             ))}

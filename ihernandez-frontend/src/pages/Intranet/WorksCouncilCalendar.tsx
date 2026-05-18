@@ -4,16 +4,16 @@ import { Link } from "react-router-dom";
 const holidays = [
     { date: "1 Ene", name: "Año Nuevo", type: "nacional" },
     { date: "6 Ene", name: "Reyes Magos", type: "nacional" },
-    { date: "18 Abr", name: "Viernes Santo", type: "nacional" },
+    { date: "3 Abr", name: "Viernes Santo", type: "nacional" },
     { date: "1 May", name: "Día del Trabajador", type: "nacional" },
     { date: "15 Ago", name: "Asunción de la Virgen", type: "nacional" },
-    { date: "12 Oct", name: "Día de la Hispanidad", type: "nacional" },
+    { date: "12 Oct", name: "Día de la Hispanidad / Virgen del Pilar", type: "nacional" },
     { date: "1 Nov", name: "Todos los Santos", type: "nacional" },
     { date: "6 Dic", name: "Día de la Constitución", type: "nacional" },
     { date: "8 Dic", name: "Inmaculada Concepción", type: "nacional" },
     { date: "25 Dic", name: "Navidad", type: "nacional" },
-    { date: "2 May", name: "Fiesta de la Comunidad de Madrid", type: "autonomico" },
-    { date: "15 May", name: "San Isidro", type: "local" },
+    { date: "23 Abr", name: "San Jorge – Día de Aragón", type: "autonomico" },
+    { date: "13 Oct", name: "Fiestas del Pilar (local Zaragoza)", type: "local" },
 ];
 
 const vacationPeriods = [

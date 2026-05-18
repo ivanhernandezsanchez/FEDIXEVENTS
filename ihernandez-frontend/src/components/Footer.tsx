@@ -1,11 +1,93 @@
 import { Link, useLocation } from "react-router-dom";
+import { useTheme } from "../ThemeContext";
 
 function Footer() {
   const location = useLocation();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   if (location.pathname.startsWith("/intranet")) {
     return null;
   }
+
+  const styles: Record<string, React.CSSProperties> = {
+    footer: {
+      background: isDark
+        ? "radial-gradient(circle at 8% 80%, rgba(168, 85, 247, 0.14), transparent 28rem), radial-gradient(circle at 90% 20%, rgba(219, 39, 119, 0.1), transparent 24rem), linear-gradient(135deg, #0D0920, #1E1B4B 52%, #2E1065)"
+        : "radial-gradient(circle at 8% 80%, rgba(168, 85, 247, 0.08), transparent 28rem), linear-gradient(135deg, #ede9fe, #f5f0ff 52%, #fce7f3)",
+      borderTop: isDark ? "1px solid rgba(168, 85, 247, 0.2)" : "1px solid rgba(168, 85, 247, 0.25)",
+      color: isDark ? "#ffffff" : "#1f0f3d",
+      marginTop: "3rem",
+    },
+    inner: {
+      display: "grid",
+      gap: "2rem",
+      gridTemplateColumns: "minmax(280px, 1.6fr) minmax(170px, 0.6fr) minmax(230px, 0.8fr)",
+      margin: "0 auto",
+      maxWidth: 1220,
+      padding: "2.5rem 2.2rem",
+    },
+    brandBlock: { maxWidth: 620 },
+    kicker: {
+      color: "#A855F7",
+      display: "block",
+      fontSize: "0.78rem",
+      fontWeight: 900,
+      letterSpacing: "0.04em",
+      marginBottom: "0.45rem",
+      textTransform: "uppercase",
+    },
+    brand: { display: "block", fontSize: "1.85rem", marginBottom: "0.55rem" },
+    text: {
+      color: isDark ? "#c4b5fd" : "#4b5563",
+      lineHeight: 1.55,
+      margin: 0,
+      maxWidth: 560,
+    },
+    trustRow: { display: "flex", flexWrap: "wrap", gap: "0.55rem", marginTop: "1rem" },
+    trustPill: {
+      background: isDark ? "rgba(168, 85, 247, 0.12)" : "rgba(168, 85, 247, 0.1)",
+      border: "1px solid rgba(168, 85, 247, 0.35)",
+      borderRadius: "999px",
+      color: isDark ? "#e9d5ff" : "#5b21b6",
+      fontSize: "0.82rem",
+      fontWeight: 800,
+      padding: "0.4rem 0.65rem",
+    },
+    heading: {
+      color: "#A855F7",
+      display: "block",
+      fontSize: "0.82rem",
+      fontWeight: 900,
+      marginBottom: "0.8rem",
+      textTransform: "uppercase",
+    },
+    links: { display: "grid", gap: "0.65rem" },
+    link: { color: isDark ? "#c4b5fd" : "#5b21b6", fontWeight: 700, textDecoration: "none" },
+    contact: { color: isDark ? "#c4b5fd" : "#4b5563", display: "grid", gap: "0.45rem" },
+    ctaLink: {
+      alignSelf: "start",
+      background: "linear-gradient(135deg, #DB2777, #F97316)",
+      borderRadius: "999px",
+      color: "#ffffff",
+      fontWeight: 900,
+      marginTop: "0.65rem",
+      padding: "0.7rem 1.1rem",
+      textDecoration: "none",
+    },
+    bottom: {
+      alignItems: "center",
+      borderTop: "1px solid rgba(168, 85, 247, 0.2)",
+      color: isDark ? "#9ca3af" : "#6b7280",
+      display: "flex",
+      flexWrap: "wrap",
+      gap: "0.75rem",
+      justifyContent: "space-between",
+      margin: "0 auto",
+      maxWidth: 1220,
+      padding: "1rem 2.2rem 1.2rem",
+    },
+  };
 
   return (
     <>
@@ -67,105 +149,5 @@ function Footer() {
     </>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  footer: {
-    background:
-      "radial-gradient(circle at 8% 80%, rgba(168, 85, 247, 0.14), transparent 28rem), radial-gradient(circle at 90% 20%, rgba(219, 39, 119, 0.1), transparent 24rem), linear-gradient(135deg, #0D0920, #1E1B4B 52%, #2E1065)",
-    borderTop: "1px solid rgba(168, 85, 247, 0.2)",
-    color: "#ffffff",
-    marginTop: "3rem",
-  },
-  inner: {
-    display: "grid",
-    gap: "2rem",
-    gridTemplateColumns: "minmax(280px, 1.6fr) minmax(170px, 0.6fr) minmax(230px, 0.8fr)",
-    margin: "0 auto",
-    maxWidth: 1220,
-    padding: "2.5rem 2.2rem",
-  },
-  brandBlock: {
-    maxWidth: 620,
-  },
-  kicker: {
-    color: "#A855F7",
-    display: "block",
-    fontSize: "0.78rem",
-    fontWeight: 900,
-    letterSpacing: "0.04em",
-    marginBottom: "0.45rem",
-    textTransform: "uppercase",
-  },
-  brand: {
-    display: "block",
-    fontSize: "1.85rem",
-    marginBottom: "0.55rem",
-  },
-  text: {
-    color: "#c4b5fd",
-    lineHeight: 1.55,
-    margin: 0,
-    maxWidth: 560,
-  },
-  trustRow: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "0.55rem",
-    marginTop: "1rem",
-  },
-  trustPill: {
-    background: "rgba(168, 85, 247, 0.12)",
-    border: "1px solid rgba(168, 85, 247, 0.35)",
-    borderRadius: "999px",
-    color: "#e9d5ff",
-    fontSize: "0.82rem",
-    fontWeight: 800,
-    padding: "0.4rem 0.65rem",
-  },
-  heading: {
-    color: "#A855F7",
-    display: "block",
-    fontSize: "0.82rem",
-    fontWeight: 900,
-    marginBottom: "0.8rem",
-    textTransform: "uppercase",
-  },
-  links: {
-    display: "grid",
-    gap: "0.65rem",
-  },
-  link: {
-    color: "#c4b5fd",
-    fontWeight: 700,
-    textDecoration: "none",
-  },
-  contact: {
-    color: "#c4b5fd",
-    display: "grid",
-    gap: "0.45rem",
-  },
-  ctaLink: {
-    alignSelf: "start",
-    background: "linear-gradient(135deg, #DB2777, #F97316)",
-    borderRadius: "999px",
-    color: "#ffffff",
-    fontWeight: 900,
-    marginTop: "0.65rem",
-    padding: "0.7rem 1.1rem",
-    textDecoration: "none",
-  },
-  bottom: {
-    alignItems: "center",
-    borderTop: "1px solid rgba(168, 85, 247, 0.2)",
-    color: "#9ca3af",
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "0.75rem",
-    justifyContent: "space-between",
-    margin: "0 auto",
-    maxWidth: 1220,
-    padding: "1rem 2.2rem 1.2rem",
-  },
-};
 
 export default Footer;

@@ -3,14 +3,17 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { UserProvider } from "./UserContext";
+import { ThemeProvider } from "./ThemeContext";
 import "./index.css";
 
 function Root() {
   return (
     <BrowserRouter>
-      <UserProvider>
-        <App />
-      </UserProvider>
+      <ThemeProvider>
+        <UserProvider>
+          <App />
+        </UserProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

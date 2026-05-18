@@ -138,6 +138,64 @@ const loginCustomer = async (email: string, password: string) => {
 
 const ensureOperationalSchema = async () => {
     await pool.query("ALTER TABLE customers ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'customer'");
+    await pool.query("ALTER TABLE activities DROP CONSTRAINT IF EXISTS activities_base_price_check").catch(() => {});
+    await pool.query("ALTER TABLE activities DROP CONSTRAINT IF EXISTS activities_price_check").catch(() => {});
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS fichajes (
+            id SERIAL PRIMARY KEY,
+            customer_id INTEGER NOT NULL,
+            tipo VARCHAR(10) NOT NULL CHECK (tipo IN ('entrada', 'salida')),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS groups (
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(200) NOT NULL,
+            organizer_id INTEGER,
+            city_id INTEGER,
+            event_date DATE,
+            budget_per_person NUMERIC(10,2) DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+    await pool.query(`ALTER TABLE groups ADD COLUMN IF NOT EXISTS budget_per_person NUMERIC(10,2) DEFAULT 0`).catch(() => {});
+    await pool.query(`ALTER TABLE groups ADD COLUMN IF NOT EXISTS organizer_id INTEGER`).catch(() => {});
+    await pool.query(`ALTER TABLE groups ADD COLUMN IF NOT EXISTS city_id INTEGER`).catch(() => {});
+    await pool.query(`ALTER TABLE groups ADD COLUMN IF NOT EXISTS event_date DATE`).catch(() => {});
+    await pool.query(`ALTER TABLE groups ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP`).catch(() => {});
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS bookings (
+            id SERIAL PRIMARY KEY,
+            group_id INTEGER,
+            total_price NUMERIC(10,2) DEFAULT 0,
+            status VARCHAR(30) DEFAULT 'pending',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+    await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS group_id INTEGER`).catch(() => {});
+    await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS total_price NUMERIC(10,2) DEFAULT 0`).catch(() => {});
+    await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS status VARCHAR(30) DEFAULT 'pending'`).catch(() => {});
+    await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP`).catch(() => {});
+    await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS reference_code VARCHAR(50) DEFAULT ''`).catch(() => {});
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS booking_items (
+            id SERIAL PRIMARY KEY,
+            booking_id INTEGER,
+            activity_id INTEGER,
+            quantity INTEGER DEFAULT 1,
+            unit_price NUMERIC(10,2) DEFAULT 0
+        )
+    `);
+    await pool.query(`ALTER TABLE booking_items ADD COLUMN IF NOT EXISTS booking_id INTEGER`).catch(() => {});
+    await pool.query(`ALTER TABLE booking_items ADD COLUMN IF NOT EXISTS activity_id INTEGER`).catch(() => {});
+    await pool.query(`ALTER TABLE booking_items ADD COLUMN IF NOT EXISTS quantity INTEGER DEFAULT 1`).catch(() => {});
+    await pool.query(`ALTER TABLE booking_items ADD COLUMN IF NOT EXISTS unit_price NUMERIC(10,2) DEFAULT 0`).catch(() => {});
+
     await pool.query(`
         CREATE TABLE IF NOT EXISTS ai_plan_submissions (
             id SERIAL PRIMARY KEY,
@@ -158,7 +216,7 @@ const ensureOperationalSchema = async () => {
         UPDATE customers
         SET role = 'admin'
         WHERE id = (SELECT MIN(id) FROM customers)
-    `);
+    `).catch(() => {});
 };
 
 ensureOperationalSchema()
@@ -304,12 +362,16 @@ app.post("/api/register", async (req: Request, res: Response) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const username = email.split("@")[0];
+        const fullName = name || "Usuario";
+        const nameParts = fullName.trim().split(/\s+/);
+        const firstName = nameParts[0];
+        const lastName = nameParts.slice(1).join(" ") || "-";
 
         const result = await pool.query(`
-            INSERT INTO customers (email, password_hash, full_name, username)
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO customers (email, password_hash, full_name, username, first_name, last_name)
+            VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING id, email, full_name, username
-        `, [email, hashedPassword, name || "Usuario", username]);
+        `, [email, hashedPassword, fullName, username, firstName, lastName]);
 
         res.status(201).json({
             message: "Usuario registrado con éxito",
@@ -356,11 +418,11 @@ app.get("/api/activities", async (req: Request, res: Response) => {
         const params: any[] = [];
 
         if (city_id) {
-            query += " WHERE a.city_id = $1";
+            query += " WHERE a.city_id = $1 OR a.provider_id IS NULL";
             params.push(city_id);
         }
 
-        query += " GROUP BY a.id, p.name ORDER BY a.id";
+        query += " GROUP BY a.id, p.name ORDER BY a.provider_id NULLS LAST, a.id";
 
         const result = await pool.query(query, params);
         res.json(result.rows);
@@ -594,6 +656,17 @@ app.get("/api/community-ideas", async (_req: Request, res: Response) => {
     }
 });
 
+app.delete("/api/ai-plan-submissions/:id", verifyToken, requireRole(["admin"]), async (req: Request, res: Response) => {
+    try {
+        const id = Number(req.params.id);
+        if (!id || isNaN(id)) return res.status(400).json({ error: "ID inválido" });
+        await pool.query("DELETE FROM ai_plan_submissions WHERE id = $1", [id]);
+        res.json({ ok: true });
+    } catch (error: any) {
+        res.status(500).json({ error: error.message || "Error al eliminar propuesta" });
+    }
+});
+
 app.patch("/api/ai-plan-submissions/:id/reject", verifyToken, requireRole(["admin"]), async (req: Request, res: Response) => {
     try {
         const id = Number(req.params.id);
@@ -645,8 +718,10 @@ app.patch("/api/ai-plan-submissions/:id/approve", verifyToken, requireRole(["adm
             return res.status(400).json({ error: "Esta propuesta ya fue revisada" });
         }
 
-        if (!submission.city_id) {
-            return res.status(400).json({ error: "La propuesta necesita ciudad para publicarse" });
+        let approvalCityId = submission.city_id;
+        if (!approvalCityId) {
+            const fallback = await pool.query("SELECT id FROM cities ORDER BY id LIMIT 1");
+            approvalCityId = fallback.rows[0]?.id ?? null;
         }
 
         const activityResult = await pool.query(`
@@ -654,7 +729,7 @@ app.patch("/api/ai-plan-submissions/:id/approve", verifyToken, requireRole(["adm
             VALUES (NULL, $1, $2, $3, $4, $5, $6, $7)
             RETURNING *
         `, [
-            submission.city_id,
+            approvalCityId,
             submission.suggested_name,
             submission.description,
             submission.category || "Plan personalizado IA",
@@ -912,12 +987,16 @@ app.post("/api/users", verifyToken, requireRole(["admin"]), async (req: AuthRequ
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const username = email.split("@")[0];
+        const fullName = name || "Usuario";
+        const nameParts = fullName.trim().split(/\s+/);
+        const firstName = nameParts[0];
+        const lastName = nameParts.slice(1).join(" ") || "-";
 
         const result = await pool.query(`
-            INSERT INTO customers (email, password_hash, full_name, username, role)
-            VALUES ($1, $2, $3, $4, $5)
+            INSERT INTO customers (email, password_hash, full_name, username, role, first_name, last_name)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING id, email, full_name, username, role
-        `, [email, hashedPassword, name || "Usuario", username, role]);
+        `, [email, hashedPassword, fullName, username, role, firstName, lastName]);
 
         res.status(201).json({
             message: "Usuario creado con éxito",
@@ -1209,11 +1288,7 @@ app.post("/api/orders", verifyToken, requireRole(["customer", "admin"]), async (
         const cityResult = activityIds.length > 0
             ? await pool.query("SELECT city_id FROM activities WHERE id = $1", [activityIds[0]])
             : { rows: [] };
-        const cityId = cityResult.rows[0]?.city_id ?? Number(firstCustomPlan?.customPlan?.cityId);
-
-        if (!cityId) {
-            return res.status(400).json({ error: "No se pudo asociar el pedido a una ciudad" });
-        }
+        const cityId = cityResult.rows[0]?.city_id ?? Number(firstCustomPlan?.customPlan?.cityId) ?? null;
 
         const total = items.reduce((sum: number, item: any) => {
             return sum + Number(item.unitPrice || 0) * Number(item.quantity || 0);
@@ -1223,13 +1298,14 @@ app.post("/api/orders", verifyToken, requireRole(["customer", "admin"]), async (
             INSERT INTO groups (name, organizer_id, city_id, event_date, budget_per_person)
             VALUES ($1, $2, $3, CURRENT_DATE, $4)
             RETURNING *
-        `, [address, req.customer.id, cityId, total]);
+        `, [address, req.customer.id, cityId || null, total]);
 
+        const refCode = "FDX-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).slice(2, 6).toUpperCase();
         const bookingResult = await pool.query(`
-            INSERT INTO bookings (group_id, total_price, status)
-            VALUES ($1, $2, 'pending')
+            INSERT INTO bookings (group_id, total_price, status, reference_code)
+            VALUES ($1, $2, 'pending', $3)
             RETURNING *
-        `, [groupResult.rows[0].id, total]);
+        `, [groupResult.rows[0].id, total, refCode]);
 
         const booking = bookingResult.rows[0];
         const bookingItems = [];
@@ -1241,12 +1317,17 @@ app.post("/api/orders", verifyToken, requireRole(["customer", "admin"]), async (
 
             if (item.customPlan && activityId < 0) {
                 const customPlan = item.customPlan;
+                let aiCityId = Number(customPlan.cityId) || cityId || null;
+                if (!aiCityId) {
+                    const fallback = await pool.query("SELECT id FROM cities ORDER BY id LIMIT 1");
+                    aiCityId = fallback.rows[0]?.id ?? null;
+                }
                 const customActivityResult = await pool.query(`
                     INSERT INTO activities (provider_id, city_id, name, description, category, price, duration_minutes, max_capacity)
                     VALUES (NULL, $1, $2, $3, $4, $5, $6, $7)
                     RETURNING id
                 `, [
-                    Number(customPlan.cityId) || cityId,
+                    aiCityId,
                     String(customPlan.name || "Plan personalizado IA").slice(0, 150),
                     String(customPlan.description || "Plan personalizado creado desde el chat IA"),
                     String(customPlan.category || "Plan personalizado IA").slice(0, 100),
@@ -1467,6 +1548,47 @@ app.get("/api/providers/:id", async (req: Request, res: Response) => {
 });
 
 /* ================= TEST ================= */
+
+/* ================= FICHAJES ================= */
+
+app.get("/api/fichajes", verifyToken, async (req: AuthRequest, res: Response) => {
+    try {
+        if (!req.customer) return res.status(401).json({ error: "No autenticado" });
+        const result = await pool.query(
+            "SELECT * FROM fichajes WHERE customer_id = $1 ORDER BY created_at DESC LIMIT 100",
+            [req.customer.id]
+        );
+        res.json(result.rows);
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post("/api/fichajes/clock-in", verifyToken, async (req: AuthRequest, res: Response) => {
+    try {
+        if (!req.customer) return res.status(401).json({ error: "No autenticado" });
+        const result = await pool.query(
+            "INSERT INTO fichajes (customer_id, tipo) VALUES ($1, 'entrada') RETURNING *",
+            [req.customer.id]
+        );
+        res.status(201).json(result.rows[0]);
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post("/api/fichajes/clock-out", verifyToken, async (req: AuthRequest, res: Response) => {
+    try {
+        if (!req.customer) return res.status(401).json({ error: "No autenticado" });
+        const result = await pool.query(
+            "INSERT INTO fichajes (customer_id, tipo) VALUES ($1, 'salida') RETURNING *",
+            [req.customer.id]
+        );
+        res.status(201).json(result.rows[0]);
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 app.get("/api/test-db", async (_req, res) => {
     try {

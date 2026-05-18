@@ -60,20 +60,20 @@ function CheckoutPage() {
 
     const clearCart = () => {
         persistCart([]);
-        setMessage("Cart cleared.");
+        setMessage("Carrito vaciado.");
     };
 
     const addSuggestedActivity = (activity: Activity) => {
         addActivityToCart(activity);
         setCart(readCart());
-        setMessage(`${activity.name} added to cart.`);
+        setMessage(`${activity.name} añadido al carrito.`);
     };
 
     const handleOrder = async () => {
         setMessage("");
 
         if (!groupName.trim()) {
-            setMessage("Please enter a group name or reference.");
+            setMessage("Por favor, introduce el nombre del grupo antes de continuar.");
             return;
         }
 
@@ -121,7 +121,7 @@ function CheckoutPage() {
 
             navigate("/history");
         } catch {
-            setMessage("Error processing order");
+            setMessage("Error al procesar el pedido. Inténtalo de nuevo.");
         } finally {
             setSubmitting(false);
         }
@@ -131,15 +131,15 @@ function CheckoutPage() {
         return (
             <main style={styles.container}>
                 <section style={styles.emptyState}>
-                    <span style={styles.emptyIcon}>Cart</span>
-                    <h1 style={styles.title}>Your cart is empty</h1>
-                    <p style={styles.muted}>Add activities from the catalogue to prepare a booking for your group.</p>
+                    <span style={styles.emptyIcon}>Carrito</span>
+                    <h1 style={styles.title}>Tu carrito está vacío</h1>
+                    <p style={styles.muted}>Añade actividades del catálogo para preparar una reserva para tu grupo.</p>
                     <div style={styles.emptyActions}>
                         <button onClick={() => navigate("/catalog")} style={styles.primaryButton}>
-                            View catalogue
+                            Ver catálogo
                         </button>
                         <button onClick={() => navigate("/contact")} style={styles.lightButton}>
-                            Get a recommendation
+                            Pedir recomendación
                         </button>
                     </div>
                 </section>
@@ -171,19 +171,19 @@ function CheckoutPage() {
             <section className="checkout-header" style={styles.header}>
                 <div>
                     <span style={styles.kicker}>Checkout</span>
-                    <h1 style={styles.title}>Cart &amp; booking</h1>
-                    <p style={styles.muted}>Review activities, adjust attendees and confirm the request for our team to handle.</p>
+                    <h1 style={styles.title}>Carrito y reserva</h1>
+                    <p style={styles.muted}>Revisa las actividades, ajusta los asistentes y confirma la solicitud.</p>
                 </div>
                 <button onClick={() => navigate("/catalog")} style={styles.lightButton}>
-                    Keep browsing
+                    Seguir explorando
                 </button>
             </section>
 
             <section className="checkout-layout" style={styles.layout}>
                 <div style={styles.cartPanel}>
                     <div style={styles.panelHeader}>
-                        <h2 style={styles.panelTitle}>Selected activities</h2>
-                        <button onClick={clearCart} style={styles.dangerButton}>Clear cart</button>
+                        <h2 style={styles.panelTitle}>Actividades seleccionadas</h2>
+                        <button onClick={clearCart} style={styles.dangerButton}>Vaciar carrito</button>
                     </div>
 
                     <div style={styles.itemList}>
@@ -204,7 +204,7 @@ function CheckoutPage() {
                                             backgroundImage: `linear-gradient(180deg, rgba(29,16,40,0.1), rgba(29,16,40,0.72)), url('${getActivityImage(item.product)}')`,
                                         }}
                                     >
-                                        <span style={styles.itemThumbLabel}>{item.customPlan ? "Plan IA" : "Ver"}</span>
+                                        <span style={styles.itemThumbLabel}>{item.customPlan ? "Plan IA" : "Ver actividad"}</span>
                                     </button>
 
                                     <div style={styles.itemInfo}>
@@ -218,7 +218,7 @@ function CheckoutPage() {
                                     </div>
 
                                     <div className="checkout-qty-box" style={styles.quantityBox}>
-                                        <span style={styles.price}>{pricePending ? "Price on request" : `${price.toFixed(2)} €`}</span>
+                                        <span style={styles.price}>{pricePending ? "Precio a consultar" : `${price.toFixed(2)} €`}</span>
                                         <div style={styles.stepper}>
                                             <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)} style={styles.stepButton}>-</button>
                                             <input
@@ -231,8 +231,8 @@ function CheckoutPage() {
                                             />
                                             <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)} style={styles.stepButton}>+</button>
                                         </div>
-                                        <strong style={styles.lineTotal}>{pricePending ? "Open price" : `${lineTotal.toFixed(2)} €`}</strong>
-                                        <button onClick={() => removeItem(item.product.id)} style={styles.removeButton}>Remove</button>
+                                        <strong style={styles.lineTotal}>{pricePending ? "Precio abierto" : `${lineTotal.toFixed(2)} €`}</strong>
+                                        <button onClick={() => removeItem(item.product.id)} style={styles.removeButton}>Eliminar</button>
                                     </div>
                                 </article>
                             );
@@ -241,14 +241,14 @@ function CheckoutPage() {
 
                     {suggestedActivities.length > 0 && (
                         <section style={styles.suggestions}>
-                            <h2 style={styles.panelTitle}>Ideas to complete your plan</h2>
+                            <h2 style={styles.panelTitle}>Ideas para completar tu plan</h2>
                             <div style={styles.suggestionGrid}>
                                 {suggestedActivities.map((activity) => (
                                     <article key={activity.id} style={styles.suggestionCard}>
                                         <strong>{activity.name}</strong>
                                         <span style={styles.itemMeta}>{activity.category} · {Number(activity.price).toFixed(2)} €</span>
                                         <button onClick={() => addSuggestedActivity(activity)} style={styles.smallButton}>
-                                            Add
+                                            Añadir
                                         </button>
                                     </article>
                                 ))}
@@ -258,9 +258,9 @@ function CheckoutPage() {
                 </div>
 
                 <aside style={styles.summary}>
-                    <h2 style={styles.panelTitle}>Summary</h2>
+                    <h2 style={styles.panelTitle}>Resumen</h2>
                     <div style={styles.summaryLine}>
-                        <span>Spots / activities</span>
+                        <span>Plazas / actividades</span>
                         <strong>{totalItems}</strong>
                     </div>
                     <div style={styles.summaryLine}>
@@ -268,18 +268,18 @@ function CheckoutPage() {
                         <strong>{subtotal.toFixed(2)} €</strong>
                     </div>
                     <div style={styles.summaryLine}>
-                        <span>Service fee</span>
+                        <span>Gestión</span>
                         <strong>{managementFee.toFixed(2)} €</strong>
                     </div>
                     <div style={styles.totalLine}>
-                        <span>Estimated total</span>
+                        <span>Total estimado</span>
                         <strong>{total.toFixed(2)} €</strong>
                     </div>
 
                     <label style={styles.label}>
-                        Group name
+                        Nombre del grupo <span style={{ color: "#FB7185" }}>*</span>
                         <input
-                            placeholder="e.g. Tom's stag party"
+                            placeholder="Ej: Despedida de Ana"
                             value={groupName}
                             onChange={(e) => setGroupName(e.target.value)}
                             style={styles.input}
@@ -287,7 +287,7 @@ function CheckoutPage() {
                     </label>
 
                     <label style={styles.label}>
-                        Event date
+                        Fecha del evento
                         <input
                             type="date"
                             value={eventDate}
@@ -297,9 +297,9 @@ function CheckoutPage() {
                     </label>
 
                     <label style={styles.label}>
-                        Notes for the team
+                        Notas para el equipo
                         <textarea
-                            placeholder="Schedule, group size, preferences..."
+                            placeholder="Horario, tamaño del grupo, preferencias..."
                             value={notes}
                             onChange={(e) => setNotes(e.target.value)}
                             style={styles.textarea}
@@ -308,14 +308,14 @@ function CheckoutPage() {
 
                     <button
                         onClick={handleOrder}
-                        disabled={submitting || !groupName.trim()}
+                        disabled={submitting}
                         style={{
                             ...styles.primaryButton,
-                            opacity: submitting || !groupName.trim() ? 0.65 : 1,
+                            opacity: submitting ? 0.65 : 1,
                             width: "100%",
                         }}
                     >
-                        {submitting ? "Confirming..." : "Confirm booking"}
+                        {submitting ? "Procesando..." : "Finalizar compra"}
                     </button>
 
                     {message && <p style={styles.message}>{message}</p>}

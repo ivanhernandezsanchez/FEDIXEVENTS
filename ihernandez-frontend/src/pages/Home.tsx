@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import type { City, Activity } from "../types";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../UserContext";
 import { addActivityToCart, addCustomPlanToCart } from "../cart";
 import { getActivityImage, renderStars } from "../visuals";
+import { useUser } from "../UserContext";
 
 type ChatMessage = {
   role: "user" | "assistant";
@@ -338,6 +338,16 @@ function Home() {
         {/* Centered hero content */}
         <div style={styles.heroContent}>
           <h1 style={styles.title}>The celebration<br />starts here</h1>
+          <p style={{
+            fontStyle: "italic",
+            color: "#F97316",
+            fontSize: "1.05rem",
+            fontWeight: 600,
+            margin: "0.2rem 0 0.6rem",
+            letterSpacing: "0.01em",
+          }}>
+            "Because regret is for the day after."
+          </p>
           <p style={styles.subtitle}>
             Plan the perfect stag or hen party with the help of our AI. Fast, easy and stress-free.
           </p>
@@ -399,7 +409,7 @@ function Home() {
       </button>
 
       <section id="ai-chat" className={`fedi-floating${footerVisible ? " fedi-over-footer" : ""}${fediOpen ? " fedi-mobile-open" : ""}`} style={styles.chatSection}>
-        <div style={styles.chatIntro}>
+        <div className="fedi-intro" style={styles.chatIntro}>
           <button className="fedi-mobile-close" onClick={() => setFediOpen(false)} style={styles.mobileCloseButton}>Close</button>
           <div style={styles.chatIntroCopy}>
             <span style={styles.fediBadge}>Fedi</span>

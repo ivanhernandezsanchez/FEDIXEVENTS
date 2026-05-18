@@ -147,6 +147,19 @@ const css = `
         grid-template-columns: 1fr 1fr;
         gap: 1rem;
     }
+    .auth-mobile-logo {
+        display: none;
+        justify-content: center;
+        margin-bottom: 1.75rem;
+    }
+    @media (max-width: 1023px) {
+        .auth-mobile-logo { display: flex; }
+        .auth-right { padding: 1.5rem 1.25rem; }
+    }
+    @media (max-width: 480px) {
+        .auth-grid-2 { grid-template-columns: 1fr; }
+        .auth-right { padding: 1.25rem 1rem; }
+    }
     @keyframes fadeSlideUp {
         from { opacity: 0; transform: translateY(16px); }
         to   { opacity: 1; transform: translateY(0); }
@@ -256,6 +269,13 @@ function Register() {
                 <div className="auth-right">
                     <div className="auth-form-container">
 
+                        {/* Logo solo visible en móvil */}
+                        <div className="auth-mobile-logo">
+                            <div style={{ background: "#fff", borderRadius: 12, padding: "6px 14px", display: "inline-flex" }}>
+                                <img src="/logo.png" alt="FedixEvents" style={{ height: 52 }} />
+                            </div>
+                        </div>
+
                         <div style={{ marginBottom: "2rem" }}>
                             <span style={{
                                 fontSize: "0.75rem", fontWeight: 800, color: "#DB2777",
@@ -341,7 +361,7 @@ function Register() {
                                         className="auth-eye-btn"
                                         aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                                     >
-                                        {showPassword ? "🙈" : "👁️"}
+                                        {showPassword ? "✕" : "○"}
                                     </button>
                                 </div>
                                 <p style={{ marginTop: "0.35rem", fontSize: "0.78rem", color: "rgba(255,255,255,0.3)" }}>

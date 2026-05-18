@@ -315,12 +315,17 @@ textarea {
     display: inline-flex !important;
   }
 
+  /* Intro always takes minimal fixed space so chat box gets the rest */
+  .fedi-intro {
+    flex-shrink: 0 !important;
+  }
+
   .fedi-floating {
     bottom: 0 !important;
     display: none !important;
     left: 0 !important;
     margin: 0 !important;
-    max-height: 92vh !important;
+    max-height: 92dvh !important;
     overflow: hidden !important;
     position: fixed !important;
     right: 0 !important;
@@ -333,21 +338,27 @@ textarea {
     flex-direction: column !important;
   }
 
+  /* Chat box fills remaining height — no fixed min-height that overflows */
+  .fedi-chat-box {
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .fedi-chat-messages {
+    flex: 1 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+  }
+
   .home-page {
     max-width: 1220px !important;
     padding-right: 2rem !important;
   }
 
-  .fedi-chat-box {
-    min-height: 720px !important;
-  }
-
-  .fedi-chat-messages {
-    min-height: 430px !important;
-    max-height: 560px !important;
-  }
-
   .fedi-tools {
+    flex-shrink: 0 !important;
     grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)) !important;
     padding: 0.65rem !important;
   }
@@ -387,16 +398,70 @@ textarea {
   }
 
   .fedi-chat-box {
-    min-height: 78vh !important;
+    flex: 1 !important;
+    min-height: 0 !important;
   }
 
   .fedi-chat-messages {
-    min-height: 48vh !important;
-    max-height: 58vh !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  /* Compact intro: takes ~80px instead of half the screen */
+  .fedi-intro {
+    padding: 0.55rem 0.85rem !important;
+    gap: 0.35rem !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  /* Badge + title on the same row, close button floats right */
+  .fedi-intro > div:nth-child(2) {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.45rem !important;
+    flex-wrap: wrap !important;
+  }
+
+  .fedi-intro h2 {
+    font-size: 0.95rem !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+  }
+
+  /* Hide the long description on mobile — title is enough */
+  .fedi-intro p {
+    display: none !important;
+  }
+
+  /* Chips in a single scrollable row */
+  .fedi-intro > div:nth-child(3) {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 0.35rem !important;
+    margin-top: 0 !important;
+    justify-content: flex-start !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    width: 100% !important;
+  }
+  .fedi-intro > div:nth-child(3)::-webkit-scrollbar {
+    display: none !important;
+  }
+  .fedi-intro > div:nth-child(3) > button {
+    flex-shrink: 0 !important;
+    font-size: 0.74rem !important;
+    min-height: 26px !important;
+    padding: 0.25rem 0.55rem !important;
+    white-space: nowrap !important;
   }
 
   .fedi-tools {
     grid-template-columns: 1fr !important;
+    max-height: 38vh !important;
+    overflow-y: auto !important;
   }
 
   .fedi-tools > div:last-child > div {
@@ -412,3 +477,69 @@ textarea {
     padding: 1.5rem !important;
   }
 }
+
+/* ===================================================
+   LIGHT MODE OVERRIDES
+   =================================================== */
+
+[data-theme="light"] body {
+  background:
+    radial-gradient(circle at 10% 15%, rgba(168, 85, 247, 0.07), transparent 30rem),
+    radial-gradient(circle at 88% 10%, rgba(219, 39, 119, 0.05), transparent 28rem),
+    radial-gradient(circle at 50% 75%, rgba(168, 85, 247, 0.04), transparent 40rem),
+    #f5f0ff;
+  color: #1f0f3d;
+}
+
+/* ---- Catalog hero ---- */
+[data-theme="light"] .catalog-hero {
+  background: linear-gradient(135deg, #ede9fe, #ddd6fe 52%, #fce7f3 120%) !important;
+  border-color: rgba(168, 85, 247, 0.2) !important;
+}
+
+[data-theme="light"] .catalog-title { color: #1f0f3d !important; }
+[data-theme="light"] .catalog-hero p { color: #5b21b6 !important; }
+[data-theme="light"] .catalog-hero > div > span { color: #7c3aed !important; }
+
+/* ---- Catalog filter box ---- */
+[data-theme="light"] .catalog-filter-box {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(168, 85, 247, 0.3) !important;
+}
+
+[data-theme="light"] .catalog-filter-box select {
+  background: #fff !important;
+  color: #1f0f3d !important;
+}
+
+/* ---- Catalog filter chips ---- */
+[data-theme="light"] .catalog-chip {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-color: rgba(168, 85, 247, 0.3) !important;
+  color: #5b21b6 !important;
+}
+
+[data-theme="light"] .catalog-chip-active {
+  background: linear-gradient(135deg, #A855F7, #DB2777) !important;
+  color: #fff !important;
+}
+
+/* ---- Catalog trust bar ---- */
+[data-theme="light"] .catalog-trust {
+  background: rgba(255, 255, 255, 0.65) !important;
+  border-color: rgba(168, 85, 247, 0.15) !important;
+  color: #5b21b6 !important;
+}
+
+/* ---- Activity cards ---- */
+[data-theme="light"] .activity-card {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(168, 85, 247, 0.15) !important;
+  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.08) !important;
+}
+
+[data-theme="light"] .activity-card h2 { color: #1f0f3d !important; }
+[data-theme="light"] .activity-card .card-meta { color: #7c3aed !important; }
+[data-theme="light"] .activity-card .card-desc { color: #374151 !important; }
+[data-theme="light"] .activity-card .card-rating { color: #6b7280 !important; }
+[data-theme="light"] .activity-card .card-footer { border-top-color: rgba(168, 85, 247, 0.15) !important; }

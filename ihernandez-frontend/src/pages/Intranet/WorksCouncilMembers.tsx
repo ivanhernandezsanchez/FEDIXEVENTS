@@ -5,7 +5,7 @@ const committeeMembers = [
     { name: "Laura Martín", role: "Presidenta", area: "Coordinación general y relación con dirección", initials: "LM" },
     { name: "Iván Hernández", role: "Secretario", area: "Actas, convocatorias y documentación", initials: "IH" },
     { name: "Marta Ruiz", role: "Delegada de igualdad", area: "Igualdad, conciliación y prevención", initials: "MR" },
-    { name: "Pablo Gómez", role: "Vocal", area: "Formación, horarios y turnos", initials: "PG" },
+    { name: "Jesús Taulés", role: "Vocal", area: "Formación, horarios y turnos", initials: "JT" },
     { name: "Nerea Santos", role: "Vocal", area: "Comunicación con trabajadores", initials: "NS" },
 ];
 
@@ -63,6 +63,13 @@ const styles: Record<string, React.CSSProperties> = {
         margin: 0,
         paddingLeft: "1.2rem",
         color: "#334155",
+    },
+    committeePhoto: {
+        width: "100%",
+        borderRadius: "8px",
+        marginTop: "1rem",
+        boxShadow: "0 12px 30px rgba(15, 23, 42, 0.12)",
+        objectFit: "cover" as const,
     },
     orgChart: {
         display: "grid",
@@ -148,8 +155,12 @@ function WorksCouncilMembers() {
             </section>
 
             <section style={styles.section}>
+                <img src="/comite.png" alt="Foto del Comité de Empresa" style={styles.committeePhoto} />
+            </section>
+
+            <section style={styles.section}>
                 <h3 style={styles.sectionTitle}>Miembros del Comité</h3>
-<div style={styles.orgChart}>
+                <div style={styles.orgChart}>
                     {committeeMembers.map((member, index) => (
                         <article key={member.name} style={{ ...styles.memberCard, ...(index === 0 ? styles.memberLead : {}) }}>
                             <span style={styles.avatar}>{member.initials}</span>

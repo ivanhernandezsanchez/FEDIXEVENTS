@@ -72,10 +72,12 @@ function App() {
           }
         />
 
+        {/* Login y Register fuera del IntranetLayout para evitar interferencia de estilos */}
+        <Route path="/intranet/login" element={<Login />} />
+        <Route path="/intranet/register" element={<Register />} />
+
         <Route path="/intranet" element={<IntranetLayout />}>
           <Route index element={<Navigate to="/intranet/login" replace />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
           <Route
             path="dashboard"
             element={

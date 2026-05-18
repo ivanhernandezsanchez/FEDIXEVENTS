@@ -121,11 +121,7 @@ const categories = [
     { title: "Calendario Laboral", description: "Festivos nacionales, autonómicos, locales, períodos de vacaciones y turnos publicados.", icon: "📅", path: "/intranet/works-council/calendar" },
     { title: "Buzón de Sugerencias", description: "Envía consultas, propuestas o inquietudes al comité de forma confidencial.", icon: "📬", path: "/intranet/works-council/suggestions" },
     { title: "Preguntas Frecuentes", description: "Respuestas a las dudas más comunes sobre derechos laborales, permisos y nóminas.", icon: "❓", path: "/intranet/works-council/faq" },
-    { title: "Guía de Permisos Retribuidos", description: "Todos los permisos a los que tienes derecho: matrimonio, nacimiento, fallecimiento y más.", icon: "📝", path: "/intranet/works-council/paid-leave" },
-{ title: "Calculadora de Finiquito", description: "Estima los conceptos de tu finiquito según tu antigüedad, salario y motivo de extinción.", icon: "🧮", path: "/intranet/works-council/severance" },
     { title: "Noticias y Avisos", description: "Tablón de novedades del comité: negociaciones, logros, convocatorias y comunicados.", icon: "📢", path: "/intranet/works-council/news" },
-    { title: "Actas de Reuniones", description: "Puntos tratados y acuerdos adoptados en cada reunión del comité de empresa.", icon: "📃", path: "/intranet/works-council/minutes" },
-    { title: "Elecciones Sindicales", description: "Proceso electoral, resultados de las últimas elecciones y composición del comité.", icon: "🗳️", path: "/intranet/works-council/elections" },
 ];
 
 function WorksCouncil() {
@@ -152,10 +148,14 @@ function WorksCouncil() {
                 </div>
             </section>
 
-            <section style={styles.section}>
-                <div style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 8px 32px rgba(15,23,42,0.12)", border: "1px solid #dbe4ef", marginBottom: "2rem" }}>
-                    <img src="/comite.png" alt="Organigrama del Comité de Empresa" style={{ width: "100%", display: "block" }} />
-                </div>
+            <section style={{ marginBottom: "2rem", borderRadius: "12px", overflow: "hidden", boxShadow: "0 8px 32px rgba(15,23,42,0.12)", border: "1px solid #dbe4ef" }}>
+                <video
+                    controls
+                    style={{ width: "100%", display: "block", maxHeight: "520px", background: "#000" }}
+                >
+                    <source src="/comite-video.mp4" type="video/mp4" />
+                    Tu navegador no soporta la reproducción de vídeo.
+                </video>
             </section>
 
             <section style={styles.section}>

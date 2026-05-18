@@ -4,6 +4,33 @@ import type { Activity } from "../types";
 import { addActivityToCart } from "../cart";
 import { getActivityImage, renderStars } from "../visuals";
 
+const mobileCss = `
+  @media (max-width: 768px) {
+    .pd-page { padding: 1rem 1rem 6rem !important; }
+    .pd-hero {
+      grid-template-columns: 1fr !important;
+    }
+    .pd-image-panel { min-height: 220px !important; border-radius: 10px !important; }
+    .pd-booking-panel { padding: 1.1rem !important; gap: 0.75rem !important; }
+    .pd-title { font-size: 1.65rem !important; }
+    .pd-price-box { font-size: 1.1rem !important; padding: 0.75rem !important; }
+    .pd-primary-btn { width: 100% !important; text-align: center !important; }
+    .pd-quick-facts { grid-template-columns: 1fr 1fr !important; gap: 0.6rem !important; }
+    .pd-content-grid { grid-template-columns: 1fr !important; }
+    .pd-include-grid { grid-template-columns: 1fr !important; gap: 0.55rem !important; }
+    .pd-review-form { position: static !important; }
+    .pd-sticky-cta {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      border-radius: 16px !important;
+      gap: 0.5rem !important;
+      padding: 0.85rem 1rem !important;
+      text-align: center !important;
+    }
+    .pd-sticky-cta strong { font-size: 0.95rem !important; }
+  }
+`;
+
 interface Review {
     id: number;
     rating: number;
@@ -84,41 +111,42 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
     if (!activity) return <p style={{ padding: 20 }}>Loading...</p>;
 
     return (
-        <main style={styles.page}>
+        <main className="pd-page" style={styles.page}>
+            <style>{mobileCss}</style>
             <button onClick={() => navigate(-1)} style={styles.backButton}>← Back</button>
 
-            <section style={styles.hero}>
-                <div style={{ ...styles.imagePanel, backgroundImage: `linear-gradient(180deg, rgba(13,9,32,0.08), rgba(46,16,101,0.7)), url('${getActivityImage(activity)}')` }}>
+            <section className="pd-hero" style={styles.hero}>
+                <div className="pd-image-panel" style={{ ...styles.imagePanel, backgroundImage: `linear-gradient(180deg, rgba(13,9,32,0.08), rgba(46,16,101,0.7)), url('${getActivityImage(activity)}')` }}>
                     <span style={styles.categoryBadge}>{activity.category}</span>
                 </div>
 
-                <aside style={styles.bookingPanel}>
+                <aside className="pd-booking-panel" style={styles.bookingPanel}>
                     <span style={styles.kicker}>Featured plan</span>
-                    <h1 style={styles.title}>{activity.name}</h1>
+                    <h1 className="pd-title" style={styles.title}>{activity.name}</h1>
                     <p style={styles.description}>{activity.description}</p>
                     <div style={styles.ratingRow}>
                         <span style={styles.stars}>{renderStars(activity.avgRating)}</span>
                         <strong>{Number(activity.avgRating) > 0 ? `${Number(activity.avgRating).toFixed(1)} / 5` : "No reviews"}</strong>
                     </div>
-                    <div style={styles.priceBox}>
+                    <div className="pd-price-box" style={styles.priceBox}>
                         <span>From</span>
                         <strong>{Number(activity.price).toFixed(2)} €</strong>
                     </div>
-                    <button onClick={addToSelection} style={styles.primaryButton}>Add to cart</button>
+                    <button className="pd-primary-btn" onClick={addToSelection} style={styles.primaryButton}>Add to cart</button>
                 </aside>
             </section>
 
-            <section style={styles.quickFacts}>
+            <section className="pd-quick-facts" style={styles.quickFacts}>
                 <article style={styles.fact}><strong>Duration</strong><span>{activity.duration_minutes ? `${activity.duration_minutes} min` : "Flexible"}</span></article>
                 <article style={styles.fact}><strong>Group</strong><span>{activity.max_capacity ? `Up to ${activity.max_capacity}` : "Open group"}</span></article>
                 <article style={styles.fact}><strong>Provider</strong><span>{activity.provider_name || "Fedi Team"}</span></article>
                 <article style={styles.fact}><strong>Includes</strong><span>Plan, coordination and booking</span></article>
             </section>
 
-            <section style={styles.contentGrid}>
+            <section className="pd-content-grid" style={styles.contentGrid}>
                 <div>
                     <h2 style={styles.sectionTitle}>What's included</h2>
-                    <div style={styles.includeGrid}>
+                    <div className="pd-include-grid" style={styles.includeGrid}>
                         {["Main activity", "Estimated timings", "Group customisation", "Add to cart"].map((item) => (
                             <span key={item} style={styles.includeItem}>✓ {item}</span>
                         ))}
@@ -142,7 +170,7 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
                     </div>
                 </div>
 
-                <aside style={styles.reviewForm}>
+                <aside className="pd-review-form" style={styles.reviewForm}>
                     <h2 style={styles.sectionTitle}>Write a review</h2>
                     <select value={rating} onChange={(e) => setRating(Number(e.target.value))} style={styles.input}>
                         {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n} {n === 1 ? "star" : "stars"}</option>)}
@@ -152,9 +180,9 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
                 </aside>
             </section>
 
-            <div style={styles.stickyCta}>
+            <div className="pd-sticky-cta" style={styles.stickyCta}>
                 <strong>{activity.name}</strong>
-                <button onClick={addToSelection} style={styles.primaryButton}>Add for {Number(activity.price).toFixed(2)} €</button>
+                <button className="pd-primary-btn" onClick={addToSelection} style={styles.primaryButton}>Add for {Number(activity.price).toFixed(2)} €</button>
             </div>
         </main>
     );

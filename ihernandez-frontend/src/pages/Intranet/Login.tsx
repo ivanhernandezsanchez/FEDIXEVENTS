@@ -143,6 +143,19 @@ const css = `
         transition: color 0.15s;
     }
     .auth-eye-btn:hover { color: rgba(255,255,255,0.7); }
+    .auth-mobile-logo {
+        display: none;
+        justify-content: center;
+        margin-bottom: 1.75rem;
+    }
+    @media (max-width: 1023px) {
+        .auth-mobile-logo { display: flex; }
+        .auth-right { padding: 1.5rem 1.25rem; }
+    }
+    @media (max-width: 480px) {
+        .auth-right { padding: 1.25rem 1rem; }
+        .auth-form-container { padding: 0; }
+    }
     @keyframes fadeSlideUp {
         from { opacity: 0; transform: translateY(16px); }
         to   { opacity: 1; transform: translateY(0); }
@@ -242,6 +255,13 @@ function Login() {
                 <div className="auth-right">
                     <div className="auth-form-container">
 
+                        {/* Logo solo visible en móvil (panel izquierdo oculto) */}
+                        <div className="auth-mobile-logo">
+                            <div style={{ background: "#fff", borderRadius: 12, padding: "6px 14px", display: "inline-flex" }}>
+                                <img src="/logo.png" alt="FedixEvents" style={{ height: 52 }} />
+                            </div>
+                        </div>
+
                         <div style={{ marginBottom: "2rem" }}>
                             <span style={{
                                 fontSize: "0.75rem", fontWeight: 800, color: "#DB2777",
@@ -302,7 +322,7 @@ function Login() {
                                         className="auth-eye-btn"
                                         aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                                     >
-                                        {showPassword ? "🙈" : "👁️"}
+                                        {showPassword ? "✕" : "○"}
                                     </button>
                                 </div>
                             </div>

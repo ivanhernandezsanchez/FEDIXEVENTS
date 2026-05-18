@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Activity, City } from "../types";
 import { addActivityToCart } from "../cart";
-import { getActivityImage, renderStars } from "../visuals";
+import { getActivityImage, getActivityVideo, renderStars } from "../visuals";
 
 function Catalog() {
   const navigate = useNavigate();
@@ -12,6 +12,39 @@ function Catalog() {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedMood, setSelectedMood] = useState("");
+  const [categoryVideos, setCategoryVideos] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const key = import.meta.env.VITE_PIXABAY_KEY;
+    if (!key || key === "TU_API_KEY_AQUI") return;
+
+    const keywords: Record<string, string> = {
+      Aventura: "karting go kart extreme sports",
+      Gastro: "restaurant chef cooking food",
+      Fiesta: "party nightclub dancing",
+      Premium: "luxury spa pool relax",
+      Ocio: "entertainment fun leisure",
+    };
+
+    const fetchVideos = async () => {
+      const results: Record<string, string> = {};
+      await Promise.all(
+        Object.entries(keywords).map(async ([cat, q]) => {
+          try {
+            const res = await fetch(
+              `https://pixabay.com/api/videos/?key=${key}&q=${encodeURIComponent(q)}&per_page=5&video_type=film`
+            );
+            const data = await res.json();
+            const url = data.hits?.[0]?.videos?.small?.url;
+            if (url) results[cat] = url;
+          } catch {}
+        })
+      );
+      setCategoryVideos(results);
+    };
+
+    fetchVideos();
+  }, []);
 
   useEffect(() => {
     fetch("/api/cities")
@@ -30,6 +63,9 @@ function Catalog() {
       .catch(() => setActivities([]))
       .finally(() => setLoading(false));
   }, [selectedCity]);
+
+  const isAIPlan = (activity: Activity) =>
+    !activity.provider_id && (Number(activity.price) === 0 || activity.category?.toLowerCase().includes("ia") || activity.category?.toLowerCase().includes("personalizado"));
 
   const categories = Array.from(new Set(activities.map((activity) => activity.category))).filter(Boolean);
   const moods = ["Party", "Adventure", "Gastro", "Relax", "Premium"];
@@ -52,23 +88,26 @@ function Catalog() {
         .catalog-title { font-size: 2rem !important; }
         .catalog-filter-box { min-width: 0 !important; width: 100% !important; }
       }
+      .activity-card:hover .activity-video {
+        opacity: 1 !important;
+      }
     `}</style>
     <main className="catalog-container" style={styles.container}>
       <section className="catalog-hero" style={styles.hero}>
         <div>
-          <span style={styles.kicker}>Full catalogue</span>
-          <h1 className="catalog-title" style={styles.title}>Catalogue</h1>
-          <p style={styles.subtitle}>Filter by city, compare activities and build your event cart in just a few clicks.</p>
+          <span style={styles.kicker}>Catálogo completo</span>
+          <h1 className="catalog-title" style={styles.title}>Catálogo</h1>
+          <p style={styles.subtitle}>Filtra por ciudad, compara actividades y prepara tu carrito en pocos clics.</p>
         </div>
 
         <div className="catalog-filter-box" style={styles.filterBox}>
-          <label style={styles.filterLabel}>Destination</label>
+          <label style={styles.filterLabel}>Destino</label>
           <select
             value={selectedCity}
             onChange={(event) => setSelectedCity(event.target.value)}
             style={styles.select}
           >
-            <option value="">All cities</option>
+            <option value="">Todas las ciudades</option>
             {cities.map((city) => (
               <option key={city.id} value={city.id}>
                 {city.name}
@@ -78,23 +117,23 @@ function Catalog() {
         </div>
       </section>
 
-      <section style={styles.trustBar}>
-        <span>{activities.length} activities available</span>
-        <span>Book from your cart</span>
-        <span>Managed via intranet</span>
+      <section className="catalog-trust" style={styles.trustBar}>
+        <span>{activities.length} actividades disponibles</span>
+        <span>Reserva desde tu carrito</span>
+        <span>Gestionado vía intranet</span>
       </section>
 
       <section style={styles.filterChips}>
-        <button onClick={() => { setSelectedCategory(""); setSelectedMood(""); }} style={!selectedCategory && !selectedMood ? styles.activeChip : styles.chip}>
-          All
+        <button className={!selectedCategory && !selectedMood ? "catalog-chip-active" : "catalog-chip"} onClick={() => { setSelectedCategory(""); setSelectedMood(""); }} style={!selectedCategory && !selectedMood ? styles.activeChip : styles.chip}>
+          Todas
         </button>
         {categories.map((category) => (
-          <button key={category} onClick={() => setSelectedCategory(category)} style={selectedCategory === category ? styles.activeChip : styles.chip}>
+          <button className={selectedCategory === category ? "catalog-chip-active" : "catalog-chip"} key={category} onClick={() => setSelectedCategory(category)} style={selectedCategory === category ? styles.activeChip : styles.chip}>
             {category}
           </button>
         ))}
         {moods.map((mood) => (
-          <button key={mood} onClick={() => setSelectedMood(mood)} style={selectedMood === mood ? styles.activeChip : styles.chip}>
+          <button className={selectedMood === mood ? "catalog-chip-active" : "catalog-chip"} key={mood} onClick={() => setSelectedMood(mood)} style={selectedMood === mood ? styles.activeChip : styles.chip}>
             {mood}
           </button>
         ))}
@@ -102,42 +141,80 @@ function Catalog() {
 
       <div style={styles.grid}>
         {loading ? (
-          <p style={styles.empty}>Loading catalogue...</p>
+          <p style={styles.empty}>Cargando catálogo...</p>
         ) : visibleActivities.length === 0 ? (
-          <p style={styles.empty}>No activities available.</p>
+          <p style={styles.empty}>No hay actividades disponibles.</p>
         ) : (
-          visibleActivities.map((activity) => (
-            <article key={activity.id} style={styles.card}>
-              <button
-                onClick={() => navigate(`/activity/${activity.id}`)}
-                style={{
-                  ...styles.imageButton,
-                  backgroundImage: `linear-gradient(180deg, rgba(29,16,40,0.1), rgba(29,16,40,0.72)), url('${getActivityImage(activity)}')`,
+          visibleActivities.map((activity) => {
+            const aiPlan = isAIPlan(activity);
+            return (
+              <article
+                key={activity.id}
+                className="activity-card"
+                style={styles.card}
+                onMouseEnter={(e) => {
+                  const video = e.currentTarget.querySelector("video");
+                  if (video) video.play().catch(() => {});
+                }}
+                onMouseLeave={(e) => {
+                  const video = e.currentTarget.querySelector("video");
+                  if (video) { video.pause(); video.currentTime = 0; }
                 }}
               >
-                <span style={styles.imageLabel}>View details</span>
-              </button>
-              <h2 style={styles.cardTitle}>{activity.name}</h2>
-              <div style={styles.ratingRow}>
-                <span style={styles.stars}>{renderStars(activity.avgRating)}</span>
-                <span>{Number(activity.avgRating) > 0 ? `${Number(activity.avgRating).toFixed(1)} / 5` : "No reviews yet"}</span>
-              </div>
-              <p style={styles.meta}>{activity.category}{activity.provider_name ? ` · ${activity.provider_name}` : ""}</p>
-              <p style={styles.description}>{activity.description}</p>
-              <div style={styles.footer}>
-                <strong>{Number(activity.price).toFixed(2)} €</strong>
                 <button
-                  onClick={() => {
-                    addActivityToCart(activity);
-                    navigate("/cart");
+                  onClick={() => navigate(`/activity/${activity.id}`)}
+                  style={{
+                    ...styles.imageButton,
+                    backgroundImage: `linear-gradient(180deg, rgba(29,16,40,0.1), rgba(29,16,40,0.72)), url('${getActivityImage(activity)}')`,
+                    position: "relative",
                   }}
-                  style={styles.button}
                 >
-                  Add
+                  <video
+                    className="activity-video"
+                    src={categoryVideos[activity.category] ?? getActivityVideo(activity)}
+                    muted
+                    loop
+                    playsInline
+                    preload="none"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      opacity: 0,
+                      transition: "opacity 0.4s ease",
+                      borderRadius: 8,
+                    }}
+                  />
+                  <span style={{ ...styles.imageLabel, position: "relative", zIndex: 1 }}>
+                    {aiPlan ? "Plan IA" : "Ver detalles"}
+                  </span>
                 </button>
-              </div>
-            </article>
-          ))
+                <h2 style={styles.cardTitle}>{activity.name}</h2>
+                <div className="card-rating" style={styles.ratingRow}>
+                  <span style={styles.stars}>{renderStars(activity.avgRating)}</span>
+                  <span>{Number(activity.avgRating) > 0 ? `${Number(activity.avgRating).toFixed(1)} / 5` : "Sin valoraciones"}</span>
+                </div>
+                <p className="card-meta" style={styles.meta}>{activity.category}{activity.provider_name ? ` · ${activity.provider_name}` : ""}</p>
+                <p className="card-desc" style={styles.description}>{activity.description}</p>
+                <div className="card-footer" style={styles.footer}>
+                  <strong style={{ color: aiPlan ? "#c4b5fd" : "#F97316" }}>
+                    {aiPlan ? "Por revisar" : `${Number(activity.price).toFixed(2)} €`}
+                  </strong>
+                  <button
+                    onClick={() => {
+                      addActivityToCart(activity);
+                      navigate("/cart");
+                    }}
+                    style={styles.button}
+                  >
+                    Añadir
+                  </button>
+                </div>
+              </article>
+            );
+          })
         )}
       </div>
     </main>

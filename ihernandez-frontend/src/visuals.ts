@@ -31,6 +31,36 @@ export const getActivityImage = (activity?: Pick<Activity, "category" | "name"> 
   return categoryImages.find((item) => item.match.test(haystack))?.url ?? defaultActivityImage;
 };
 
+const categoryVideos = [
+  {
+    match: /kart|motor|aventura|paintball|extremo|quad|buggy|kayak|wakeboard|jet\s?ski/i,
+    url: "/videos/aventura.mp4",
+  },
+  {
+    match: /cena|gastro|comida|restaurante|tapas|beer|cerveza|paella|vino/i,
+    url: "/videos/gastro.mp4",
+  },
+  {
+    match: /barco|playa|mar|boat|yate|catamar/i,
+    url: "/videos/playa.mp4",
+  },
+  {
+    match: /relax|spa|premium|vip|limusina|glamping/i,
+    url: "/videos/relax.mp4",
+  },
+  {
+    match: /noche|fiesta|party|discoteca|club/i,
+    url: "/videos/fiesta.mp4",
+  },
+];
+
+export const defaultActivityVideo = "/videos/default.mp4";
+
+export const getActivityVideo = (activity?: Pick<Activity, "category" | "name"> | null) => {
+  const haystack = `${activity?.category ?? ""} ${activity?.name ?? ""}`;
+  return categoryVideos.find((item) => item.match.test(haystack))?.url ?? defaultActivityVideo;
+};
+
 export const renderStars = (value?: number | string | null) => {
   const rating = Number(value) || 0;
   const rounded = Math.max(0, Math.min(5, Math.round(rating)));
