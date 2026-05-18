@@ -109,14 +109,14 @@ function Header() {
             }}>{label}</Link>
           ))}
           {user?.role === "customer" && (
-            <Link to="/history" style={{ color: isDark ? "#d1d5db" : "#4b1d96", textDecoration: "none", fontWeight: 600, fontSize: 14, padding: "6px 14px", borderRadius: 999 }}>📦 Historial</Link>
+            <Link to="/history" style={{ color: isDark ? "#d1d5db" : "#4b1d96", textDecoration: "none", fontWeight: 600, fontSize: 14, padding: "6px 14px", borderRadius: 999 }}>Orders</Link>
           )}
           {user?.role === "admin" ? (
             <Link to="/intranet/dashboard" style={{ color: "#A855F7", textDecoration: "none", fontWeight: 700, fontSize: 14, padding: "6px 14px", borderRadius: 999 }}>Intranet</Link>
           ) : !user ? (
             <>
-              <Link to="/intranet/login" style={{ color: isDark ? "#d1d5db" : "#4b1d96", textDecoration: "none", fontWeight: 600, fontSize: 14, padding: "6px 14px", borderRadius: 999 }}>Iniciar sesión</Link>
-              <Link to="/intranet/register" style={{ background: "linear-gradient(135deg,#DB2777,#F97316)", color: "#fff", textDecoration: "none", fontWeight: 700, fontSize: 14, padding: "6px 14px", borderRadius: 999 }}>Registrarse</Link>
+              <Link to="/intranet/login" style={{ color: isDark ? "#d1d5db" : "#4b1d96", textDecoration: "none", fontWeight: 600, fontSize: 14, padding: "6px 14px", borderRadius: 999 }}>Log in</Link>
+              <Link to="/intranet/register" style={{ background: "linear-gradient(135deg,#DB2777,#F97316)", color: "#fff", textDecoration: "none", fontWeight: 700, fontSize: 14, padding: "6px 14px", borderRadius: 999 }}>Sign up</Link>
             </>
           ) : null}
         </nav>
@@ -135,7 +135,7 @@ function Header() {
           {!isIntranet && (
             <button
               onClick={toggleTheme}
-              title={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
               style={{
                 background: isDark ? "rgba(255,255,255,0.08)" : "rgba(168,85,247,0.1)",
                 border: isDark ? "1px solid rgba(255,255,255,0.15)" : "1px solid rgba(168,85,247,0.3)",
@@ -162,7 +162,7 @@ function Header() {
             boxShadow: "0 4px 16px rgba(219, 39, 119, 0.45)",
             whiteSpace: "nowrap",
           }}>
-            🛒 {totalItems > 0 ? totalItems : ""}
+            {totalItems > 0 ? totalItems : "Cart"}
           </Link>
 
           {/* Hamburger — visible only on mobile via CSS */}
@@ -205,14 +205,14 @@ function Header() {
               }}>{label}</Link>
             ))}
             {user?.role === "customer" && (
-              <Link to="/history" onClick={() => setMenuOpen(false)} style={{ color: "#d1d5db", textDecoration: "none", fontWeight: 600, fontSize: 15, padding: "11px 4px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>📦 Historial de pedidos</Link>
+              <Link to="/history" onClick={() => setMenuOpen(false)} style={{ color: "#d1d5db", textDecoration: "none", fontWeight: 600, fontSize: 15, padding: "11px 4px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>Order history</Link>
             )}
             {user?.role === "admin" ? (
               <Link to="/intranet/dashboard" onClick={() => setMenuOpen(false)} style={{ color: "#A855F7", textDecoration: "none", fontWeight: 700, fontSize: 15, padding: "11px 4px", borderBottom: "1px solid rgba(168,85,247,0.15)" }}>Intranet</Link>
             ) : !user ? (
               <>
-                <Link to="/intranet/login" onClick={() => setMenuOpen(false)} style={{ color: "#d1d5db", textDecoration: "none", fontWeight: 600, fontSize: 15, padding: "11px 4px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>Iniciar sesión</Link>
-                <Link to="/intranet/register" onClick={() => setMenuOpen(false)} style={{ color: "#DB2777", textDecoration: "none", fontWeight: 700, fontSize: 15, padding: "11px 4px", borderBottom: "1px solid rgba(219,39,119,0.15)" }}>Registrarse</Link>
+                <Link to="/intranet/login" onClick={() => setMenuOpen(false)} style={{ color: "#d1d5db", textDecoration: "none", fontWeight: 600, fontSize: 15, padding: "11px 4px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>Log in</Link>
+                <Link to="/intranet/register" onClick={() => setMenuOpen(false)} style={{ color: "#DB2777", textDecoration: "none", fontWeight: 700, fontSize: 15, padding: "11px 4px", borderBottom: "1px solid rgba(219,39,119,0.15)" }}>Sign up</Link>
               </>
             ) : null}
             {user && (

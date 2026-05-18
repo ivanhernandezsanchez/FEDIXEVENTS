@@ -14,7 +14,7 @@ function CartSummary({ cart, onUpdateQuantity, onRemove, onConfirm }: Props) {
     );
 
     if (cart.length === 0) {
-        return <p style={{ color: "#999" }}>El carrito está vacío.</p>;
+        return <p style={{ color: "#999" }}>The cart is empty.</p>;
     }
 
     return (
@@ -47,7 +47,7 @@ function CartSummary({ cart, onUpdateQuantity, onRemove, onConfirm }: Props) {
                 disabled={cart.length === 0}
                 style={{ marginTop: 10 }}
             >
-                🧾 Ir a pagar
+                🧾 Checkout
             </button>
         </div>
     );

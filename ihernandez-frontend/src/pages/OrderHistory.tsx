@@ -24,10 +24,10 @@ interface Order {
 }
 
 const statusLabel: Record<string, string> = {
-    pending: "Pendiente",
-    confirmed: "Confirmado",
-    cancelled: "Cancelado",
-    completed: "Completado",
+    pending: "Pending",
+    confirmed: "Confirmed",
+    cancelled: "Cancelled",
+    completed: "Completed",
 };
 
 function OrderHistory() {
@@ -37,7 +37,7 @@ function OrderHistory() {
     const [error, setError] = useState("");
 
     const formatDate = (value?: string) =>
-        value ? new Date(value).toLocaleDateString("es-ES", { day: "2-digit", month: "long", year: "numeric" }) : "-";
+        value ? new Date(value).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" }) : "-";
 
     useEffect(() => {
         const loadOrders = async () => {
@@ -45,12 +45,12 @@ function OrderHistory() {
                 const res = await fetch("/api/orders/my", { credentials: "include" });
                 const data = await res.json();
                 if (!res.ok) {
-                    setError(data.error || "No se pudo cargar el historial");
+                    setError(data.error || "Could not load order history");
                     return;
                 }
                 setOrders(Array.isArray(data) ? data : []);
             } catch {
-                setError("Error de red al cargar el historial");
+                setError("Network error loading order history");
             } finally {
                 setLoading(false);
             }
@@ -61,22 +61,22 @@ function OrderHistory() {
     if (loading) {
         return (
             <main style={s.page}>
-                <p style={{ color: "#9ca3af", padding: "3rem 0" }}>Cargando historial...</p>
+                <p style={{ color: "#9ca3af", padding: "3rem 0" }}>Loading order history...</p>
             </main>
         );
     }
 
     return (
         <main style={s.page}>
-            <span style={s.kicker}>Mi cuenta</span>
-            <h1 style={s.h1}>Historial de pedidos</h1>
+            <span style={s.kicker}>My account</span>
+            <h1 style={s.h1}>Order history</h1>
 
             {error ? (
                 <div style={s.errorBox}>{error}</div>
             ) : orders.length === 0 ? (
                 <div style={s.emptyBox}>
-                    <p style={{ color: "#9ca3af", margin: 0 }}>Aún no tienes pedidos. Completa una reserva para ver tu historial.</p>
-                    <button onClick={() => navigate("/catalog")} style={s.primaryBtn}>Ver catálogo</button>
+                    <p style={{ color: "#9ca3af", margin: 0 }}>No orders yet. Complete a booking to see your history.</p>
+                    <button onClick={() => navigate("/catalog")} style={s.primaryBtn}>View catalogue</button>
                 </div>
             ) : (
                 <div style={s.grid}>
@@ -84,7 +84,7 @@ function OrderHistory() {
                         <article key={order.id ?? index} style={s.card}>
                             <div style={s.cardHead}>
                                 <div>
-                                    <strong style={{ color: "#F3F4F6", fontSize: "1rem" }}>Pedido #{order.id}</strong>
+                                    <strong style={{ color: "#F3F4F6", fontSize: "1rem" }}>Order #{order.id}</strong>
                                     {order.address && (
                                         <p style={{ color: "#A855F7", fontSize: "0.85rem", margin: "4px 0 0" }}>{order.address}</p>
                                     )}
@@ -99,7 +99,7 @@ function OrderHistory() {
                                         fontWeight: 700,
                                         padding: "3px 10px",
                                     }}>
-                                        {statusLabel[order.status ?? ""] ?? order.status ?? "Pendiente"}
+                                        {statusLabel[order.status ?? ""] ?? order.status ?? "Pending"}
                                     </span>
                                     <p style={{ color: "#6b7280", fontSize: "0.8rem", margin: "6px 0 0" }}>{formatDate(order.created_at ?? order.createdAt)}</p>
                                 </div>
@@ -121,7 +121,7 @@ function OrderHistory() {
                             )}
 
                             <div style={s.cardFoot}>
-                                <span style={{ color: "#9ca3af", fontSize: "0.88rem" }}>Total estimado</span>
+                                <span style={{ color: "#9ca3af", fontSize: "0.88rem" }}>Estimated total</span>
                                 <strong style={{ color: "#F97316", fontSize: "1.1rem" }}>{Number(order.total).toFixed(2)} €</strong>
                             </div>
                         </article>
@@ -130,7 +130,7 @@ function OrderHistory() {
             )}
 
             <button onClick={() => navigate("/")} style={{ ...s.primaryBtn, marginTop: "2rem" }}>
-                ← Volver a la tienda
+                ← Back to shop
             </button>
         </main>
     );

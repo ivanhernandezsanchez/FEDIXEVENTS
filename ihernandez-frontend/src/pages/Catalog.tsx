@@ -95,19 +95,19 @@ function Catalog() {
     <main className="catalog-container" style={styles.container}>
       <section className="catalog-hero" style={styles.hero}>
         <div>
-          <span style={styles.kicker}>Catálogo completo</span>
-          <h1 className="catalog-title" style={styles.title}>Catálogo</h1>
-          <p style={styles.subtitle}>Filtra por ciudad, compara actividades y prepara tu carrito en pocos clics.</p>
+          <span style={styles.kicker}>Full catalogue</span>
+          <h1 className="catalog-title" style={styles.title}>Catalogue</h1>
+          <p style={styles.subtitle}>Filter by city, compare activities and build your cart in a few clicks.</p>
         </div>
 
         <div className="catalog-filter-box" style={styles.filterBox}>
-          <label style={styles.filterLabel}>Destino</label>
+          <label style={styles.filterLabel}>Destination</label>
           <select
             value={selectedCity}
             onChange={(event) => setSelectedCity(event.target.value)}
             style={styles.select}
           >
-            <option value="">Todas las ciudades</option>
+            <option value="">All cities</option>
             {cities.map((city) => (
               <option key={city.id} value={city.id}>
                 {city.name}
@@ -118,14 +118,14 @@ function Catalog() {
       </section>
 
       <section className="catalog-trust" style={styles.trustBar}>
-        <span>{activities.length} actividades disponibles</span>
-        <span>Reserva desde tu carrito</span>
-        <span>Gestionado vía intranet</span>
+        <span>{activities.length} activities available</span>
+        <span>Book from your cart</span>
+        <span>Managed via intranet</span>
       </section>
 
       <section style={styles.filterChips}>
         <button className={!selectedCategory && !selectedMood ? "catalog-chip-active" : "catalog-chip"} onClick={() => { setSelectedCategory(""); setSelectedMood(""); }} style={!selectedCategory && !selectedMood ? styles.activeChip : styles.chip}>
-          Todas
+          All
         </button>
         {categories.map((category) => (
           <button className={selectedCategory === category ? "catalog-chip-active" : "catalog-chip"} key={category} onClick={() => setSelectedCategory(category)} style={selectedCategory === category ? styles.activeChip : styles.chip}>
@@ -141,9 +141,9 @@ function Catalog() {
 
       <div style={styles.grid}>
         {loading ? (
-          <p style={styles.empty}>Cargando catálogo...</p>
+          <p style={styles.empty}>Loading catalogue...</p>
         ) : visibleActivities.length === 0 ? (
-          <p style={styles.empty}>No hay actividades disponibles.</p>
+          <p style={styles.empty}>No activities available.</p>
         ) : (
           visibleActivities.map((activity) => {
             const aiPlan = isAIPlan(activity);
@@ -188,19 +188,19 @@ function Catalog() {
                     }}
                   />
                   <span style={{ ...styles.imageLabel, position: "relative", zIndex: 1 }}>
-                    {aiPlan ? "Plan IA" : "Ver detalles"}
+                    {aiPlan ? "AI Plan" : "View details"}
                   </span>
                 </button>
                 <h2 style={styles.cardTitle}>{activity.name}</h2>
                 <div className="card-rating" style={styles.ratingRow}>
                   <span style={styles.stars}>{renderStars(activity.avgRating)}</span>
-                  <span>{Number(activity.avgRating) > 0 ? `${Number(activity.avgRating).toFixed(1)} / 5` : "Sin valoraciones"}</span>
+                  <span>{Number(activity.avgRating) > 0 ? `${Number(activity.avgRating).toFixed(1)} / 5` : "No ratings"}</span>
                 </div>
                 <p className="card-meta" style={styles.meta}>{activity.category}{activity.provider_name ? ` · ${activity.provider_name}` : ""}</p>
                 <p className="card-desc" style={styles.description}>{activity.description}</p>
                 <div className="card-footer" style={styles.footer}>
                   <strong style={{ color: aiPlan ? "#c4b5fd" : "#F97316" }}>
-                    {aiPlan ? "Por revisar" : `${Number(activity.price).toFixed(2)} €`}
+                    {aiPlan ? "To review" : `${Number(activity.price).toFixed(2)} €`}
                   </strong>
                   <button
                     onClick={() => {
@@ -209,7 +209,7 @@ function Catalog() {
                     }}
                     style={styles.button}
                   >
-                    Añadir
+                    Add
                   </button>
                 </div>
               </article>
