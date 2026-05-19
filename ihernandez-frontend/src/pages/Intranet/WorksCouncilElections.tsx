@@ -2,11 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const members = [
-    { name: "María López Fernández", role: "Presidenta del Comité", since: "2024", sindical: "CCOO" },
-    { name: "Carlos Martínez Ruiz", role: "Secretario", since: "2024", sindical: "UGT" },
-    { name: "Ana García Torres", role: "Vocal — Salud Laboral", since: "2024", sindical: "CCOO" },
-    { name: "José Sánchez Moreno", role: "Vocal — Formación", since: "2024", sindical: "Independiente" },
-    { name: "Laura Pérez Díaz", role: "Vocal — Igualdad", since: "2024", sindical: "UGT" },
+    { name: "Laura Martín", role: "Presidenta del Comité", since: "2024", sindical: "CCOO" },
+    { name: "Iván Hernández", role: "Secretario", since: "2024", sindical: "UGT" },
+    { name: "Marta Ruiz", role: "Vocal — Igualdad y Prevención", since: "2024", sindical: "CCOO" },
+    { name: "Jesús Taulés", role: "Vocal — Formación y Turnos", since: "2024", sindical: "Independiente" },
+    { name: "Nerea Santos", role: "Vocal — Comunicación", since: "2024", sindical: "UGT" },
 ];
 
 const timeline = [

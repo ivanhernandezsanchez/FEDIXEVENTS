@@ -3,6 +3,15 @@ import { Link } from "react-router-dom";
 
 const news = [
     {
+        date: "19 May 2026",
+        tag: "Aviso",
+        tagColor: "#92400e",
+        tagBg: "#fef3c7",
+        title: "Recordatorio: plazo de inscripción formación — cierra el 23 de mayo",
+        body: "El plazo para inscribirse en los cursos del segundo trimestre cierra el próximo 23 de mayo. Quedan plazas disponibles en inglés de negocios, Excel avanzado y atención al cliente digital. Las solicitudes se tramitan a través del buzón interno del comité.",
+        priority: "media",
+    },
+    {
         date: "12 May 2026",
         tag: "Negociación",
         tagColor: "#2563eb",

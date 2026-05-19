@@ -4,22 +4,22 @@ import { Link } from "react-router-dom";
 const objectives = [
     {
         title: "Plan de conciliación 2026",
-        progress: 65,
+        progress: 82,
         text: "Negociar medidas de flexibilidad horaria, permisos y teletrabajo parcial para puestos compatibles.",
     },
     {
         title: "Guía interna sobre cambios y extinción del contrato",
-        progress: 40,
+        progress: 60,
         text: "Crear una guía práctica para que cualquier trabajador entienda sus derechos ante modificaciones, despidos y fin de contrato.",
     },
     {
         title: "Mejora del calendario de formación",
-        progress: 55,
+        progress: 75,
         text: "Ordenar cursos por áreas, publicar convocatorias con más antelación y reservar plazas para nuevos perfiles.",
     },
     {
         title: "Revisión de descansos y turnos",
-        progress: 35,
+        progress: 50,
         text: "Analizar incidencias de carga de trabajo y proponer ajustes en picos de reservas y atención al cliente.",
     },
 ];

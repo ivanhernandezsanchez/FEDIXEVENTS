@@ -26,6 +26,12 @@ const agreements = [
         date: "Abril 2026",
         text: "Se habilita un buzón interno para trasladar dudas sobre nóminas, descansos, permisos y prevención de riesgos.",
     },
+    {
+        title: "Protocolo de teletrabajo aprobado: hasta 2 días semanales",
+        tag: "Teletrabajo",
+        date: "Mayo 2026",
+        text: "Tras tres meses de negociación, la empresa ha aprobado el protocolo de teletrabajo que permite hasta 2 días semanales para los puestos elegibles. El comité supervisará su correcta aplicación.",
+    },
 ];
 
 const styles: Record<string, React.CSSProperties> = {
