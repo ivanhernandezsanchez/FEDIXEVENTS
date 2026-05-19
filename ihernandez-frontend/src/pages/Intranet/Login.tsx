@@ -206,8 +206,12 @@ function Login() {
         try {
             const loggedUser = await login(email, password);
             const fromPath = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname;
-            const fallbackPath = loggedUser.role === "admin" ? "/intranet/dashboard" : "/";
-            const targetPath = fromPath && (loggedUser.role === "admin" || !fromPath.startsWith("/intranet"))
+            const fallbackPath = loggedUser.role === "admin"
+                ? "/intranet/dashboard"
+                : loggedUser.role === "employee"
+                ? "/intranet/works-council/attendance"
+                : "/";
+            const targetPath = fromPath && (["admin", "employee"].includes(loggedUser.role) || !fromPath.startsWith("/intranet"))
                 ? fromPath
                 : fallbackPath;
             navigate(targetPath, { replace: true });

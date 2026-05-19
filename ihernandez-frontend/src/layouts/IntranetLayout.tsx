@@ -38,6 +38,27 @@ function IntranetLayout() {
             `}</style>
 
             <div style={{ display: "flex", minHeight: "100vh", fontFamily: "Trebuchet MS, Arial, sans-serif" }}>
+                {user?.role === "employee" && (
+                    <aside
+                        className="intranet-sidebar"
+                        style={{ width: 280, background: "#111827", color: "white", padding: 22, position: "sticky", top: 0, height: "100vh", overflowY: "auto", flexShrink: 0 }}
+                    >
+                        <h2 style={{ color: "#93c5fd", margin: 0 }}>Panel empleado</h2>
+                        <p style={{ color: "#cbd5e1", marginTop: 8 }}>Hola, {user.name}</p>
+                        <hr style={{ borderColor: "#334155", margin: "18px 0" }} />
+                        <nav style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 20 }}>
+                            <Link to="/intranet/works-council/attendance" style={navLink}>Fichajes</Link>
+                            <Link to="/intranet/works-council" style={navLink}>Comité de empresa</Link>
+                            <button
+                                onClick={logout}
+                                style={{ marginTop: 20, background: "#dc2626", color: "white", border: "none", padding: "0.8rem 1rem", cursor: "pointer", borderRadius: 8, fontWeight: 800 }}
+                            >
+                                Cerrar Sesión
+                            </button>
+                        </nav>
+                    </aside>
+                )}
+
                 {user?.role === "admin" && (
                     <>
                         {/* Overlay — only rendered when sidebar is open on mobile */}

@@ -31,6 +31,7 @@ import WorksCouncilSeverance from "./pages/Intranet/WorksCouncilSeverance";
 import WorksCouncilNews from "./pages/Intranet/WorksCouncilNews";
 import WorksCouncilMinutes from "./pages/Intranet/WorksCouncilMinutes";
 import WorksCouncilElections from "./pages/Intranet/WorksCouncilElections";
+import WorksCouncilAttendance from "./pages/Intranet/WorksCouncilAttendance";
 
 function App() {
   return (
@@ -113,7 +114,7 @@ function App() {
           <Route
             path="works-council"
             element={
-              <PrivateRoute roles={["admin"]}>
+              <PrivateRoute roles={["admin", "employee"]}>
                 <WorksCouncil />
               </PrivateRoute>
             }
@@ -122,7 +123,7 @@ function App() {
           <Route
             path="works-council/members"
             element={
-              <PrivateRoute roles={["admin"]}>
+              <PrivateRoute roles={["admin", "employee"]}>
                 <WorksCouncilMembers />
               </PrivateRoute>
             }
@@ -130,7 +131,7 @@ function App() {
           <Route
             path="works-council/legal"
             element={
-              <PrivateRoute roles={["admin"]}>
+              <PrivateRoute roles={["admin", "employee"]}>
                 <WorksCouncilLegal />
               </PrivateRoute>
             }
@@ -138,7 +139,7 @@ function App() {
           <Route
             path="works-council/contract-info"
             element={
-              <PrivateRoute roles={["admin"]}>
+              <PrivateRoute roles={["admin", "employee"]}>
                 <WorksCouncilContractInfo />
               </PrivateRoute>
             }
@@ -146,7 +147,7 @@ function App() {
           <Route
             path="works-council/agreements"
             element={
-              <PrivateRoute roles={["admin"]}>
+              <PrivateRoute roles={["admin", "employee"]}>
                 <WorksCouncilAgreements />
               </PrivateRoute>
             }
@@ -154,19 +155,20 @@ function App() {
           <Route
             path="works-council/objectives"
             element={
-              <PrivateRoute roles={["admin"]}>
+              <PrivateRoute roles={["admin", "employee"]}>
                 <WorksCouncilObjectives />
               </PrivateRoute>
             }
           />
-          <Route path="works-council/calendar" element={<PrivateRoute roles={["admin"]}><WorksCouncilCalendar /></PrivateRoute>} />
-          <Route path="works-council/suggestions" element={<PrivateRoute roles={["admin"]}><WorksCouncilSuggestions /></PrivateRoute>} />
-          <Route path="works-council/faq" element={<PrivateRoute roles={["admin"]}><WorksCouncilFAQ /></PrivateRoute>} />
-          <Route path="works-council/paid-leave" element={<PrivateRoute roles={["admin"]}><WorksCouncilPaidLeave /></PrivateRoute>} />
-          <Route path="works-council/severance" element={<PrivateRoute roles={["admin"]}><WorksCouncilSeverance /></PrivateRoute>} />
-          <Route path="works-council/news" element={<PrivateRoute roles={["admin"]}><WorksCouncilNews /></PrivateRoute>} />
-          <Route path="works-council/minutes" element={<PrivateRoute roles={["admin"]}><WorksCouncilMinutes /></PrivateRoute>} />
-          <Route path="works-council/elections" element={<PrivateRoute roles={["admin"]}><WorksCouncilElections /></PrivateRoute>} />
+          <Route path="works-council/attendance" element={<PrivateRoute roles={["admin", "employee"]}><WorksCouncilAttendance /></PrivateRoute>} />
+          <Route path="works-council/calendar" element={<PrivateRoute roles={["admin", "employee"]}><WorksCouncilCalendar /></PrivateRoute>} />
+          <Route path="works-council/suggestions" element={<PrivateRoute roles={["admin", "employee"]}><WorksCouncilSuggestions /></PrivateRoute>} />
+          <Route path="works-council/faq" element={<PrivateRoute roles={["admin", "employee"]}><WorksCouncilFAQ /></PrivateRoute>} />
+          <Route path="works-council/paid-leave" element={<PrivateRoute roles={["admin", "employee"]}><WorksCouncilPaidLeave /></PrivateRoute>} />
+          <Route path="works-council/severance" element={<PrivateRoute roles={["admin", "employee"]}><WorksCouncilSeverance /></PrivateRoute>} />
+          <Route path="works-council/news" element={<PrivateRoute roles={["admin", "employee"]}><WorksCouncilNews /></PrivateRoute>} />
+          <Route path="works-council/minutes" element={<PrivateRoute roles={["admin", "employee"]}><WorksCouncilMinutes /></PrivateRoute>} />
+          <Route path="works-council/elections" element={<PrivateRoute roles={["admin", "employee"]}><WorksCouncilElections /></PrivateRoute>} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
